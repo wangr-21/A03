@@ -1,0 +1,36 @@
+{
+  "python.envFile": "${workspaceFolder}/.env",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "ruff.nativeServer": "on",
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+
+  // basedpyright
+  "python.languageServer": "None",
+  "python.analysis.typeCheckingMode": "off", // do not use pyr, use bp instead
+  "basedpyright.disableLanguageServices": false,
+  "basedpyright.analysis.typeCheckingMode": "standard", // <--- here
+  "basedpyright.analysis.diagnosticMode": "workspace",
+  "basedpyright.analysis.autoImportCompletions": true,
+  "basedpyright.analysis.inlayHints.variableTypes": false,
+  "basedpyright.analysis.inlayHints.callArgumentNames": true,
+  "basedpyright.analysis.inlayHints.genericTypes": true,
+  "basedpyright.analysis.inlayHints.functionReturnTypes": true,
+}
