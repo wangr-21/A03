@@ -14,11 +14,14 @@ class AIService:
         # 检查必要的环境变量
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.openai_base_url = os.getenv("OPENAI_BASE_URL")
+        self.openai_model_name = os.getenv("OPENAI_MODEL_NAME") or "gpt-3.5-turbo"
         if not self.openai_api_key:
             raise ValueError("OPENAI_API_KEY 环境变量未设置")
-        # self.openai_api_key = "sk-fAYszZ3DzaoziPmA704aF25e257a4bC1Bc54E85345E24dCb"
-        # self.openai_base_url = "http://localhost:3000/v1"
-        self.openai_client = OpenAI(api_key=self.openai_api_key, base_url=self.openai_base_url)
+
+        self.openai_client = OpenAI(
+            api_key=self.openai_api_key,
+            base_url=self.openai_base_url,
+        )
         self.sd_api_url = os.getenv("STABLE_DIFFUSION_API_URL")
         self.sd_api_key = os.getenv("STABLE_DIFFUSION_API_KEY")
         self.neo4j_uri = os.getenv("NEO4J_URI")
@@ -32,7 +35,7 @@ class AIService:
         try:
             prompt = f"请为{grade}年级{subject}课程生成一份关于《{topic}》的教案，包含教学目标、重点难点、教学过程和板书设计。"
             response = self.openai_client.chat.completions.create(
-                model="gemini-1.5-flash",
+                model=self.openai_model_name,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
                 max_tokens=2000,

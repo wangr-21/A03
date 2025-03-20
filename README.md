@@ -27,11 +27,15 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ### 调试配置
 
-- 在项目根目录下创建 `.env` 文件，填写 `OPENAI_API_KEY` 和 `OPENAI_BASE_URL`
+- 在项目根目录下创建 `.env` 文件，填写 `OPENAI_API_KEY`、`OPENAI_BASE_URL` 和 `OPENAI_MODEL_NAME`
 
 ```env
+# 必填
 OPENAI_API_KEY=sk-xxxxxx
+
+# 可选，默认值为 OpenAI API
 OPENAI_BASE_URL=https://xxxxxx/v1
+OPENAI_MODEL_NAME=gpt-3.5-turbo
 ```
 
 - 在 `VS Code` 侧边 `调试` 栏中选择 `全栈: 启动前端+后端`，`F5` 启动调试
