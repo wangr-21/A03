@@ -1,29 +1,21 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import TeacherWorkbench from './components/TeacherWorkbench.vue';
-import ResourceCenter from './components/ResourceCenter.vue';
-import DataAnalysis from './components/DataAnalysis.vue';
-import Home from './components/Home.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
-const routes: Array<RouteRecordRaw> = [
+const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    component: () => import('./components/Home.vue'),
   },
   {
     path: '/workbench',
-    name: 'TeacherWorkbench',
-    component: TeacherWorkbench,
+    component: () => import('./components/TeacherWorkbench.vue'),
   },
   {
     path: '/resources',
-    name: 'ResourceCenter',
-    component: ResourceCenter,
+    component: () => import('./components/ResourceCenter.vue'),
   },
   {
     path: '/analysis',
-    name: 'DataAnalysis',
-    component: DataAnalysis,
+    component: () => import('./components/DataAnalysis.vue'),
   },
 ];
 

@@ -39,13 +39,46 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue';
 import { message } from 'ant-design-vue';
-import * as echarts from 'echarts';
 import {
   UserOutlined,
   BookOutlined,
   CheckCircleOutlined,
   RiseOutlined,
 } from '@ant-design/icons-vue';
+
+// 按需导入ECharts核心模块
+import * as echarts from 'echarts/core';
+import { BarChart, BarSeriesOption, RadarChart, RadarSeriesOption } from 'echarts/charts';
+import {
+  TitleComponent,
+  TitleComponentOption,
+  TooltipComponent,
+  TooltipComponentOption,
+  GridComponent,
+  GridComponentOption,
+  LegendComponent,
+} from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+
+// 声明组合图表类型
+type ECOption = echarts.ComposeOption<
+  | BarSeriesOption
+  | RadarSeriesOption
+  | TitleComponentOption
+  | TooltipComponentOption
+  | GridComponentOption
+>;
+
+// 注册必要的组件
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent,
+  BarChart,
+  RadarChart,
+  CanvasRenderer,
+]);
 
 const loading = ref(true);
 const chartRef1 = ref<HTMLElement | null>(null);
@@ -107,7 +140,7 @@ const initCharts = async () => {
 
   if (chartRef1.value) {
     const chart1 = echarts.init(chartRef1.value);
-    chart1.setOption({
+    const option: ECOption = {
       title: {
         text: '知识点掌握情况',
       },
@@ -132,12 +165,18 @@ const initCharts = async () => {
           ],
         },
       ],
+    };
+    chart1.setOption(option);
+
+    // 添加窗口大小变化时的自适应处理
+    window.addEventListener('resize', () => {
+      chart1.resize();
     });
   }
 
   if (chartRef2.value) {
     const chart2 = echarts.init(chartRef2.value);
-    chart2.setOption({
+    const option: ECOption = {
       title: {
         text: '每周学习时长分布',
       },
@@ -154,7 +193,8 @@ const initCharts = async () => {
           type: 'bar',
         },
       ],
-    });
+    };
+    chart2.setOption(option);
   }
 };
 
