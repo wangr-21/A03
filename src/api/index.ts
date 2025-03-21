@@ -13,20 +13,16 @@ type ApiResponse<T> =
     };
 
 const api = {
-  generateTeachingPlan: async (
-    subject: string,
-    grade: string,
-    topic: string
-  ): Promise<ApiResponse<string>> => {
+  generateTeachingPlan: async (params: {
+    subject: string;
+    grade: string;
+    topic: string;
+  }): Promise<ApiResponse<string>> => {
     try {
       const response = await axios.post<{
         success: true;
         data: string;
-      }>(`${BASE_URL}/teaching/generate-plan`, {
-        subject,
-        grade,
-        topic,
-      });
+      }>(`${BASE_URL}/teaching/generate-plan`, params);
       return response.data;
     } catch (error: any) {
       console.error("API调用错误:", error.response?.data || error.message);
@@ -55,7 +51,7 @@ const api = {
       };
     }
   },
-  queryKnowledgeGraph: async (query) => {
+  queryKnowledgeGraph: async (query: string) => {
     try {
       const response = await axios.post(`${BASE_URL}/knowledge/query`, {
         query,

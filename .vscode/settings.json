@@ -33,4 +33,12 @@
   "basedpyright.analysis.inlayHints.callArgumentNames": true,
   "basedpyright.analysis.inlayHints.genericTypes": true,
   "basedpyright.analysis.inlayHints.functionReturnTypes": true,
+  
+  // file nesting
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "tsconfig.json": "tsconfig.*.json, env.d.ts",
+    "vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
+    "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig"
+  }
 }
