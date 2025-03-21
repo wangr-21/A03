@@ -89,27 +89,36 @@
 import { ref, reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { PlusOutlined, DownloadOutlined } from '@ant-design/icons-vue';
-import type { UploadProps } from 'ant-design-vue';
+import type { UploadFile, UploadProps } from 'ant-design-vue';
 import type { FormInstance } from 'ant-design-vue';
+
+const styleMap = {
+    impressionist: '印象派',
+    cubism: '立体主义',
+    ink: '中国水墨画',
+    vangogh: '梵高',
+    pop: '波普艺术',
+}
+type StyleType = keyof typeof styleMap;
 
 // 表单引用
 const formRef = ref<FormInstance>();
 
 // 表单状态
 const formState = reactive({
-  styleType: undefined as string | undefined,
+  styleType: undefined as StyleType | undefined,
 });
 
 // 文件上传相关
-const fileList = ref<any[]>([]);
+const fileList = ref<UploadFile[]>([]);
 const previewVisible = ref(false);
-const previewImage = ref('');
-const previewTitle = ref('');
+const previewImage = ref(undefined as string | undefined);
+const previewTitle = ref(undefined as string | undefined);
 
 // 转换状态和结果
 const converting = ref(false);
-const resultImage = ref('');
-const originalImageUrl = ref('');
+const resultImage = ref(undefined as string | undefined);
+const originalImageUrl = ref(undefined as string | undefined);
 
 // 处理文件变化
 const handleFileChange = () => {
@@ -160,16 +169,10 @@ const getBase64 = (file: Blob): Promise<string> => {
   });
 };
 
+
 // 获取风格名称
-const getStyleName = (styleType: string | undefined): string => {
+const getStyleName = (styleType: StyleType | undefined): string => {
   if (!styleType) return '';
-  const styleMap: Record<string, string> = {
-    impressionist: '印象派',
-    cubism: '立体主义',
-    ink: '中国水墨画',
-    vangogh: '梵高',
-    pop: '波普艺术',
-  };
   return styleMap[styleType] || styleType;
 };
 
@@ -193,7 +196,7 @@ const handleStyleConversion = async () => {
 
     // 创建FormData对象
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('image', file || "");
     formData.append('style', formState.styleType);
 
     // 模拟API调用
