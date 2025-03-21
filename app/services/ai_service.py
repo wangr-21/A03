@@ -8,6 +8,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+TEACHING_PLAN_PROMPT = """\
+你是一名{grade}年级的{subject}老师，现在你需要准备一份关于《{topic}》的教案。
+教案内容包括教学目标、重点难点、教学过程和板书设计。
+"""
+
 
 class AIService:
     def __init__(self):
@@ -32,21 +37,27 @@ class AIService:
         if not all([subject, grade, topic]):
             raise ValueError("科目、年级和主题参数不能为空")
 
+        prompt = TEACHING_PLAN_PROMPT.format(
+            grade=grade,
+            subject=subject,
+            topic=topic,
+        )
+
         try:
-            prompt = f"请为{grade}年级{subject}课程生成一份关于《{topic}》的教案，包含教学目标、重点难点、教学过程和板书设计。"
             response = self.openai_client.chat.completions.create(
                 model=self.openai_model_name,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
                 max_tokens=2000,
             )
-            # 确保返回内容不为空
-            content = response.choices[0].message.content
-            if content is None:
-                raise ValueError("GPT API返回的内容为空")
-            return content
         except Exception as e:
             raise Exception(f"调用GPT API生成教案失败: {str(e)}")
+
+        # 确保返回内容不为空
+        content = response.choices[0].message.content
+        if content is None:
+            raise ValueError("GPT API返回的内容为空")
+        return content
 
     def generate_teaching_image(self, prompt: str) -> str:
         if not prompt:
