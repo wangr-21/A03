@@ -61,7 +61,7 @@ import { ref, reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { VideoCameraOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
-import { Resource } from '@/types/resources';
+import type { Resource } from '@/types/resources';
 
 const emit = defineEmits(['resource-generated']);
 const formRef = ref<FormInstance>();

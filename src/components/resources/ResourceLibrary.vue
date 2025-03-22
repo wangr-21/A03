@@ -26,7 +26,7 @@
 import { computed } from 'vue';
 import { FolderOutlined } from '@ant-design/icons-vue';
 import ResourceList from './ResourceList.vue';
-import { Resource } from '@/types/resources';
+import type { Resource } from '@/types/resources';
 
 const props = defineProps<{
   resources: Resource[];

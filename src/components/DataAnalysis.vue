@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, nextTick } from 'vue';
+import { ref, reactive, onMounted, nextTick, FunctionalComponent } from 'vue';
 import { message } from 'ant-design-vue';
 import {
   UserOutlined,
@@ -113,7 +113,13 @@ const analysisData = reactive([
     prefix: '%',
     color: '#fa8c16',
   },
-]);
+] as {
+  title: string;
+  value: number;
+  icon: FunctionalComponent;
+  prefix: string;
+  color: string;
+}[]);
 
 const fetchAnalysisData = async () => {
   try {

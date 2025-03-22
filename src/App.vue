@@ -13,29 +13,17 @@
           :selected-keys="[activeMenuKey]"
           class="custom-menu"
         >
-          <a-menu-item key="1" class="menu-item">
+          <a-menu-item v-for="item in menuItems" :key="item.key" class="menu-item">
             <template #icon>
-              <book-outlined />
+              <item.icon />
             </template>
-            <router-link to="/workbench" class="menu-link">教师工作台</router-link>
-          </a-menu-item>
-          <a-menu-item key="2" class="menu-item">
-            <template #icon>
-              <database-outlined />
-            </template>
-            <router-link to="/resources" class="menu-link">资源中心</router-link>
-          </a-menu-item>
-          <a-menu-item key="3" class="menu-item">
-            <template #icon>
-              <bar-chart-outlined />
-            </template>
-            <router-link to="/analysis" class="menu-link">数据分析</router-link>
+            <router-link :to="item.route" class="menu-link">{{ item.title }}</router-link>
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout style="padding: 24px">
         <a-layout-content style="background: #fff; padding: 24px; margin: 0; min-height: 280px">
-          <router-view></router-view>
+          <router-view />
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -44,7 +32,7 @@
 
 <script setup lang="ts">
 import { BookOutlined, DatabaseOutlined, BarChartOutlined } from '@ant-design/icons-vue';
-import { ref, provide, watch } from 'vue';
+import { ref, provide, watch, FunctionalComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -83,6 +71,32 @@ watch(
   },
   { immediate: true }
 );
+
+const menuItems = [
+  {
+    key: '1',
+    icon: BookOutlined,
+    title: '教师工作台',
+    route: '/workbench',
+  },
+  {
+    key: '2',
+    icon: DatabaseOutlined,
+    title: '资源中心',
+    route: '/resources',
+  },
+  {
+    key: '3',
+    icon: BarChartOutlined,
+    title: '数据分析',
+    route: '/analysis',
+  },
+] as {
+  key: string;
+  icon: FunctionalComponent;
+  title: string;
+  route: string;
+}[];
 </script>
 
 <style>

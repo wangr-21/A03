@@ -5,26 +5,16 @@
       <div class="welcome-divider"></div>
       <p class="welcome-subtitle">高效备课，智能辅助，提升教学质量</p>
     </div>
-
     <div class="quick-links">
-      <div class="link-card" @click="navigateTo('/workbench', '1')">
+      <div
+        v-for="link in quickLinks"
+        :key="link.menuKey"
+        class="link-card"
+        @click="navigateTo(link.route, link.menuKey)"
+      >
         <div class="card-content">
-          <h3>教师工作台</h3>
-          <p>开始您的备课工作</p>
-        </div>
-      </div>
-
-      <div class="link-card" @click="navigateTo('/resources', '2')">
-        <div class="card-content">
-          <h3>资源中心</h3>
-          <p>浏览教学资源库</p>
-        </div>
-      </div>
-
-      <div class="link-card" @click="navigateTo('/analysis', '3')">
-        <div class="card-content">
-          <h3>数据分析</h3>
-          <p>查看教学数据分析</p>
+          <h3>{{ link.title }}</h3>
+          <p>{{ link.description }}</p>
         </div>
       </div>
     </div>
@@ -47,6 +37,32 @@ const navigateTo = (path: string, menuKey: string) => {
   // 导航到相应页面
   router.push(path);
 };
+
+const quickLinks = [
+  {
+    title: '教师工作台',
+    description: '开始您的备课工作',
+    route: '/workbench',
+    menuKey: '1',
+  },
+  {
+    title: '资源中心',
+    description: '浏览教学资源库',
+    route: '/resources',
+    menuKey: '2',
+  },
+  {
+    title: '数据分析',
+    description: '查看教学数据分析',
+    route: '/analysis',
+    menuKey: '3',
+  },
+] as {
+  title: string;
+  description: string;
+  route: string;
+  menuKey: string;
+}[];
 </script>
 
 <style scoped>

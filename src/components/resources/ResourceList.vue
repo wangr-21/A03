@@ -77,7 +77,7 @@ import {
   MoreOutlined,
   PlayCircleOutlined,
 } from '@ant-design/icons-vue';
-import { Resource } from '@/types/resources';
+import type { Resource } from '@/types/resources';
 
 defineProps<{
   resources: Resource[];

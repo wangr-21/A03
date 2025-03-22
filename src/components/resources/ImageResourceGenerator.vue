@@ -52,7 +52,7 @@ import { ref, reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { PictureOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
-import { Resource } from '@/types/resources';
+import type { Resource } from '@/types/resources';
 
 const emit = defineEmits(['resource-generated']);
 const previewImage = ref('');
@@ -64,11 +64,8 @@ const handleResourceGenerated = (resource: Resource) => {
 };
 
 // 表单状态 - 使用 undefined 而不是空字符串
-const formState: {
-  imageType?: string;
-  description: string;
-} = reactive({
-  imageType: undefined,
+const formState = reactive({
+  imageType: undefined as string | undefined,
   description: '',
 });
 
