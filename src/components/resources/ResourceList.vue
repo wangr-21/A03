@@ -3,7 +3,7 @@
     <a-list :grid="{ gutter: 16, column: 3 }" :data-source="resources">
       <template #renderItem="{ item }">
         <a-list-item>
-          <a-card :title="getResourceTitle(item)" size="small" :hoverable="true">
+          <a-card :title="item.type" size="small" :hoverable="true">
             <template #extra>
               <a-dropdown>
                 <template #overlay>
@@ -77,15 +77,7 @@ import {
   MoreOutlined,
   PlayCircleOutlined,
 } from '@ant-design/icons-vue';
-
-interface Resource {
-  type: string;
-  data: {
-    url: string;
-    description?: string;
-    createdAt?: string;
-  };
-}
+import { Resource } from '@/types/resources';
 
 defineProps<{
   resources: Resource[];
@@ -94,15 +86,6 @@ defineProps<{
 const loading = ref(false);
 const previewVisible = ref(false);
 const previewResource = ref<Resource | null>(null);
-
-const getResourceTitle = (resource: Resource) => {
-  if (resource.type === '图片') {
-    return `${resource.type || '图片资源'}`;
-  } else if (resource.type === '视频') {
-    return `${resource.type || '视频资源'}`;
-  }
-  return resource.type;
-};
 
 const truncateText = (text: string, maxLength: number) => {
   if (!text) return '';

@@ -52,10 +52,16 @@ import { ref, reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { PictureOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
+import { Resource } from '@/types/resources';
 
 const emit = defineEmits(['resource-generated']);
 const previewImage = ref('');
 const formRef = ref<FormInstance>();
+
+const handleResourceGenerated = (resource: Resource) => {
+  resource.data.createdAt = new Date().toLocaleString();
+  emit('resource-generated', resource);
+};
 
 // 表单状态 - 使用 undefined 而不是空字符串
 const formState: {
@@ -118,7 +124,7 @@ const handleGenerateImage = async (values: ImageFormData) => {
 
 const saveGeneratedResource = () => {
   if (currentImageData) {
-    emit('resource-generated', {
+    handleResourceGenerated({
       type: '图片',
       data: currentImageData,
     });

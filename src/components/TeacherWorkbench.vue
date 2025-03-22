@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent } from 'vue';
+import { ref, computed, defineAsyncComponent, DefineComponent, FunctionalComponent } from 'vue';
 import {
   FormOutlined,
   BookOutlined,
@@ -52,7 +52,12 @@ const menuItems = [
     icon: PictureOutlined,
     component: defineAsyncComponent(() => import('./workbench/ArtStyleConverter.vue')),
   },
-];
+] as {
+  key: string;
+  title: string;
+  icon: FunctionalComponent;
+  component: DefineComponent;
+}[];
 
 const selectedKey = ref<string>('1');
 

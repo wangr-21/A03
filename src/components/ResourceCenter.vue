@@ -28,18 +28,15 @@
       </a-menu>
     </a-layout-sider>
     <a-layout-content style="padding: 24px; min-height: 280px">
-      <image-resource-generator 
+      <image-resource-generator
         v-if="selectedKey === '1'"
-        @resource-generated="handleResourceGenerated" 
+        @resource-generated="handleResourceGenerated"
       />
-      <video-resource-generator 
+      <video-resource-generator
         v-if="selectedKey === '2'"
-        @resource-generated="handleResourceGenerated" 
+        @resource-generated="handleResourceGenerated"
       />
-      <resource-library 
-        v-if="selectedKey === '3'"
-        :resources="generatedResources" 
-      />
+      <resource-library v-if="selectedKey === '3'" :resources="generatedResources" />
     </a-layout-content>
   </a-layout>
 </template>
@@ -50,15 +47,7 @@ import { PictureOutlined, VideoCameraOutlined, FolderOutlined } from '@ant-desig
 import ImageResourceGenerator from './resources/ImageResourceGenerator.vue';
 import VideoResourceGenerator from './resources/VideoResourceGenerator.vue';
 import ResourceLibrary from './resources/ResourceLibrary.vue';
-
-interface Resource {
-  type: string;
-  data: {
-    url: string;
-    description?: string;
-    createdAt?: string;
-  };
-}
+import { Resource } from '@/types/resources';
 
 const selectedKey = ref('1');
 const generatedResources = ref<Resource[]>([]);

@@ -3,8 +3,8 @@
     <template #extra>
       <video-camera-outlined style="font-size: 24px" />
     </template>
-    <a-form 
-      layout="vertical" 
+    <a-form
+      layout="vertical"
       @finish="handleGenerateVideo"
       :model="formState"
       ref="formRef"
@@ -15,11 +15,7 @@
         label="视频类型"
         :rules="[{ required: true, message: '请选择视频类型' }]"
       >
-        <a-select 
-          v-model:value="formState.videoType"
-          placeholder="请选择视频类型"
-          allow-clear
-        >
+        <a-select v-model:value="formState.videoType" placeholder="请选择视频类型" allow-clear>
           <a-select-option value="micro">微课视频</a-select-option>
           <a-select-option value="animation">教学动画</a-select-option>
           <a-select-option value="experiment">实验演示</a-select-option>
@@ -30,9 +26,9 @@
         label="视频脚本"
         :rules="[{ required: true, message: '请输入视频内容脚本' }]"
       >
-        <a-textarea 
-          v-model:value="formState.script" 
-          :rows="4" 
+        <a-textarea
+          v-model:value="formState.script"
+          :rows="4"
           placeholder="请输入视频内容脚本"
         ></a-textarea>
       </a-form-item>
@@ -65,14 +61,20 @@ import { ref, reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { VideoCameraOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
+import { Resource } from '@/types/resources';
 
 const emit = defineEmits(['resource-generated']);
 const formRef = ref<FormInstance>();
 
+const handleResourceGenerated = (resource: Resource) => {
+  resource.data.createdAt = new Date().toLocaleString();
+  emit('resource-generated', resource);
+};
+
 // 表单状态 - 使用 undefined 而不是空字符串
 const formState = reactive({
   videoType: undefined, // 修改为 undefined
-  script: ''
+  script: '',
 });
 
 const previewVideo = ref('');
@@ -140,7 +142,7 @@ const completeVideoGeneration = (values: VideoFormData) => {
 
 const saveGeneratedResource = () => {
   if (currentVideoData) {
-    emit('resource-generated', {
+    handleResourceGenerated({
       type: '视频',
       data: currentVideoData,
     });
