@@ -1,39 +1,36 @@
 <template>
-  <a-layout style="min-height: 100vh">
-    <a-layout-header style="display: flex; align-items: center; z-index: 1000">
+  <el-container style="min-height: 100vh">
+    <el-header style="display: flex; align-items: center; z-index: 1000">
       <div class="logo-container">
         <h1 class="app-title" @click="goToHome"><span class="logo-icon">📚</span> 智能备课助手</h1>
       </div>
-    </a-layout-header>
-    <a-layout>
-      <a-layout-sider width="200">
-        <a-menu
-          mode="inline"
-          style="height: 100%; border-right: 0"
-          :selected-keys="[activeMenuKey]"
-          class="custom-menu"
-        >
-          <a-menu-item v-for="item in menuItems" :key="item.key" class="menu-item">
-            <template #icon>
-              <item.icon />
-            </template>
-            <router-link :to="item.route" class="menu-link">{{ item.title }}</router-link>
-          </a-menu-item>
-        </a-menu>
-      </a-layout-sider>
-      <a-layout style="padding: 24px">
-        <a-layout-content style="background: #fff; padding: 24px; margin: 0; min-height: 280px">
-          <router-view />
-        </a-layout-content>
-      </a-layout>
-    </a-layout>
-  </a-layout>
+    </el-header>
+    <el-container>
+      <el-aside width="200px">
+        <el-menu mode="vertical" :default-active="activeMenuKey" class="custom-menu" router>
+          <el-menu-item v-for="item in menuItems" :key="item.key" :index="item.route">
+            <el-icon>
+              <component :is="item.icon" />
+            </el-icon>
+            <span>{{ item.title }}</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-main style="padding: 24px">
+          <div class="content-box">
+            <router-view />
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
+  </el-container>
 </template>
 
 <script setup lang="ts">
-import { BookOutlined, DatabaseOutlined, BarChartOutlined } from '@ant-design/icons-vue';
-import { ref, provide, watch, FunctionalComponent } from 'vue';
+import { ref, provide, watch, DefineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { Reading, Files, DataAnalysis } from '@element-plus/icons-vue';
 
 const router = useRouter();
 // 创建响应式的活动菜单键值
@@ -75,25 +72,25 @@ watch(
 const menuItems = [
   {
     key: '1',
-    icon: BookOutlined,
+    icon: Reading,
     title: '教师工作台',
     route: '/workbench',
   },
   {
     key: '2',
-    icon: DatabaseOutlined,
+    icon: Files,
     title: '资源中心',
     route: '/resources',
   },
   {
     key: '3',
-    icon: BarChartOutlined,
+    icon: DataAnalysis,
     title: '数据分析',
     route: '/analysis',
   },
 ] as {
   key: string;
-  icon: FunctionalComponent;
+  icon: DefineComponent;
   title: string;
   route: string;
 }[];
@@ -123,14 +120,14 @@ const menuItems = [
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-weight: 500;
+  font-weight: 350;
   position: relative;
   padding: 6px 0;
   transition: all 0.3s;
 }
 
 .app-title:hover {
-  color: #40a9ff; /* 鼠标悬停时使用Ant Design的主题蓝色 */
+  color: #40a9ff;
   text-shadow: 0 0 8px rgba(24, 144, 255, 0.5);
 }
 
@@ -155,51 +152,23 @@ const menuItems = [
   margin-right: 8px;
 }
 
-/* 侧边栏菜单自定义样式 */
-.custom-menu .ant-menu-item {
-  position: relative;
-  overflow: visible;
+.content-box {
+  background: #fff;
+  padding: 24px;
+  margin: 0;
+  min-height: 280px;
 }
 
-.menu-link {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  transition: color 0.3s;
+.el-header {
+  background-color: #001529;
+  padding: 0 20px;
 }
 
-.menu-link:after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: #40a9ff;
-  transition: width 0.3s;
-  z-index: 10;
+.el-aside {
+  border-right: 1px solid #e6e6e6;
 }
 
-.ant-menu-item:hover .menu-link {
-  color: #40a9ff !important;
-  text-shadow: 0 0 8px rgba(24, 144, 255, 0.3);
-}
-
-.ant-menu-item:hover .menu-link:after {
-  width: 100%;
-}
-
-/* 当菜单项被选中时保持下划线效果 */
-.ant-menu-item-selected .menu-link:after {
-  width: 100%;
-}
-
-/* 覆盖Ant Design默认选中样式 */
-.custom-menu.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: rgba(24, 144, 255, 0.1);
-}
-
-.custom-menu.ant-menu-inline .ant-menu-item::after {
-  border-right: 3px solid #40a9ff;
+.el-menu {
+  border-right: none;
 }
 </style>

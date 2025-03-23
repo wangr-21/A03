@@ -1,27 +1,16 @@
 <template>
-  <a-spin :spinning="loading">
-    <a-list :grid="{ gutter: 16, column: 3 }" :data-source="resources">
-      <template #renderItem="{ item }">
-        <a-list-item>
-          <a-card :title="item.type" size="small" :hoverable="true">
-            <template #extra>
-              <a-dropdown>
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item key="download" @click="handleDownload(item)">
-                      <download-outlined /> 下载
-                    </a-menu-item>
-                    <a-menu-item key="preview" @click="handlePreview(item)">
-                      <eye-outlined /> 预览
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-                <a-button type="link">
-                  <more-outlined />
-                </a-button>
-              </a-dropdown>
-            </template>
-
+  <el-container v-loading="loading">
+    <el-row :gutter="16" style="width: 100%">
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="8"
+        v-for="(item, index) in resources"
+        :key="index"
+        style="margin-bottom: 16px"
+      >
+        <el-card :body-style="{ padding: '0px' }" shadow="hover">
+          <div style="position: relative">
             <div class="resource-thumbnail">
               <img
                 v-if="item.type === '图片'"
@@ -29,54 +18,69 @@
                 :alt="item.data.description || '图片资源'"
               />
               <div v-else-if="item.type === '视频'" class="video-thumbnail">
-                <play-circle-outlined />
+                <el-icon><VideoPlay /></el-icon>
               </div>
             </div>
 
+            <div class="resource-actions">
+              <el-dropdown trigger="click">
+                <el-button type="primary" size="small" circle>
+                  <el-icon><More /></el-icon>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="handleDownload(item)">
+                      <el-icon><Download /></el-icon> 下载
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="handlePreview(item)">
+                      <el-icon><View /></el-icon> 预览
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </div>
+
+          <div style="padding: 14px">
+            <div class="resource-title">{{ item.type }}</div>
             <div class="resource-info">
               <p class="description" v-if="item.data.description">
                 {{ truncateText(item.data.description, 50) }}
               </p>
               <p class="timestamp" v-if="item.data.createdAt">创建于: {{ item.data.createdAt }}</p>
             </div>
-          </a-card>
-        </a-list-item>
-      </template>
-    </a-list>
-  </a-spin>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
-  <!-- 预览模态框 -->
-  <a-modal
-    :visible="previewVisible"
-    :title="previewResource?.data?.description || '资源预览'"
-    @cancel="previewVisible = false"
-    :footer="null"
-    :width="720"
-  >
-    <img
-      v-if="previewResource?.type === '图片'"
-      :src="previewResource?.data?.url"
-      alt="预览图片"
-      style="max-width: 100%"
-    />
-    <video
-      v-else-if="previewResource?.type === '视频'"
-      :src="previewResource?.data?.url"
-      controls
-      style="width: 100%"
-    ></video>
-  </a-modal>
+    <!-- 预览对话框 -->
+    <el-dialog
+      v-model="previewVisible"
+      :title="previewResource?.data?.description || '资源预览'"
+      width="70%"
+      destroy-on-close
+    >
+      <img
+        v-if="previewResource?.type === '图片'"
+        :src="previewResource?.data?.url"
+        alt="预览图片"
+        style="max-width: 100%"
+      />
+      <video
+        v-else-if="previewResource?.type === '视频'"
+        :src="previewResource?.data?.url"
+        controls
+        style="width: 100%"
+      ></video>
+    </el-dialog>
+  </el-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { message } from 'ant-design-vue';
-import {
-  DownloadOutlined,
-  EyeOutlined,
-  MoreOutlined,
-  PlayCircleOutlined,
-} from '@ant-design/icons-vue';
+import { ElMessage } from 'element-plus';
+import { Download, View, VideoPlay, More } from '@element-plus/icons-vue';
 import type { Resource } from '@/types/resources';
 
 defineProps<{
@@ -93,7 +97,7 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 const handleDownload = (resource: Resource) => {
-  message.success('开始下载资源');
+  ElMessage.success('开始下载资源');
   // 实际实现下载逻辑
   const link = document.createElement('a');
   link.href = resource.data.url;
@@ -116,14 +120,12 @@ const handlePreview = (resource: Resource) => {
   justify-content: center;
   align-items: center;
   background-color: #f5f5f5;
-  margin-bottom: 8px;
-  border-radius: 4px;
   overflow: hidden;
 }
 
 .resource-thumbnail img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -135,7 +137,14 @@ const handlePreview = (resource: Resource) => {
   height: 100%;
   background-color: #e6f7ff;
   font-size: 48px;
-  color: #1890ff;
+  color: #409eff;
+}
+
+.resource-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #303133;
 }
 
 .resource-info {
@@ -145,11 +154,19 @@ const handlePreview = (resource: Resource) => {
 .description {
   margin-bottom: 4px;
   font-size: 14px;
+  color: #606266;
 }
 
 .timestamp {
-  color: #999;
+  color: #909399;
   font-size: 12px;
   margin: 0;
+}
+
+.resource-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
 }
 </style>

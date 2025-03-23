@@ -5,19 +5,20 @@
       <div class="welcome-divider"></div>
       <p class="welcome-subtitle">高效备课，智能辅助，提升教学质量</p>
     </div>
-    <div class="quick-links">
-      <div
-        v-for="link in quickLinks"
-        :key="link.menuKey"
-        class="link-card"
-        @click="navigateTo(link.route, link.menuKey)"
-      >
-        <div class="card-content">
-          <h3>{{ link.title }}</h3>
-          <p>{{ link.description }}</p>
-        </div>
-      </div>
-    </div>
+
+    <el-row :gutter="24" class="quick-links">
+      <el-col v-for="link in quickLinks" :key="link.menuKey" :xs="24" :sm="12" :md="8">
+        <el-card shadow="hover" class="link-card" @click="navigateTo(link.route, link.menuKey)">
+          <div class="card-content">
+            <el-icon :size="36" class="card-icon">
+              <component :is="link.icon" />
+            </el-icon>
+            <h3>{{ link.title }}</h3>
+            <p>{{ link.description }}</p>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -44,24 +45,28 @@ const quickLinks = [
     description: '开始您的备课工作',
     route: '/workbench',
     menuKey: '1',
+    icon: 'Reading',
   },
   {
     title: '资源中心',
     description: '浏览教学资源库',
     route: '/resources',
     menuKey: '2',
+    icon: 'Files',
   },
   {
     title: '数据分析',
     description: '查看教学数据分析',
     route: '/analysis',
     menuKey: '3',
+    icon: 'DataAnalysis',
   },
 ] as {
   title: string;
   description: string;
   route: string;
   menuKey: string;
+  icon: string;
 }[];
 </script>
 
@@ -71,6 +76,8 @@ const quickLinks = [
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .welcome-section {
@@ -83,7 +90,7 @@ const quickLinks = [
 .welcome-title {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #1890ff; /* Ant Design 主题蓝色 */
+  color: #409eff; /* Element Plus 主题蓝色 */
   margin-bottom: 1rem;
   letter-spacing: 1px;
 }
@@ -91,61 +98,68 @@ const quickLinks = [
 .welcome-divider {
   height: 3px;
   width: 80px;
-  background: linear-gradient(to right, #1890ff, #40a9ff);
+  background: linear-gradient(to right, #409eff, #79bbff);
   margin: 0 auto 1.5rem;
   border-radius: 3px;
 }
 
 .welcome-subtitle {
   font-size: 1.1rem;
-  color: #666;
+  color: #606266; /* Element Plus 次要文本颜色 */
   margin-bottom: 1rem;
   font-weight: 300;
 }
 
 .quick-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-  max-width: 1200px;
+  width: 100%;
 }
 
 .link-card {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 280px;
-  height: 180px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.3s, box-shadow 0.3s;
-  overflow: hidden;
+  height: 100%;
   cursor: pointer;
+  transition: transform 0.3s;
 }
 
 .link-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-content {
-  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 180px;
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 1rem;
+}
+
+.card-icon {
+  margin-bottom: 16px;
+  color: #409eff;
 }
 
 h3 {
-  margin-bottom: 0.5rem;
-  color: #3498db;
+  margin-bottom: 0.8rem;
+  color: #409eff;
+  font-size: 1.25rem;
 }
 
 p {
   margin: 0;
-  color: #666;
+  color: #606266;
+  font-size: 0.95rem;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .card-content {
+    height: auto;
+    padding: 1.5rem 1rem;
+  }
+
+  .welcome-title {
+    font-size: 2rem;
+  }
 }
 </style>

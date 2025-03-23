@@ -1,50 +1,45 @@
 <template>
-  <a-layout style="padding: 24px">
-    <a-layout-content>
-      <a-spin :spinning="loading">
-        <a-row :gutter="[24, 24]">
-          <a-col :span="6" v-for="(data, index) in analysisData" :key="index">
-            <a-card>
-              <a-statistic
-                :title="data.title"
-                :value="data.value"
-                :value-style="{ color: data.color }"
-              >
-                <template #prefix>
-                  <component :is="data.icon" style="font-size: 24px" />
-                </template>
-                <template #suffix>{{ data.prefix }}</template>
-              </a-statistic>
-            </a-card>
-          </a-col>
-        </a-row>
+  <el-container style="padding: 24px">
+    <el-main>
+      <el-loading :value="loading">
+        <el-row :gutter="24">
+          <el-col :span="6" v-for="(data, index) in analysisData" :key="index">
+            <el-card>
+              <div class="statistic-item">
+                <el-icon class="statistic-icon" :style="{ color: data.color }">
+                  <component :is="data.icon" />
+                </el-icon>
+                <div class="statistic-content">
+                  <div class="statistic-title">{{ data.title }}</div>
+                  <div class="statistic-value" :style="{ color: data.color }">
+                    {{ data.value }}{{ data.prefix }}
+                  </div>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
 
-        <a-row :gutter="[16, 16]" style="margin-top: 24px">
-          <a-col :span="12">
-            <a-card title="学习进度分析">
+        <el-row :gutter="16" style="margin-top: 24px">
+          <el-col :span="12">
+            <el-card header="学习进度分析">
               <div ref="chartRef1" style="height: 400px"></div>
-            </a-card>
-          </a-col>
-          <a-col :span="12">
-            <a-card title="学习时长分布">
+            </el-card>
+          </el-col>
+          <el-col :span="12">
+            <el-card header="学习时长分布">
               <div ref="chartRef2" style="height: 400px"></div>
-            </a-card>
-          </a-col>
-        </a-row>
-      </a-spin>
-    </a-layout-content>
-  </a-layout>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-loading>
+    </el-main>
+  </el-container>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, nextTick, FunctionalComponent } from 'vue';
-import { message } from 'ant-design-vue';
-import {
-  UserOutlined,
-  BookOutlined,
-  CheckCircleOutlined,
-  RiseOutlined,
-} from '@ant-design/icons-vue';
+import { ref, reactive, onMounted, nextTick } from 'vue';
+import { ElMessage } from 'element-plus';
 
 // 按需导入ECharts核心模块
 import * as echarts from 'echarts/core';
@@ -88,35 +83,35 @@ const analysisData = reactive([
   {
     title: '学习能力评估',
     value: 0,
-    icon: UserOutlined,
+    icon: 'User',
     prefix: '分',
-    color: '#1890ff',
+    color: '#409EFF',
   },
   {
     title: '知识点掌握度',
     value: 0,
-    icon: BookOutlined,
+    icon: 'Reading',
     prefix: '%',
-    color: '#52c41a',
+    color: '#67C23A',
   },
   {
     title: '完成任务数',
     value: 0,
-    icon: CheckCircleOutlined,
+    icon: 'Select',
     prefix: '个',
-    color: '#722ed1',
+    color: '#8E44AD',
   },
   {
     title: '学习进度',
     value: 0,
-    icon: RiseOutlined,
+    icon: 'Histogram',
     prefix: '%',
-    color: '#fa8c16',
+    color: '#E6A23C',
   },
 ] as {
   title: string;
   value: number;
-  icon: FunctionalComponent;
+  icon: string;
   prefix: string;
   color: string;
 }[]);
@@ -135,7 +130,7 @@ const fetchAnalysisData = async () => {
       initCharts();
     }, 1000);
   } catch (error) {
-    message.error('获取学情分析数据失败，请重试');
+    ElMessage.error('获取学情分析数据失败，请重试');
     console.error('获取分析数据错误:', error);
     loading.value = false;
   }
@@ -208,3 +203,30 @@ onMounted(() => {
   fetchAnalysisData();
 });
 </script>
+
+<style scoped>
+.statistic-item {
+  display: flex;
+  align-items: center;
+}
+
+.statistic-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.statistic-content {
+  flex: 1;
+}
+
+.statistic-title {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.statistic-value {
+  font-size: 24px;
+  font-weight: bold;
+}
+</style>

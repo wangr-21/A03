@@ -1,66 +1,77 @@
 <template>
-  <a-card title="视频资源生成">
-    <template #extra>
-      <video-camera-outlined style="font-size: 24px" />
+  <el-card>
+    <template #header>
+      <div class="card-header">
+        <span>视频资源生成</span>
+        <el-icon :size="24"><VideoCamera /></el-icon>
+      </div>
     </template>
-    <a-form
-      layout="vertical"
-      @finish="handleGenerateVideo"
+
+    <el-form
       :model="formState"
       ref="formRef"
-      :validate-trigger="['submit']"
+      label-position="top"
+      @submit.prevent="handleGenerateVideo"
     >
-      <a-form-item
-        name="videoType"
+      <el-form-item
         label="视频类型"
-        :rules="[{ required: true, message: '请选择视频类型' }]"
+        prop="videoType"
+        :rules="[{ required: true, message: '请选择视频类型', trigger: 'change' }]"
       >
-        <a-select v-model:value="formState.videoType" placeholder="请选择视频类型" allow-clear>
-          <a-select-option value="micro">微课视频</a-select-option>
-          <a-select-option value="animation">教学动画</a-select-option>
-          <a-select-option value="experiment">实验演示</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        name="script"
+        <el-select
+          v-model="formState.videoType"
+          placeholder="请选择视频类型"
+          clearable
+          style="width: 100%"
+        >
+          <el-option label="微课视频" value="micro" />
+          <el-option label="教学动画" value="animation" />
+          <el-option label="实验演示" value="experiment" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
         label="视频脚本"
-        :rules="[{ required: true, message: '请输入视频内容脚本' }]"
+        prop="script"
+        :rules="[{ required: true, message: '请输入视频内容脚本', trigger: 'blur' }]"
       >
-        <a-textarea
-          v-model:value="formState.script"
+        <el-input
+          v-model="formState.script"
+          type="textarea"
           :rows="4"
           placeholder="请输入视频内容脚本"
-        ></a-textarea>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">生成视频</a-button>
-      </a-form-item>
-    </a-form>
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" native-type="submit">生成视频</el-button>
+      </el-form-item>
+    </el-form>
 
     <div class="preview-container" v-if="previewVideo">
       <h3>视频预览</h3>
       <div class="video-placeholder" v-if="isGenerating">
         <p>视频生成中...</p>
-        <a-progress :percent="generationProgress" />
+        <el-progress :percentage="generationProgress" />
       </div>
       <video v-else :src="previewVideo" controls class="preview-video"></video>
-      <a-button
+      <el-button
         type="primary"
         @click="saveGeneratedResource"
         style="margin-top: 16px"
         :disabled="isGenerating"
       >
         保存到资源库
-      </a-button>
+      </el-button>
     </div>
-  </a-card>
+  </el-card>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { message } from 'ant-design-vue';
-import { VideoCameraOutlined } from '@ant-design/icons-vue';
-import type { FormInstance } from 'ant-design-vue';
+import { ElMessage } from 'element-plus';
+import { VideoCamera } from '@element-plus/icons-vue';
+import type { FormInstance } from 'element-plus';
 import type { Resource } from '@/types/resources';
 
 const emit = defineEmits(['resource-generated']);
@@ -71,9 +82,9 @@ const handleResourceGenerated = (resource: Resource) => {
   emit('resource-generated', resource);
 };
 
-// 表单状态 - 使用 undefined 而不是空字符串
+// 表单状态
 const formState = reactive({
-  videoType: undefined, // 修改为 undefined
+  videoType: '',
   script: '',
 });
 
@@ -86,14 +97,29 @@ let currentVideoData: {
   description: string;
 } | null = null;
 
-interface VideoFormData {
-  videoType: 'micro' | 'animation' | 'experiment';
-  script: string;
-}
+// interface VideoFormData {
+//   videoType: 'micro' | 'animation' | 'experiment';
+//   script: string;
+// }
 
-const handleGenerateVideo = async (values: VideoFormData) => {
+const handleGenerateVideo = async () => {
+  await formRef.value?.validate((valid) => {
+    if (!valid) return;
+    generateVideo();
+  });
+};
+
+const generateVideo = async () => {
   try {
-    message.loading({ content: '正在生成视频资源...', key: 'videoResource' });
+    ElMessage({
+      message: '正在生成视频资源...',
+      type: 'info',
+      duration: 0,
+      showClose: true,
+      grouping: true,
+      // id: 'videoResource',
+    });
+
     isGenerating.value = true;
     previewVideo.value = 'pending';
 
@@ -102,22 +128,19 @@ const handleGenerateVideo = async (values: VideoFormData) => {
       generationProgress.value += 10;
       if (generationProgress.value >= 100) {
         clearInterval(interval);
-        completeVideoGeneration(values);
+        completeVideoGeneration();
       }
     }, 800);
   } catch (error) {
     isGenerating.value = false;
     previewVideo.value = '';
-    message.error({
-      content: '生成视频资源失败，请重试',
-      key: 'videoResource',
-    });
+    ElMessage.error('生成视频资源失败，请重试');
     console.error('生成视频资源错误:', error);
   }
 };
 
-const completeVideoGeneration = (values: VideoFormData) => {
-  const videoTypeLabels = {
+const completeVideoGeneration = () => {
+  const videoTypeLabels: Record<string, string> = {
     micro: '微课视频',
     animation: '教学动画',
     experiment: '实验演示',
@@ -130,13 +153,14 @@ const completeVideoGeneration = (values: VideoFormData) => {
   isGenerating.value = false;
   previewVideo.value = sampleVideoUrl;
 
-  message.success({ content: '视频资源生成成功！', key: 'videoResource' });
+  ElMessage.closeAll();
+  ElMessage.success('视频资源生成成功！');
 
   // 保存当前视频数据以供后续使用
   currentVideoData = {
     url: sampleVideoUrl,
-    type: videoTypeLabels[values.videoType],
-    description: values.script,
+    type: videoTypeLabels[formState.videoType] || formState.videoType,
+    description: formState.script,
   };
 };
 
@@ -146,7 +170,7 @@ const saveGeneratedResource = () => {
       type: '视频',
       data: currentVideoData,
     });
-    message.success('视频已成功保存到资源库');
+    ElMessage.success('视频已成功保存到资源库');
 
     // 重置预览和表单
     previewVideo.value = '';
@@ -158,6 +182,12 @@ const saveGeneratedResource = () => {
 </script>
 
 <style scoped>
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .preview-container {
   margin-top: 24px;
   text-align: center;

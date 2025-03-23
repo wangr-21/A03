@@ -1,52 +1,72 @@
 <template>
-  <a-card title="智能教案生成">
-    <a-form
-      layout="vertical"
-      @finish="handleGenerateLesson"
+  <el-card header="智能教案生成">
+    <el-form
       :model="formState"
-      :validate-trigger="['submit']"
+      @submit.prevent="handleGenerateLesson"
+      label-position="top"
     >
-      <a-form-item name="subject" label="学科" :rules="[{ required: true, message: '请选择学科' }]">
-        <a-select v-model:value="formState.subject" placeholder="请选择学科">
-          <a-select-option v-for="item in subjects" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item name="grade" label="年级" :rules="[{ required: true, message: '请选择年级' }]">
-        <a-select v-model:value="formState.grade" placeholder="请选择年级">
-          <a-select-option v-for="item in grades" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        name="chapter"
-        label="教学内容"
+      <el-form-item label="学科" prop="subject" :rules="[{ required: true, message: '请选择学科' }]">
+        <el-select v-model="formState.subject" placeholder="请选择学科" style="width: 100%">
+          <el-option 
+            v-for="item in subjects" 
+            :key="item.value" 
+            :label="item.label" 
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      
+      <el-form-item label="年级" prop="grade" :rules="[{ required: true, message: '请选择年级' }]">
+        <el-select v-model="formState.grade" placeholder="请选择年级" style="width: 100%">
+          <el-option 
+            v-for="item in grades" 
+            :key="item.value" 
+            :label="item.label" 
+            :value="item.value" 
+          />
+        </el-select>
+      </el-form-item>
+      
+      <el-form-item 
+        label="教学内容" 
+        prop="chapter"
         :rules="[{ required: true, message: '请输入教学内容' }]"
       >
-        <a-textarea v-model:value="formState.chapter" :rows="4" placeholder="请输入教学内容" />
-      </a-form-item>
-      <a-form-item
-        name="objectives"
+        <el-input
+          v-model="formState.chapter"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入教学内容"
+        />
+      </el-form-item>
+      
+      <el-form-item 
         label="教学目标"
+        prop="objectives"
         :rules="[{ required: true, message: '请输入教学目标' }]"
       >
-        <a-textarea v-model:value="formState.objectives" :rows="4" placeholder="请输入教学目标" />
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit">生成教案</a-button>
-      </a-form-item>
-    </a-form>
-    <a-card v-if="lessonPlan" title="生成的教案" style="margin-top: 16px">
+        <el-input
+          v-model="formState.objectives"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入教学目标"
+        />
+      </el-form-item>
+      
+      <el-form-item>
+        <el-button type="primary" native-type="submit">生成教案</el-button>
+      </el-form-item>
+    </el-form>
+    
+    <el-card v-if="lessonPlan" header="生成的教案" style="margin-top: 16px">
       <pre style="white-space: pre-wrap">{{ lessonPlan }}</pre>
-    </a-card>
-  </a-card>
+    </el-card>
+  </el-card>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { message } from 'ant-design-vue';
+import { ElMessage } from 'element-plus';
 import api from '@/api';
 
 const lessonPlan = ref<string | undefined>(undefined);
@@ -75,23 +95,32 @@ interface LessonPlan {
   objectives: string;
 }
 
-const handleGenerateLesson = async (values: LessonPlan) => {
+const handleGenerateLesson = async (_values: LessonPlan) => {
   try {
-    message.loading({ content: '正在生成教案...', key: 'lessonPlan' });
+    ElMessage({
+      message: '正在生成教案...',
+      type: 'info',
+      duration: 0,
+      showClose: true,
+      grouping: true
+    });
+    
     const response = await api.generateTeachingPlan({
-      subject: values.subject,
-      grade: values.grade,
-      topic: values.chapter,
+      subject: formState.subject || '',
+      grade: formState.grade || '',
+      topic: formState.chapter || '',
     });
 
     if (response.success) {
-      message.success({ content: '教案生成成功！', key: 'lessonPlan' });
+      ElMessage.closeAll();
+      ElMessage.success('教案生成成功！');
       lessonPlan.value = response.data;
     } else {
       throw new Error('生成教案失败');
     }
   } catch (error: any) {
-    message.error({ content: '生成教案失败，请重试', key: 'lessonPlan' });
+    ElMessage.closeAll();
+    ElMessage.error('生成教案失败，请重试');
     console.error('生成教案错误:', error);
   }
 };
