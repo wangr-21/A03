@@ -1,12 +1,13 @@
 import base64
-import io
+import zipfile
 import json
 import random
+import uuid
 
 import fleep
 import jinja2
 
-from ..constant import ASSETS_DIR
+from ..constant import ASSETS_DIR, CACHE_DIR
 from .utils import CompletionMessage, get_openai_client, run_sync
 
 ASSETS_ROOT = ASSETS_DIR / "teaching_plan"
@@ -16,13 +17,14 @@ DOCUMENT_XML_TEMPLATE = ASSETS_ROOT / "document.xml.jinja2"
 DOCUMENT_TEMPLATE_DIR = ASSETS_ROOT / "template"
 
 
-def _convert_images(images: list[str]) -> list[str]:
+def _convert_images(images: list[bytes]) -> list[str]:
     result: list[str] = []
     for raw in images:
-        info = fleep.get(base64.b64decode(raw[:344]))
+        info = fleep.get(raw[:256])
         if not info.mime or not any("image" in mime for mime in info.mime):
             raise ValueError("Invalid image format")
-        result.append(f"data:image/png;base64,{raw}")
+        encoded = base64.b64encode(raw).decode("utf-8")
+        result.append(f"data:image/png;base64,{encoded}")
     return result
 
 
@@ -31,7 +33,7 @@ class TeachingPlanGenerator:
         self.client, self.model_name = get_openai_client()
 
     @run_sync
-    def generate(self, grade: str, images: list[str]) -> str:
+    def generate(self, grade: str, images: list[bytes]) -> str:
         prompt = PROMPT_GENERATE.read_text("utf-8")
         response = self.client.chat.completions.create(
             model=self.model_name,
@@ -42,8 +44,10 @@ class TeachingPlanGenerator:
                 .build()
             ],
         )
-        return response.choices[0].message.content or ""
+        result = response.choices[0].message.content or ""
+        return result[result.find("#") :]
 
+    @run_sync
     def _convert_json(self, content: str):
         prompt = PROMPT_CONVERT.read_text("utf-8")
         response = self.client.chat.completions.create(
@@ -64,21 +68,16 @@ class TeachingPlanGenerator:
         return template.render(data)
 
     def _pack_docx(self, document: str):
-        import zipfile
-
-        buffer = io.BytesIO()
-        with zipfile.ZipFile(buffer, "w") as docx:
+        output_file = CACHE_DIR / f"{uuid.uuid4()}.docx"
+        with zipfile.ZipFile(output_file, "w") as docx:
             docx.writestr("word/document.xml", document)
             for file in DOCUMENT_TEMPLATE_DIR.glob("**/*"):
                 if file.is_file() and file.name != "document.xml":
                     docx.write(file, file.relative_to(DOCUMENT_TEMPLATE_DIR))
+        return output_file
 
-        buffer.seek(0)
-        return buffer.read()
-
-    @run_sync
-    def convert(self, teaching_plan: str):
-        converted_json = self._convert_json(teaching_plan)
+    async def convert(self, teaching_plan: str):
+        converted_json = await self._convert_json(teaching_plan)
         if not converted_json:
             raise ValueError(
                 "API returned empty content when converting teaching plan to JSON"

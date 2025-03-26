@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from ..db import DBSession, HomeworkInfo, StudentInfo
 
-router = APIRouter(tags=["students"])
+router = APIRouter(prefix="/students", tags=["students"])
 
 
 class HomeworkResp(BaseModel):
@@ -49,7 +49,7 @@ class StudentResp(BaseModel):
         from_attributes = True
 
 
-@router.get("/students", response_model=list[StudentResp])
+@router.get("/", response_model=list[StudentResp])
 async def get_students(
     db: DBSession,
     student_name: str | None = None,
@@ -92,7 +92,7 @@ class CreateStudentRequest(BaseModel):
     gender: Literal["男", "女"]
 
 
-@router.post("/students")
+@router.post("/")
 async def create_student(db: DBSession, request: CreateStudentRequest):
     """创建新的学生记录"""
     try:
@@ -111,7 +111,7 @@ async def create_student(db: DBSession, request: CreateStudentRequest):
         raise HTTPException(status_code=500, detail=f"添加学生信息失败: {str(e)}")
 
 
-@router.delete("/students/{student_id}")
+@router.delete("/{student_id}")
 async def delete_student(db: DBSession, student_id: str):
     """删除学生信息及其关联的所有作业"""
     stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
