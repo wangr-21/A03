@@ -1,38 +1,33 @@
+import asyncio
+
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from ..services.ai_service import AIService
+from pydantic import BaseModel, Field
+
+from ..services.teaching_plan import TeachingPlanGenerator
 
 router = APIRouter()
-ai_service = AIService()
+teaching_plan_cache: dict[int, str] = {}
 
 
 class GenerateTeachingPlanRequest(BaseModel):
-    subject: str
     grade: str
-    topic: str
+    images: list[str] = Field(description="Base64编码的图片列表")
 
 
-@router.post("/teaching/generate-plan")
+@router.post("/teaching/generate_plan")
 async def generate_teaching_plan(request: GenerateTeachingPlanRequest):
-    try:
-        plan = ai_service.generate_teaching_plan(
-            subject=request.subject,
-            grade=request.grade,
-            topic=request.topic,
-        )
-        return {"success": True, "data": plan}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    plan = await TeachingPlanGenerator().generate(request.grade, request.images)
+    plan_id = hash(plan)
+    teaching_plan_cache[plan_id] = plan
+    asyncio.get_event_loop().call_later(3600, teaching_plan_cache.pop, plan_id)
+    return {"plan": plan, "plan_id": plan_id}
 
 
-class GenerateTeachingImageRequest(BaseModel):
-    prompt: str
+@router.get("/teaching/plan_document/{plan_id}")
+async def get_teaching_plan_document(plan_id: int):
+    plan = teaching_plan_cache.get(plan_id)
+    if plan is None:
+        raise HTTPException(status_code=404, detail="未找到该教案")
 
-
-@router.post("/teaching/generate-image")
-async def generate_teaching_image(request: GenerateTeachingImageRequest):
-    try:
-        image = ai_service.generate_teaching_image(request.prompt)
-        return {"success": True, "data": image}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    document = await TeachingPlanGenerator().convert(plan)
+    return document

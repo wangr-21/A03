@@ -1,0 +1,2980 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+    xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
+    xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
+    xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
+    xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex"
+    xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex"
+    xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex"
+    xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex"
+    xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex"
+    xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink"
+    xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:oel="http://schemas.microsoft.com/office/2019/extlst"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+    xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+    xmlns:w10="urn:schemas-microsoft-com:office:word"
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+    xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
+    xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"
+    xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"
+    xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"
+    xmlns:w16du="http://schemas.microsoft.com/office/word/2023/wordml/word16du"
+    xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"
+    xmlns:w16sdtfl="http://schemas.microsoft.com/office/word/2024/wordml/sdtformatlock"
+    xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"
+    xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
+    xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
+    xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+    mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14">
+    <w:body>
+        <w:p w14:paraId="41B6FB88" w14:textId="77777777" w:rsidR="00000000"
+            w:rsidRDefault="00000000">
+            <w:pPr>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia" />
+                    <w:b />
+                    <w:bCs />
+                    <w:sz w:val="32" />
+                    <w:szCs w:val="36" />
+                </w:rPr>
+            </w:pPr>
+        </w:p>
+        <w:p w14:paraId="23DC5D36" w14:textId="77777777" w:rsidR="00000000"
+            w:rsidRDefault="00000000">
+            <w:pPr>
+                <w:jc w:val="center" />
+                <w:rPr>
+                    <w:b />
+                    <w:bCs />
+                    <w:sz w:val="32" />
+                    <w:szCs w:val="36" />
+                </w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia" />
+                    <w:b />
+                    <w:bCs />
+                    <w:sz w:val="32" />
+                    <w:szCs w:val="36" />
+                </w:rPr>
+                <w:t>《{{课程标题}}》教学设计</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="57F09B0F" w14:textId="77777777" w:rsidR="00000000"
+            w:rsidRDefault="00000000">
+            <w:pPr>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia" />
+                    <w:b />
+                    <w:bCs />
+                    <w:sz w:val="24" />
+                    <w:szCs w:val="28" />
+                </w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia" />
+                    <w:b />
+                    <w:bCs />
+                    <w:sz w:val="24" />
+                    <w:szCs w:val="28" />
+                </w:rPr>
+                <w:t>【课程概况】</w:t>
+            </w:r>
+        </w:p>
+        <w:tbl>
+            <w:tblPr>
+                <w:tblW w:w="0" w:type="auto" />
+                <w:tblInd w:w="0" w:type="dxa" />
+                <w:tblBorders>
+                    <w:top w:val="single" w:sz="4" w:space="0" w:color="auto" />
+                    <w:left w:val="single" w:sz="4" w:space="0" w:color="auto" />
+                    <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto" />
+                    <w:right w:val="single" w:sz="4" w:space="0" w:color="auto" />
+                    <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto" />
+                    <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
+                </w:tblBorders>
+                <w:tblLook w:val="0000" w:firstRow="0" w:lastRow="0" w:firstColumn="0"
+                    w:lastColumn="0" w:noHBand="0" w:noVBand="0" />
+            </w:tblPr>
+            <w:tblGrid>
+                <w:gridCol w:w="735" />
+                <w:gridCol w:w="394" />
+                <w:gridCol w:w="3019" />
+                <w:gridCol w:w="71" />
+                <w:gridCol w:w="2003" />
+                <w:gridCol w:w="123" />
+                <w:gridCol w:w="1951" />
+            </w:tblGrid>
+            <w:tr w:rsidR="00000000" w14:paraId="014CFD87" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="589" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="4479825D" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>授课对象</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3019" w:type="dxa" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="auto" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="048B038E" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>{{授课对象}}</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2074" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="641402ED" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>课时规划</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2074" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="6EC11B9B" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>{{课时规划}}</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>课时</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="4132737A" w14:textId="77777777">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="01A6CD08" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>参考教材</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3019" w:type="dxa" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="auto" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="77146D18" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:widowControl />
+                            <w:jc w:val="left" />
+                            <w:rPr>
+                                <w:kern w:val="0" />
+                                <w:sz w:val="24" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>{{参考教材}}</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2074" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="65AA181B" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>学习领域</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2074" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="496BA1FE" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:ind w:firstLine="420" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>{{学习领域}}</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="75CE989F" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="2854" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="4784DFDE" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>教材分析</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="4F8D2B9A" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:ind w:firstLineChars="200" w:firstLine="420" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>{{教材分析}}</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="7FF7838F" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="2635" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="11C1F843" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>学情分析</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="595DD66A" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:ind w:firstLineChars="200" w:firstLine="420" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>{{学情分析}}</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="46A09026" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="2175" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="557F0A19" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>设计思路</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="05B33262" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:ind w:firstLineChars="200" w:firstLine="420" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>{{设计思路}}</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="75D7D59A" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="841" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="18C6E4A3" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>教学目标</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="213E0B19" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【审美感知】</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>通过欣赏不同地区的面具艺术（如威尼斯面具、非洲面具、藏戏面具等），观察其材料、造型及用途，感受民间美术的艺术特征与文化魅力。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="643C754D" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【艺术表现】</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>学生能够结合欣赏内容，制作</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>世界民间美术的多样性</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>思维导图，将观察和分析的结果以清晰的视觉化方式呈现。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="7E6D0627" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【文化理解】</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>
+                                理解民间美术如何反映当地的生活需求和文化背景，通过分析具体作品（如面具艺术）感受其背后的社会功能和文化内涵。学会尊重多元文化，增强对世界文化多样性的认知和认同感，逐步建立文化自信。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="3791F7AF" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>创意实践</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>】</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>为后续艺术元素提取与创作做好铺垫，通过本课的学习，初步掌握从作品中观察艺术元素并理解其设计逻辑的方法。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="2A082647" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="838" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="742A7DC3" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>教学</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1D2795C2" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>重难点</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="12A8E6F5" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【教学重点】</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="74B0F04F" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00E96BF7">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>通过对世界民间美术作品的欣赏与讨论，学生掌握从材料、造型和用途等多个维</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramStart" />
+                        <w:r w:rsidR="00000000">
+                            <w:t>度分析</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramEnd" />
+                        <w:r w:rsidR="00000000">
+                            <w:t>艺术作品，归纳其艺术特点。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="43000674" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00E96BF7">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>理解不同文化背景对民间美术形式的影响，认识民间美术作为文化表达的重要意义。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="73045E70" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【教学难点】</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="09A7E7C6" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00E96BF7">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>通过学生对陌生文化艺术形式的欣赏与分析，建立对民间美术与文化背景关系的清晰认识，并在讨论中表达自己的观点。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="09735ECA" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00E96BF7">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>在制作思维导图时，引导学生将分析结果转化为具有逻辑性和条理性的可视化成果，体现对民间美术特点和文化内涵的深度理解。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="0648B9FA" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="695" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="15B142CB" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>教学方法</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="4C5C26C9" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>讲授法</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>讨论法</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>案例分析法</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>可视化学习法</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>启发式教学法</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="7F3078D6" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="988" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1129" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="2F134DD7" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>教学准备</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="7167" w:type="dxa" />
+                        <w:gridSpan w:val="5" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="129DF66B" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【教具准备】</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>世界各地民间美术（如面具）高清图片、视频资料、思维导图模板、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>PPT</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>课件。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="51031B05" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>【学具准备】</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>学生分组协作用的笔记本、彩笔、卡纸等材料。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="12D118F3" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="853" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="0198AAC6" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                            <w:t>教学环节</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="58DC1950" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                            <w:t>教师活动</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="0EC3F26D" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                            <w:t>学生活动</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="0E37EECE" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="22" />
+                                <w:szCs w:val="24" />
+                            </w:rPr>
+                            <w:t>设计构思</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="7FBFA627" w14:textId="77777777">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="7AB6DA05" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                            <w:t>新课导入</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="53D6F76A" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t xml:space="preserve">1. </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>教师通过</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>PPT</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>展示主题情境：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>有</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>一位</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>中国的旅行收藏者，</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>梦想</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>着</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>收集全世界劳动者创造的艺术珍品，他用一生的时间环游世界，收集了许多充满智慧的民间美术作品。</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>大家是这位收藏者的助手，现在他给你下达了任务——根据他的探险旅程，策划艺术馆中</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>世界民间美术展厅</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>的内容。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="78DE7240" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t xml:space="preserve">2. </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>出示一张</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>艺术家的旅程地图</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>，地图标注了艺术家到访的地区及代表性民间美术形式，例如：非洲：木雕</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>；</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>欧洲：编织品</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>；</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>亚洲：剪纸与刺绣</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="08D1EBCD" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>3.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t xml:space="preserve"> </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>问题引导：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>你注意到这些作品在材料、颜色和用途上有什么</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>不</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>同？</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>这些民间美术形式为什么能够代表它们的地区？你觉得它们和当地的文化、生活方式有什么关系？</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="784FD656" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t xml:space="preserve">4. </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>引入课程主题：在策划世界民间美术展厅前，</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>我们将探索这些作品的材料、用途和艺术特点，理解它们如何成为劳动者智慧的结晶，并感受到民间美术作为</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>‘</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>人类文化的宝库</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>’</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>的独特魅力。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="29DE8A4B" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>观察与感受</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>学生观看地图和视频，尝试记住作品的材料、造型和色彩特点。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="596C2C32" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>回答问题</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>学生结合观察和已有知识，回答教师提出的问题，分享对民间美术与文化背景的初步理解。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="25E868E9" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                    </w:tcPr>
+                    <w:p w14:paraId="600D77F4" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>以</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>收藏</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>家环游世界</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>
+                                为线索，通过地图和视频展示民间美术的多样性，激发学生的好奇心和探索欲。问题设置由浅入深，从材料、造型、色彩等外在特点引申到与文化背景的联系。为课堂主题内容的深入学习提供逻辑支撑。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="43AB3C59" w14:textId="77777777">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge w:val="restart" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="76561030" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:proofErr w:type="gramStart" />
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                            <w:t>知</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>识新授</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramEnd" />
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="5EB8028A" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRPr="00D20DB5" w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>环节</w:t>
+                        </w:r>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>1</w:t>
+                        </w:r>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>：走进经典——藏戏</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="544640C6" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="1" />
+                            </w:numPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:lastRenderedPageBreak />
+                            <w:t>展示教材中的藏戏图片或视频（藏戏表演中的场景，演员戴着面具），</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>讲解藏戏的文化背景，并引导</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>提问：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>这些面具有什么独特之处？你觉得它们在藏戏中扮演什么样的角色？</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="262FC133" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="1" />
+                            </w:numPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>引导学生观察藏戏面具的造型、色彩和装饰特点（如夸张的造型、鲜艳的色彩）。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="11139021" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="1" />
+                            </w:numPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>展示一副藏戏面具，引导学生根据面具的造型与色彩分析人物的性格特征。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="368D0A38" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="1" />
+                            </w:numPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>引出面具这一民间美术形式。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="5BCDE414" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>观察图片或视频，</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:lastRenderedPageBreak />
+                            <w:t>记录藏戏面具的造型和色彩特点。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="04B3B606" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>分析案例的戏中人物性格特征</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="7D5AC716" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                    </w:tcPr>
+                    <w:p w14:paraId="1E949F10" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:lastRenderedPageBreak />
+                            <w:t>通过藏戏这一经典</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:lastRenderedPageBreak />
+                            <w:t>艺术形式引入面具艺术的概念，利用其视觉冲击力和文化内涵，让学生理解面具作为艺术表达载体的功能，同时为世界范围内的面具艺术学习做好铺垫。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="46A6FD42" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="0F4E9BA8" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="55B624DE" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="47B13243" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="73E21778" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="583EABD3" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="1520" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="1B36EF96" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="25920B63" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRPr="00D20DB5" w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>环节</w:t>
+                        </w:r>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>2</w:t>
+                        </w:r>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>：面具艺术</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="6ECB89C9" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t xml:space="preserve"> </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>展示教材中的世界面具图片（如威尼斯面具、非洲部落面具、藏戏面具），提问：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>这些面具在材料、用途和造型上有什么异同？</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1171E666" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t xml:space="preserve"> </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>讲解世界面具艺术</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>，</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>根据图片，依次讲解面具的特点和文化背景：</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="59A08CA1" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>威尼斯面具</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：以纸浆和金属制成，用于狂欢节，特点是造型精致、色彩华丽。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="7F3FD174" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>非洲部落面具</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：用木材雕刻而成，用于宗教仪式或舞蹈表演，特点是线条简练、造型粗犷。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="4E534E98" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>中国傩</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>戏面具</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：用木头</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>布料</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>或竹子</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>制作，</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>傩戏表演</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>中使用</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="6CFAF602" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>印尼巴龙面具</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>：巴龙面具下面吊着一圈“胡子”，头上插着花，极具</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="72BC8DEE" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>地域风情。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="469DD02F" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>3.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t xml:space="preserve"> </w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>提问：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>为什么这些面具会呈现出不同的艺术风格？它们的材料、用途和文化背景之间有什么联系？</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="2F486421" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>观察不同地区的面具图片，记录其材料、造型和用途特点。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="073623A7" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>小组讨论，分析不同面具的特点与文化背景的关系，并尝试归纳面具艺术的共性与差异。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="43027318" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                    </w:tcPr>
+                    <w:p w14:paraId="500626C0" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>
+                                通过对比分析世界范围内的面具艺术，引导学生认识面具作为民间美术的重要组成部分，不同文化背景对其艺术风格和功能的影响，为理解民间美术的多样性提供典型案例。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="17097516" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="60DD7E98" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="2C4E7080" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="046240F7" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="957" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="7752A8DF" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="39257071" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRPr="00D20DB5" w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>环节</w:t>
+                        </w:r>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>3</w:t>
+                        </w:r>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>：世界民间美术的多样性</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="6C577B96" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>结合教材内容，扩展民间美术范围，从面具艺术延展到其他民间美术形式，陶器、编织品、</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>雕塑等</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>。展示图片并提问：</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>这些民间美术形式在材料和用途上有什么样的共同点？</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>”“</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>为什么说民间美术是劳动者智慧的结晶？</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="732D0FD7" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>分区域分析民间美术作品的大体</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>特征，以陶器为例：</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="22C5B01B" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>中国陶瓷</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：青花瓷以自然景物为装饰，反映了东方文化对自然意境的追求，同时体现了东西方文化交流的成果。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1501BF2C" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>欧洲陶瓷</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：德累斯顿瓷器以优雅的花卉与人物雕塑为特色，展现了宫廷艺术的奢华与品味。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="7F0FB9C5" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>伊斯兰陶瓷</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：釉陶以几何纹样和阿拉伯书法为主，反映了伊斯兰文化中的抽象美学和宗教禁忌。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1956C303" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>拉丁美洲陶瓷</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>：造型鲜艳活泼，以太阳和宗教符号为装饰，体现了印第安文化中的太阳崇拜与自然崇拜。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="30841B17" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>3.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>总结：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>世界民间美术的多样性不仅体现了劳动者的创造力，也记录了各地区的文化传统、自然环境与生活方式，它们是人类文化的宝库。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="57100264" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>观察</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>ppt</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>中的民间美术作品，记录其材料、用途和特点。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1C38A9A5" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>小组讨论某一类民间美术的区域特点，并分析这些特点与当地文化背景的关系。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="44D0E752" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>3.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>分享讨论结果，归纳世界民间美术的共</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:lastRenderedPageBreak />
+                            <w:t>性与差异。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1D472077" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000" />
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                    </w:tcPr>
+                    <w:p w14:paraId="4CB52961" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:lastRenderedPageBreak />
+                            <w:t>
+                                通过分区域讲解和图片观察，引导学生认识世界民间美术的多样性及其与文化背景的深度联系。学生通过讨论和总结，将观察与分析结果系统化，为理解民间美术的</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:lastRenderedPageBreak />
+                            <w:t>文化价值及现代意义奠定基础。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="5D015843" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="17A3DD02" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="64CAD03C" w14:textId="77777777">
+                <w:trPr>
+                    <w:trHeight w:val="927" />
+                </w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge w:val="restart" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="4862EFCA" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>实践展评</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="1695EABB" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRPr="00D20DB5" w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="5" />
+                            </w:numPr>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>实践：民艺思维导图</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="105AD351" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>引导学生根据本节课所学内容，</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>从</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>世界民间美术作品中选择一件自己感兴趣的作品（如藏戏面具、威尼斯面具、</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>中国青花瓷</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>等）。通过思维导图或视觉笔记，将作品的地域、历史、文化、民俗、艺术特点等进行分类整理和展示</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>，作为世界民间美术展厅的策划内容。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="07697391" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>学生分组讨论并选择作品，整理信息后绘制思维导图或视觉笔记。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="73832A6F" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>小组成员分工合作，完善作品的展示形式。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="09FFDD56" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:jc w:val="center" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                    </w:tcPr>
+                    <w:p w14:paraId="37DAED35" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>通过制作思维导图或视觉笔记，引导学生将知识点系统化，梳理世界民间美术的特点和文化背景。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="06C0EBA2" w14:textId="77777777">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="53A380A9" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="428BBEB1" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRPr="00D20DB5" w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="5" />
+                            </w:numPr>
+                            <w:rPr>
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00D20DB5">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:b />
+                                <w:bCs />
+                            </w:rPr>
+                            <w:t>展示评价：世界民间美术分享会</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="061F6A57" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:ind w:firstLineChars="200" w:firstLine="420" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>每组轮流展示自己的思维导图或视觉笔记，并从以下角度进行介绍：</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="7E3F3D81" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>作品的地域特征（如非洲、欧洲、亚洲等）。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="5B277D04" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>文化背景与历史意义（作品的社会功能与文化承载）。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="14F3E5BC" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>3</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>材料与艺术特点（如造型、色彩、装饰风格）</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="6BC12A9F" w14:textId="77777777" w:rsidR="00D20DB5"
+                        w:rsidRDefault="00000000" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="5" />
+                            </w:numPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>提问并点评：</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="6C8D00FB" w14:textId="77777777" w:rsidR="00D20DB5"
+                        w:rsidRDefault="00000000" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>这个作品的艺术特点如何体现它的文化背景？</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="786B9AAF" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5" w:rsidP="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>这种民间美术形式对现代设计有什么启发？</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="531A355E" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>1.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>各小组轮流展示作品，简述创作思路和作品分析内容。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="2F7E327D" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00D20DB5">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r w:rsidR="00000000">
+                            <w:t>听取其他小组展示，提出问题或分享看法。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1763A900" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                    </w:tcPr>
+                    <w:p w14:paraId="65571254" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>通过分享会，学生在展示中巩固了知识，在互动中深化了理解，提升了语言表达能力与团队协作能力。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="58671C99" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="0C363F0C" w14:textId="77777777">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge w:val="restart" />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                        <w:vAlign w:val="center" />
+                    </w:tcPr>
+                    <w:p w14:paraId="321C555B" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:sz w:val="28" />
+                                <w:szCs w:val="32" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                                <w:sz w:val="24" />
+                                <w:szCs w:val="28" />
+                            </w:rPr>
+                            <w:t>小结</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="0403640C" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="6" />
+                            </w:numPr>
+                            <w:tabs>
+                                <w:tab w:val="left" w:pos="312" />
+                            </w:tabs>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>简单回顾本节</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramStart" />
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>课知识</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramEnd" />
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>点：</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1121C7A0" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:t>教师总结：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>今天我们一起学习了世</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:lastRenderedPageBreak />
+                            <w:t>
+                                界民间美术的多样性，从面具艺术到其他民间美术形式，比如陶瓷和编织品，我们发现这些作品在材料、用途和艺术特点上都展现了鲜明的地域风格。这些民间美术形式不仅反映了劳动者的智慧，也承载了各自文化的独特内涵。</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>”</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="57F3FF7E" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>升华：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>教师引导：</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>“</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>
+                                民间美术不仅是过去的文化记忆，更是未来的灵感来源。希望同学们通过今天的学习，不仅了解民间美术的多样性，也能感受到这些作品中蕴含的生活美学与文化价值。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="469D71B8" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>学生回忆巩固本节</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramStart" />
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>课知识</w:t>
+                        </w:r>
+                        <w:proofErr w:type="gramEnd" />
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                        <w:vMerge w:val="restart" />
+                    </w:tcPr>
+                    <w:p w14:paraId="21207DBB" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>巩固课程知识，联系生活实际。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="76843942" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:lastRenderedPageBreak />
+                            <w:t>鼓励学生</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t>通过课后任务延展学习内容，培养学生主动探索艺术与设计结合的思维能力。</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="4995A05F" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr w:rsidR="00000000" w14:paraId="237368D3" w14:textId="77777777">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="735" w:type="dxa" />
+                        <w:vMerge />
+                        <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
+                    </w:tcPr>
+                    <w:p w14:paraId="181D5D5E" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="3484" w:type="dxa" />
+                        <w:gridSpan w:val="3" />
+                    </w:tcPr>
+                    <w:p w14:paraId="3993A6DB" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:numPr>
+                                <w:ilvl w:val="0" />
+                                <w:numId w:val="6" />
+                            </w:numPr>
+                            <w:tabs>
+                                <w:tab w:val="left" w:pos="312" />
+                            </w:tabs>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>课后作业：</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="7074F2E0" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:pStyle w:val="p1" />
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:t>
+                                请选择一件你周围带有民间美术特点的物品（例如：装饰品、日用品等），拍下照片并记录它的艺术特点（如图案、色彩、用途）。结合今天的学习，分析它可能受到的民间美术影响，并思考如何用现代设计进行创新。</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="2126" w:type="dxa" />
+                        <w:gridSpan w:val="2" />
+                    </w:tcPr>
+                    <w:p w14:paraId="51967AFA" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>2.</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                            <w:t>学生在课后完成学习任务</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1951" w:type="dxa" />
+                        <w:vMerge />
+                    </w:tcPr>
+                    <w:p w14:paraId="14F8AF8D" w14:textId="77777777" w:rsidR="00000000"
+                        w:rsidRDefault="00000000">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia" />
+                            </w:rPr>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+        </w:tbl>
+        <w:p w14:paraId="1D892DC3" w14:textId="77777777" w:rsidR="00461F85"
+            w:rsidRDefault="00461F85">
+            <w:pPr>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia" />
+                    <w:b />
+                    <w:bCs />
+                    <w:sz w:val="24" />
+                    <w:szCs w:val="28" />
+                </w:rPr>
+            </w:pPr>
+        </w:p>
+        <w:sectPr w:rsidR="00461F85">
+            <w:pgSz w:w="11906" w:h="16838" />
+            <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="851"
+                w:footer="992" w:gutter="0" />
+            <w:cols w:space="720" />
+            <w:docGrid w:type="lines" w:linePitch="312" />
+        </w:sectPr>
+    </w:body>
+</w:document>

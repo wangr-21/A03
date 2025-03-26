@@ -5,10 +5,15 @@ description = "lesson-planning-assistant"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "anyio>=4.9.0",
     "dotenv>=0.9.9",
     "fastapi>=0.115.11",
+    "fleep>=1.0.1",
+    "jinja2>=3.1.6",
     "openai>=1.66.5",
-    "uvicorn>=0.34.0",
+    "python-multipart>=0.0.20",
+    "sqlalchemy[aiosqlite]>=2.0.39",
+    "uvicorn[standard]>=0.34.0",
 ]
 
 [tool.ruff]

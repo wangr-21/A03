@@ -1,6 +1,12 @@
+# ruff: noqa: E402
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import teaching
+
+load_dotenv()
+
+from .routers import analysis, homework, students, teaching
 
 app = FastAPI()
 
@@ -14,7 +20,8 @@ app.add_middleware(
 )
 
 # 注册路由
-app.include_router(teaching.router, prefix="/api")
+for router in (teaching.router, analysis.router, homework.router, students.router):
+    app.include_router(router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn
