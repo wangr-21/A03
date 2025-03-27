@@ -1,12 +1,12 @@
-import uuid
 import json
+import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from sqlalchemy import select, and_
+from sqlalchemy import and_, select
 
-from ..db import DBSession, Question, KnowledgePoint, MistakeRecord, StudentInfo
+from ..db import DBSession, KnowledgePoint, MistakeRecord, Question, StudentInfo
 from ..services.question_bank import QuestionBankService  # , MistakeBookService
 
 router = APIRouter(prefix="/question_bank", tags=["question_bank"])
@@ -144,7 +144,7 @@ async def generate_questions(request: GenerateQuestionsRequest, db: DBSession):
         for q in questions:
             # 处理选项格式
             options = None
-            if "options" in q and q["options"]:
+            if q.get("options"):
                 if isinstance(q["options"], str):
                     try:
                         options = json.loads(q["options"])
@@ -172,7 +172,7 @@ async def generate_questions(request: GenerateQuestionsRequest, db: DBSession):
         return result
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"题目生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"题目生成失败: {e!s}") from e
 
 
 @router.get("/questions", response_model=list[QuestionResponse])
@@ -256,7 +256,7 @@ async def list_questions(
         return response
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"查询失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"查询失败: {e!s}") from e
 
 
 @router.get("/questions/{question_id}", response_model=QuestionResponse)
@@ -297,13 +297,13 @@ async def get_question(question_id: str, db: DBSession):
 
 
 @router.get("/knowledge_points", response_model=list[KnowledgePointNode])
-async def get_knowledge_tree(subject: str, db: DBSession):
+async def get_knowledge_tree(subject: str):
     """获取知识点树结构"""
     try:
         return await QuestionBankService().generate_knowledge_tree(subject)
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取知识点树失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"获取知识点树失败: {e!s}") from e
 
 
 @router.post("/mistakes/analyze", response_model=MistakeAnalysisResponse)
@@ -379,7 +379,7 @@ async def analyze_mistake(request: AnalyzeMistakeRequest, db: DBSession):
         return analysis_result
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"错题分析失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"错题分析失败: {e!s}") from e
 
 
 @router.get("/mistakes", response_model=list[MistakeRecordResponse])
@@ -459,7 +459,7 @@ async def list_mistakes(
         return response
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"查询失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"查询失败: {e!s}") from e
 
 
 @router.patch("/mistakes/{mistake_id}", response_model=MistakeRecordResponse)

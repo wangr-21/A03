@@ -1,3 +1,4 @@
+# ruff: noqa: E501, N815
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import func, select
@@ -143,12 +144,11 @@ def analyze_comments(comments: list[str]) -> str:
 
     if positive_ratio > 0.7:
         return "评语分析：整体学习状态良好，根据评语反馈，掌握知识点扎实，理解透彻，作业完成质量高。"
-    elif positive_ratio > 0.4:
+    if positive_ratio > 0.4:
         return (
             "评语分析：学习状态一般，有部分知识点掌握得不够牢固，需要加强针对性练习。"
         )
-    else:
-        return "评语分析：学习存在一定困难，多数知识点理解不够透彻，建议加强基础知识学习和课后练习。"
+    return "评语分析：学习存在一定困难，多数知识点理解不够透彻，建议加强基础知识学习和课后练习。"
 
 
 def generate_knowledge_heatmap(homeworks: list[HomeworkInfo]) -> list[KnowledgePoint]:
@@ -185,7 +185,9 @@ def generate_knowledge_heatmap(homeworks: list[HomeworkInfo]) -> list[KnowledgeP
 
 
 def generate_overall_analysis(
-    student_name: str, homeworks: list[HomeworkInfo], score_trend: list[ScoreTrendPoint]
+    student_name: str,
+    homeworks: list[HomeworkInfo],  # noqa: ARG001
+    score_trend: list[ScoreTrendPoint],
 ) -> str:
     """生成学生的整体学习分析"""
     if not score_trend:
@@ -207,14 +209,13 @@ def generate_overall_analysis(
     # 根据平均分给出不同的建议
     if avg_score >= 90:
         return f"{student_name}同学整体表现优秀，平均分达到{avg_score:.1f}分。{trend_analysis}建议继续保持良好的学习习惯，可以尝试更具挑战性的学习内容。"
-    elif avg_score >= 80:
+    if avg_score >= 80:
         return f"{student_name}同学整体表现良好，平均分为{avg_score:.1f}分。{trend_analysis}建议巩固已掌握的知识点，针对性地提高薄弱环节。"
-    elif avg_score >= 70:
+    if avg_score >= 70:
         return f"{student_name}同学整体表现中等，平均分为{avg_score:.1f}分。{trend_analysis}建议加强基础知识的学习和理解，增加练习量。"
-    elif avg_score >= 60:
+    if avg_score >= 60:
         return f"{student_name}同学整体表现及格，平均分为{avg_score:.1f}分。{trend_analysis}建议重点关注基础知识点，寻求教师帮助，制定针对性学习计划。"
-    else:
-        return f"{student_name}同学整体表现不佳，平均分仅为{avg_score:.1f}分。{trend_analysis}建议全面复习基础知识，增加学习时间和练习量，必要时寻求一对一辅导。"
+    return f"{student_name}同学整体表现不佳，平均分仅为{avg_score:.1f}分。{trend_analysis}建议全面复习基础知识，增加学习时间和练习量，必要时寻求一对一辅导。"
 
 
 def generate_class_knowledge_heatmap(

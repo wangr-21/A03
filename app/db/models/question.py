@@ -1,6 +1,7 @@
-from sqlalchemy import Column, String, Integer, Text, Boolean, ForeignKey, Table
-from sqlalchemy.orm import mapped_column, relationship, Mapped
-from typing import List, Optional
+from typing import Optional
+
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..config import Base
 
@@ -70,14 +71,14 @@ class KnowledgePoint(Base):
     """知识点层级"""
 
     # 与题目的多对多关系
-    questions: Mapped[List["Question"]] = relationship(
+    questions: Mapped[list["Question"]] = relationship(
         "Question",
         secondary=question_knowledge_association,
         back_populates="knowledge_points",
     )
 
     # 自引用关系，用于树形知识点结构
-    children: Mapped[List["KnowledgePoint"]] = relationship(
+    children: Mapped[list["KnowledgePoint"]] = relationship(
         "KnowledgePoint",
         back_populates="parent",
     )

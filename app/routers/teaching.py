@@ -17,8 +17,8 @@ class GenerateTeachingPlanResponse(BaseModel):
 
 @router.post("/generate_plan", response_model=GenerateTeachingPlanResponse)
 async def generate_teaching_plan(
-    grade: str = Form(..., description="年级"),
-    images: list[UploadFile] = File(..., description="教材图片文件"),
+    grade: str = Form(description="年级"),
+    images: list[UploadFile] = File(description="教材图片文件"),
 ):
     plan = await TeachingPlanGenerator().generate(
         grade, [await img.read() for img in images]
@@ -40,5 +40,5 @@ async def get_teaching_plan_document(plan_id: str) -> FileResponse:
     return FileResponse(
         path=str(document.absolute()),
         filename=f"教案_{plan_id}.docx",
-        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )

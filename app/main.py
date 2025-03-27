@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-from .routers import analysis, homework, students, teaching, interactive, question_bank
+from .routers import analysis, homework, interactive, question_bank, students, teaching
 
 app = FastAPI()
 
@@ -33,4 +33,4 @@ for router in (
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)  # noqa: S104

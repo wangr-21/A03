@@ -1,8 +1,8 @@
 import base64
-import zipfile
 import json
 import random
 import uuid
+import zipfile
 
 import fleep
 import jinja2
@@ -85,8 +85,8 @@ class TeachingPlanGenerator:
 
         try:
             data = json.loads(converted_json)
-        except json.JSONDecodeError:
-            raise ValueError("Failed to parse JSON content from API response")
+        except json.JSONDecodeError as err:
+            raise ValueError("Failed to parse JSON content from API response") from err
 
         document = self._render_document(data)
         return self._pack_docx(document)

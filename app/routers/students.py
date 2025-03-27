@@ -28,19 +28,19 @@ class StudentResp(BaseModel):
     homeworks: list[HomeworkResp] = []
 
     @field_validator("student_id")
-    def student_id_not_empty(cls, v):
+    def student_id_not_empty(cls, v):  # noqa: N805, ANN001
         if not v or not v.strip():
             raise ValueError("学生学号不能为空")
         return v
 
     @field_validator("student_name")
-    def student_name_not_empty(cls, v):
+    def student_name_not_empty(cls, v):  # noqa: N805, ANN001
         if not v or not v.strip():
             raise ValueError("学生姓名不能为空")
         return v
 
     @field_validator("gender")
-    def gender_valid(cls, v):
+    def gender_valid(cls, v):  # noqa: N805, ANN001
         if v not in ["男", "女"]:
             raise ValueError('性别必须是"男"或"女"')
         return v
@@ -100,12 +100,13 @@ async def create_student(db: DBSession, request: CreateStudentRequest):
         )
         db.add(student)
         await db.commit()
-        return {"message": "学生信息添加成功", "student_id": request.student_id}
 
-    except IntegrityError:
-        raise HTTPException(status_code=409, detail="学号已存在，请使用其他学号")
+    except IntegrityError as e:
+        raise HTTPException(status_code=409, detail="学号已存在，请使用其他学号") from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"添加学生信息失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"添加学生信息失败: {e!s}") from e
+    else:
+        return {"message": "学生信息添加成功", "student_id": request.student_id}
 
 
 @router.delete("/{student_id}")
@@ -119,6 +120,7 @@ async def delete_student(db: DBSession, student_id: str):
         # 由于设置了级联删除，删除学生时会自动删除其所有作业
         await db.delete(student)
         await db.commit()
-        return {"message": "学生信息及相关作业已成功删除"}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"删除失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"删除失败: {e!s}") from e
+    else:
+        return {"message": "学生信息及相关作业已成功删除"}

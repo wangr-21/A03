@@ -1,11 +1,13 @@
 import json
-import uuid
 import random
+import uuid
 from datetime import datetime
+
+from ..constant import ASSETS_DIR
+from .utils import CompletionMessage, get_openai_client, run_sync
+
 # from typing import List, Optional
 
-from .utils import CompletionMessage, get_openai_client, run_sync
-from ..constant import ASSETS_DIR
 
 ASSETS_ROOT = ASSETS_DIR / "question_bank"
 PROMPT_GENERATE = ASSETS_ROOT / "generate.md"
@@ -81,9 +83,9 @@ class QuestionBankService:
                 if "options" in q and isinstance(q["options"], list):
                     q["options"] = json.dumps(q["options"], ensure_ascii=False)
 
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as err:
             # 如果返回内容不是标准JSON，返回错误
-            raise ValueError("题目生成失败，无法解析返回结果")
+            raise ValueError("题目生成失败，无法解析返回结果") from err
 
         return questions
 
@@ -100,7 +102,7 @@ class QuestionBankService:
 
         # 准备题目信息
         question_info = f"题目：{question['title']}\n"
-        if "options" in question and question["options"]:
+        if question.get("options"):
             options = (
                 json.loads(question["options"])
                 if isinstance(question["options"], str)
@@ -134,8 +136,8 @@ class QuestionBankService:
         try:
             content = content[content.index("{") : content.rindex("}") + 1]
             result = json.loads(content)
-        except json.JSONDecodeError:
-            raise ValueError("错误分析失败，无法解析返回结果")
+        except json.JSONDecodeError as err:
+            raise ValueError("错误分析失败，无法解析返回结果") from err
 
         return result
 
@@ -173,7 +175,7 @@ class QuestionBankService:
                     ],
                 },
             ]
-        elif subject == "数学":
+        if subject == "数学":
             return [
                 {
                     "id": str(uuid.uuid4()),
@@ -194,26 +196,25 @@ class QuestionBankService:
                     ],
                 },
             ]
-        else:
-            # 返回一些通用的知识点结构
-            return [
-                {
-                    "id": str(uuid.uuid4()),
-                    "name": f"{subject}基础知识",
-                    "children": [
-                        {"id": str(uuid.uuid4()), "name": "基本概念"},
-                        {"id": str(uuid.uuid4()), "name": "基本方法"},
-                    ],
-                },
-                {
-                    "id": str(uuid.uuid4()),
-                    "name": f"{subject}应用能力",
-                    "children": [
-                        {"id": str(uuid.uuid4()), "name": "能力培养"},
-                        {"id": str(uuid.uuid4()), "name": "实践应用"},
-                    ],
-                },
-            ]
+        # 返回一些通用的知识点结构
+        return [
+            {
+                "id": str(uuid.uuid4()),
+                "name": f"{subject}基础知识",
+                "children": [
+                    {"id": str(uuid.uuid4()), "name": "基本概念"},
+                    {"id": str(uuid.uuid4()), "name": "基本方法"},
+                ],
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": f"{subject}应用能力",
+                "children": [
+                    {"id": str(uuid.uuid4()), "name": "能力培养"},
+                    {"id": str(uuid.uuid4()), "name": "实践应用"},
+                ],
+            },
+        ]
 
 
 class MistakeBookService:

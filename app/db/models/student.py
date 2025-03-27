@@ -69,4 +69,4 @@ class HomeworkInfo(Base):
         back_populates="homeworks",
     )
 
-    __table_args__ = {"comment": "学生作业信息表"}
+    __table_args__ = {"comment": "学生作业信息表"}  # noqa: RUF012

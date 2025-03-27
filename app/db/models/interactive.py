@@ -1,5 +1,6 @@
-from sqlalchemy import String, Integer, Text
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import Integer, String, Text
+from sqlalchemy.orm import Mapped, mapped_column
+
 from ..config import Base
 
 

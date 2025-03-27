@@ -1,5 +1,5 @@
 import json
-from typing import Literal
+from typing import Literal, Self
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -53,7 +53,7 @@ class ActivityResponse(BaseModel):
     extensions: list[str] = Field(description="活动延伸")
 
     @classmethod
-    def from_orm(cls, obj: InteractiveActivity):
+    def from_orm(cls, obj: InteractiveActivity) -> Self:
         metadata = {
             "id": obj.id,
             "activity_type": obj.activity_type,
@@ -120,7 +120,7 @@ class ScenarioResponse(BaseModel):
     teacher_guide: ScenarioTeacherGuide = Field(description="教师指南")
 
     @classmethod
-    def from_orm(cls, obj: ScenarioSimulation):
+    def from_orm(cls, obj: ScenarioSimulation) -> Self:
         metadata = {
             "id": obj.id,
             "scenario_type": obj.scenario_type,
@@ -154,7 +154,7 @@ async def generate_activity(request: GenerateActivityRequest, db: DBSession):
         return {**metadata, **content}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"活动生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"活动生成失败: {e!s}") from e
 
 
 @router.post("/scenarios", response_model=ScenarioResponse)
@@ -178,7 +178,7 @@ async def generate_scenario(request: GenerateScenarioRequest, db: DBSession):
         return {**metadata, **content}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"场景生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"场景生成失败: {e!s}") from e
 
 
 @router.get("/activities", response_model=list[ActivityResponse])

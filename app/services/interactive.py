@@ -2,8 +2,8 @@ import json
 import uuid
 from datetime import datetime
 
-from .utils import CompletionMessage, get_openai_client, run_sync
 from ..constant import ASSETS_DIR
+from .utils import CompletionMessage, get_openai_client, run_sync
 
 ASSETS_ROOT = ASSETS_DIR / "interactive"
 PROMPT_ACTIVITY = ASSETS_ROOT / "activity.md"
