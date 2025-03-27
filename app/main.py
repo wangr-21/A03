@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-from .routers import analysis, homework, students, teaching
+from .routers import analysis, homework, students, teaching, interactive
 
 app = FastAPI()
 
@@ -20,7 +20,13 @@ app.add_middleware(
 )
 
 # 注册路由
-for router in (teaching.router, analysis.router, homework.router, students.router):
+for router in (
+    teaching.router,
+    analysis.router,
+    homework.router,
+    students.router,
+    interactive.router,
+):
     app.include_router(router, prefix="/api")
 
 if __name__ == "__main__":
