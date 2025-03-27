@@ -114,12 +114,14 @@ async def update_homework(
     score, comment = await generate_homework_feedback(image_path)
     homework.score = score
     homework.comment = comment
-
-    return {
+    response = {
         "message": "作业更新成功",
-        "score": homework.score,
-        "comment": homework.comment,
+        "score": score,
+        "comment": comment,
     }
+
+    await db.commit()
+    return response
 
 
 class HomeworkResponse(BaseModel):

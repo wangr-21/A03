@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-from .routers import analysis, homework, students, teaching, interactive
+from .routers import analysis, homework, students, teaching, interactive, question_bank
 
 app = FastAPI()
 
@@ -26,6 +26,7 @@ for router in (
     homework.router,
     students.router,
     interactive.router,
+    question_bank.router,
 ):
     app.include_router(router, prefix="/api")
 

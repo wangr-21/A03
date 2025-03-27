@@ -5,7 +5,7 @@ from pydantic import BaseModel, field_validator
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
-from ..db import DBSession, HomeworkInfo, StudentInfo
+from ..db import DBSession, StudentInfo
 
 router = APIRouter(prefix="/students", tags=["students"])
 
@@ -71,16 +71,13 @@ async def get_students(
 
     result = []
     for student in students:
-        item: dict[str, object] = {
+        await db.refresh(student, ["homeworks"])
+        item = {
             "student_id": student.student_id,
             "student_name": student.student_name,
             "gender": student.gender,
+            "homeworks": sorted(student.homeworks, key=lambda hw: hw.homework_order),
         }
-        stmt = select(HomeworkInfo).filter(
-            HomeworkInfo.student_id == student.student_id
-        )
-        homeworks = (await db.execute(stmt)).scalars().all()
-        item["homeworks"] = sorted(homeworks, key=lambda hw: hw.homework_order)
         result.append(item)
 
     return result
