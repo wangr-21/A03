@@ -1,55 +1,26 @@
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from ..db import DBSession, StudentInfo
+from .homework import HomeworkResponse
 
 router = APIRouter(prefix="/students", tags=["students"])
 
 
-class HomeworkResp(BaseModel):
-    student_id: str
-    homework_order: int
-    homework_image_path: str
-    score: float | None = None
-    comment: str | None = None
+class StudentResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
-
-
-class StudentResp(BaseModel):
     student_id: str
     student_name: str
-    gender: str
-    homeworks: list[HomeworkResp] = []
-
-    @field_validator("student_id")
-    def student_id_not_empty(cls, v):  # noqa: N805, ANN001
-        if not v or not v.strip():
-            raise ValueError("学生学号不能为空")
-        return v
-
-    @field_validator("student_name")
-    def student_name_not_empty(cls, v):  # noqa: N805, ANN001
-        if not v or not v.strip():
-            raise ValueError("学生姓名不能为空")
-        return v
-
-    @field_validator("gender")
-    def gender_valid(cls, v):  # noqa: N805, ANN001
-        if v not in ["男", "女"]:
-            raise ValueError('性别必须是"男"或"女"')
-        return v
-
-    class Config:
-        from_attributes = True
+    gender: Literal["男", "女"]
+    homeworks: list[HomeworkResponse] = []
 
 
-@router.get("/", response_model=list[StudentResp])
+@router.get("/", response_model=list[StudentResponse])
 async def get_students(
     db: DBSession,
     student_name: str | None = None,
@@ -89,7 +60,11 @@ class CreateStudentRequest(BaseModel):
     gender: Literal["男", "女"]
 
 
-@router.post("/")
+class CreateStudentResponse(BaseModel):
+    student_id: str
+
+
+@router.post("/", response_model=CreateStudentResponse)
 async def create_student(db: DBSession, request: CreateStudentRequest):
     """创建新的学生记录"""
     try:
@@ -106,10 +81,21 @@ async def create_student(db: DBSession, request: CreateStudentRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"添加学生信息失败: {e!s}") from e
     else:
-        return {"message": "学生信息添加成功", "student_id": request.student_id}
+        return {"student_id": request.student_id}
 
 
-@router.delete("/{student_id}")
+@router.get("/{student_id}", response_model=StudentResponse)
+async def get_student(db: DBSession, student_id: str):
+    """获取指定学生的信息及其所有作业信息"""
+    stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
+    if not (student := (await db.execute(stmt)).scalar()):
+        raise HTTPException(status_code=404, detail="未找到该学生")
+
+    await db.refresh(student, ["homeworks"])
+    return student
+
+
+@router.delete("/{student_id}", response_model=None)
 async def delete_student(db: DBSession, student_id: str):
     """删除学生信息及其关联的所有作业"""
     stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
@@ -122,5 +108,3 @@ async def delete_student(db: DBSession, student_id: str):
         await db.commit()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"删除失败: {e!s}") from e
-    else:
-        return {"message": "学生信息及相关作业已成功删除"}

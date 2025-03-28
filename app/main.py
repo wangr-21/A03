@@ -3,6 +3,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 load_dotenv()
 
@@ -29,6 +30,12 @@ for router in (
     question_bank.router,
 ):
     app.include_router(router, prefix="/api")
+
+
+@app.get("/", response_class=RedirectResponse)
+async def root() -> RedirectResponse:
+    return RedirectResponse(url="/docs")
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -29,7 +29,7 @@ async def generate_teaching_plan(
     return {"plan": plan, "plan_id": plan_id}
 
 
-@router.get("/plan_document/{plan_id}")
+@router.get("/plan_document/{plan_id}", response_class=FileResponse)
 async def get_teaching_plan_document(plan_id: str) -> FileResponse:
     plan = teaching_plan_cache.get(plan_id)
     if plan is None:
