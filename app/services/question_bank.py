@@ -6,9 +6,6 @@ from datetime import datetime
 from ..constant import ASSETS_DIR
 from .utils import CompletionMessage, get_openai_client, run_sync
 
-# from typing import List, Optional
-
-
 ASSETS_ROOT = ASSETS_DIR / "question_bank"
 PROMPT_GENERATE = ASSETS_ROOT / "generate.md"
 PROMPT_ANALYZE_MISTAKE = ASSETS_ROOT / "analyze_mistake.md"

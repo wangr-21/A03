@@ -1,9 +1,12 @@
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from sqlalchemy import Double, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..config import Base
+
+if TYPE_CHECKING:
+    from .question import MistakeRecord
 
 
 class StudentInfo(Base):
@@ -25,11 +28,15 @@ class StudentInfo(Base):
         comment="性别",
     )
 
-    # 建立与作业信息表的关系，并在删除学生时级联删除其所有作业
     homeworks: Mapped[list["HomeworkInfo"]] = relationship(
         "HomeworkInfo",
         back_populates="student",
-        cascade="all, delete-orphan",
+        cascade="all, delete-orphan",  # 删除学生时级联删除其所有作业
+    )
+    mistake_records: Mapped[list["MistakeRecord"]] = relationship(
+        "MistakeRecord",
+        back_populates="student",
+        cascade="all, delete-orphan",  # 删除学生时删除相关错题记录
     )
 
 

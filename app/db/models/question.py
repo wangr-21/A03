@@ -1,9 +1,8 @@
-from typing import Optional
-
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..config import Base
+from .student import StudentInfo
 
 # 题目与知识点多对多关联表
 question_knowledge_association = Table(
@@ -82,7 +81,7 @@ class KnowledgePoint(Base):
         "KnowledgePoint",
         back_populates="parent",
     )
-    parent: Mapped[Optional["KnowledgePoint"]] = relationship(
+    parent: Mapped["KnowledgePoint | None"] = relationship(
         "KnowledgePoint",
         back_populates="children",
         remote_side=[id],
@@ -115,6 +114,9 @@ class MistakeRecord(Base):
     """最后更新时间"""
 
     # 关联关系
-    question: Mapped["Question"] = relationship(
+    question: Mapped[Question] = relationship(
         Question, back_populates="mistake_records"
+    )
+    student: Mapped[StudentInfo] = relationship(
+        StudentInfo, back_populates="mistake_records"
     )
