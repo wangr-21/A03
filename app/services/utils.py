@@ -1,9 +1,10 @@
+import asyncio
+import contextvars
 import functools
 import os
 from collections.abc import Awaitable, Callable, Iterable
 from typing import Self
 
-import anyio.to_thread
 from openai import OpenAI
 from openai.types.chat import (
     ChatCompletionContentPartParam,
@@ -60,9 +61,9 @@ def run_sync[**P, R](call: Callable[P, R]) -> Callable[P, Awaitable[R]]:
 
     @functools.wraps(call)
     async def _wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-        return await anyio.to_thread.run_sync(
-            functools.partial(call, *args, **kwargs),
-            abandon_on_cancel=True,
-        )
+        loop = asyncio.get_event_loop()
+        context = contextvars.copy_context()
+        pfunc = functools.partial(call, *args, **kwargs)
+        return await loop.run_in_executor(None, context.run, pfunc)
 
     return _wrapper

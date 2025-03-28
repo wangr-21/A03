@@ -5,7 +5,6 @@ description = "lesson-planning-assistant"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "anyio>=4.9.0",
     "dotenv>=0.9.9",
     "fastapi>=0.115.11",
     "fleep>=1.0.1",
@@ -15,6 +14,11 @@ dependencies = [
     "sqlalchemy[aiosqlite]>=2.0.39",
     "uvicorn[standard]>=0.34.0",
 ]
+
+[project.optional-dependencies]
+mysql = ["sqlalchemy[aiomysql]>=2.0.39"]
+postgres = ["sqlalchemy[postgresql-asyncpg]>=2.0.39"]
+
 
 [tool.ruff]
 line-length = 88
@@ -70,7 +74,6 @@ select = [
     "YTT",   # flake8-2020
 ]
 ignore = [
-    "E402",   # module-import-not-at-top-of-file
     "RUF001", # ambiguous-unicode-character-string
     "RUF002", # ambiguous-unicode-character-docstring
     "RUF003", # ambiguous-unicode-character-comment
@@ -78,6 +81,7 @@ ignore = [
     "ANN202", # missing-return-type-private-function
     "ANN401", # any-type
     "TRY003", # raise-vanilla-args
+    "TRY300", # try-consider-else
     "TRY301", # raise-within-try
     "EM102",  # f-string-in-exception
     "COM812", # missing-trailing-comma
@@ -87,25 +91,16 @@ ignore = [
     "ISC001", # single-line-implicit-string-concatenation
     "DTZ005", # call-datetime-now-without-tzinfo
     "S311",   # suspicious-non-cryptographic-random-usage
-    "PGH003", # blanket-type-ignore
-    "N818",   # error-suffix-on-exception-name  # stupid
-    "PYI041", # redundant-numeric-union  # int | float
-    "S101",   # assert
-    "B911",   # batched-without-explicit-strict
     "FBT001", # boolean-type-hint-positional-argument
-    "B008",   # function-call-in-default-argument
-    "TRY300", # try-consider-else
 ]
 
 [tool.ruff.lint.flake8-builtins]
 builtins-ignorelist = ["id", "dir"]
 
-[tool.ruff.lint.flake8-pytest-style]
-fixture-parentheses = false
-mark-parentheses = false
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.File"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["src", "tests/*"]
 extra-standard-library = ["typing_extensions"]
 
 [tool.ruff.lint.pyupgrade]

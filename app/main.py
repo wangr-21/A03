@@ -1,5 +1,3 @@
-# ruff: noqa: E402
-
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,7 +5,14 @@ from fastapi.responses import RedirectResponse
 
 load_dotenv()
 
-from .routers import analysis, homework, interactive, question_bank, students, teaching
+from .routers import (  # noqa: E402
+    analysis,
+    homework,
+    interactive,
+    question_bank,
+    students,
+    teaching,
+)
 
 app = FastAPI()
 
