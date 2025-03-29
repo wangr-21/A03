@@ -1,3 +1,5 @@
+from .cultural_corridor import CrossDisciplineCase as CrossDisciplineCase
+from .cultural_corridor import TraditionalStory as TraditionalStory
 from .interactive import InteractiveActivity as InteractiveActivity
 from .interactive import ScenarioSimulation as ScenarioSimulation
 from .question import KnowledgePoint as KnowledgePoint

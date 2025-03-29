@@ -7,6 +7,7 @@ load_dotenv()
 
 from .routers import (  # noqa: E402
     analysis,
+    cultural_corridor,
     homework,
     interactive,
     question_bank,
@@ -33,6 +34,7 @@ for router in (
     students.router,
     interactive.router,
     question_bank.router,
+    cultural_corridor.router,
 ):
     app.include_router(router, prefix="/api")
 
