@@ -1,5 +1,4 @@
 import asyncio
-import contextvars
 import functools
 import os
 from collections.abc import Awaitable, Callable, Iterable
@@ -60,10 +59,7 @@ def run_sync[**P, R](call: Callable[P, R]) -> Callable[P, Awaitable[R]]:
     """
 
     @functools.wraps(call)
-    async def _wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-        loop = asyncio.get_event_loop()
-        context = contextvars.copy_context()
-        pfunc = functools.partial(call, *args, **kwargs)
-        return await loop.run_in_executor(None, context.run, pfunc)
+    async def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+        return await asyncio.to_thread(call, *args, **kwargs)
 
-    return _wrapper
+    return wrapper

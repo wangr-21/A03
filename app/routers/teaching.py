@@ -11,8 +11,8 @@ teaching_plan_cache: dict[str, str] = {}
 
 
 class GenerateTeachingPlanResponse(BaseModel):
-    plan: str = Field(description="生成的教案")
     plan_id: str = Field(description="教案 ID")
+    plan: str = Field(description="生成的教案")
 
 
 @router.post("/generate_plan", response_model=GenerateTeachingPlanResponse)

@@ -4,10 +4,10 @@ import random
 import uuid
 import zipfile
 
-import fleep
 import jinja2
 
 from ..constant import ASSETS_DIR, CACHE_DIR
+from . import fleep
 from .utils import CompletionMessage, get_openai_client, run_sync
 
 ASSETS_ROOT = ASSETS_DIR / "teaching_plan"
@@ -24,7 +24,7 @@ def _convert_images(images: list[bytes]) -> list[str]:
         if not info.mime or not any("image" in mime for mime in info.mime):
             raise ValueError("Invalid image format")
         encoded = base64.b64encode(raw).decode("utf-8")
-        result.append(f"data:image/png;base64,{encoded}")
+        result.append(f"data:{info.mime[0]};base64,{encoded}")
     return result
 
 

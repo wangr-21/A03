@@ -1,13 +1,13 @@
 import uuid
 from pathlib import Path
 
-import fleep
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import select
 
 from ..constant import UPLOAD_DIR
 from ..db import DBSession, HomeworkInfo, StudentInfo
+from ..services import fleep
 from ..services.homework import generate_homework_feedback
 
 router = APIRouter(prefix="/homework", tags=["homework"])
