@@ -1,41 +1,37 @@
-from fastapi import APIRouter, File, Form, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 
-from ..services.style_transfer import StyleTransferResponse, StyleTransferService
+from ..services import fleep
+from ..services.style_transfer import StyleTransferService
 
 router = APIRouter(prefix="/style-transfer", tags=["style-transfer"])
 service = StyleTransferService()
 
 
-@router.post("/generate")
+@router.post("/generate", response_class=FileResponse)
 async def generate_styled_image(
-    file: UploadFile = File(...), style_prompt: str = Form(...)
-):
+    style_prompt: str = Form(...),
+    file: UploadFile = File(...),
+) -> FileResponse:
     """处理图片风格转换请求并直接返回生成的图片"""
-    # 验证文件格式
-    if not file.filename or "." not in file.filename:
-        return StyleTransferResponse(
-            code=0, msg="文件格式无效", data={"status": "failed"}
-        )
-
-    ext = file.filename.rsplit(".", 1)[1].lower()
-    if ext not in {"png", "jpg", "jpeg"}:
-        return StyleTransferResponse(
-            code=0, msg="仅支持PNG/JPG格式", data={"status": "failed"}
-        )
-
     # 验证风格提示词
     if not style_prompt:
-        return StyleTransferResponse(
-            code=0, msg="风格提示词不能为空", data={"status": "failed"}
-        )
+        raise HTTPException(status_code=400, detail="风格提示词不能为空")
 
-    result = await service.generate_styled_image(file, style_prompt)
+    head = await file.read(256)
+    info = fleep.get(head)
+    if not info or not info.mime:
+        raise HTTPException(status_code=400, detail="文件格式无效")
+    content = head + await file.read()
 
-    # 如果生成失败，返回错误响应
-    if result.code != 1:
-        return result
-
-    # 生成成功，直接返回图片文件
-    file_path = service.generated_dir / result.data["resultUrl"].split("/")[-1]
-    return FileResponse(file_path, media_type="image/png")
+    try:
+        file_path = await service.generate_styled_image(content, style_prompt)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"处理请求失败: {e}",
+        ) from e
+    else:
+        return FileResponse(file_path, media_type="image/png")

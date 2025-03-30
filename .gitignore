@@ -12,4 +12,3 @@ wheels/
 node_modules/
 .env*
 
-data/**

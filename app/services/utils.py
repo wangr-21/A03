@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import functools
 import os
 from collections.abc import Awaitable, Callable, Iterable
@@ -9,6 +10,8 @@ from openai.types.chat import (
     ChatCompletionContentPartParam,
     ChatCompletionUserMessageParam,
 )
+
+from . import fleep as fleep
 
 
 def get_openai_client():
@@ -36,7 +39,15 @@ class CompletionMessage:
         self.content.append({"type": "text", "text": text})
         return self
 
-    def image(self, image_url: str) -> Self:
+    def image(self, image_url: str | bytes) -> Self:
+        if isinstance(image_url, bytes):
+            info = fleep.get(image_url)
+            if not info or not info.mime:
+                raise ValueError("无效的图片数据")
+
+            encoded = base64.b64encode(image_url).decode("utf-8")
+            image_url = f"data:{info.mime[0]};base64,{encoded}"
+
         self.content.append(
             {"type": "image_url", "image_url": {"url": image_url, "detail": "auto"}}
         )

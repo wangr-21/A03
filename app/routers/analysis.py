@@ -1,17 +1,13 @@
 # ruff: noqa: E501, N815
-from pathlib import Path
+from typing import Literal
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel
 from sqlalchemy import func, select
 
 from ..db import DBSession, HomeworkInfo, StudentInfo
-from ..services.analysis import (
-    UPLOADS_DIR,
-    analyze_image_emotion,
-    extract_dominant_colors,
-    is_valid_image,
-)
+from ..services import fleep
+from ..services.analysis import analyze_image_emotion, extract_dominant_colors
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -22,10 +18,9 @@ class ColorInfo(BaseModel):
     percentage: float
 
 
-class AnalysisResponse(BaseModel):
-    code: int
-    msg: str
-    data: dict[str, list[ColorInfo] | str] | None = None
+class ImageAnalysisResponse(BaseModel):
+    colors: list[ColorInfo]
+    emotion: str
 
 
 # 学生个人分析响应模型
@@ -46,54 +41,33 @@ class StudentAnalysisResponse(BaseModel):
     overallAnalysis: str
 
 
-@router.post("/ai-analysis", response_model=AnalysisResponse)
+@router.post("/image", response_model=ImageAnalysisResponse)
 async def analyze_image(
+    word_count: Literal[50, 100, 150, 200] = 100,
     file: UploadFile = File(),
-    word_count: int = 100,
 ):
     """处理图片分析请求"""
-    if not file:
-        raise HTTPException(status_code=400, detail="未上传图片文件")
 
-    if word_count not in {50, 100, 150, 200}:
-        raise HTTPException(
-            status_code=400, detail="字数参数无效，必须为50/100/150/200"
-        )
+    head = await file.read(256)
+    info = fleep.get(head)
+    if not info or not info.mime:
+        raise HTTPException(status_code=400, detail="文件格式无效")
+    if not info.extension_matches("png") and not info.extension_matches("jpg"):
+        raise HTTPException(status_code=400, detail="仅支持PNG/JPG格式")
 
-    content = await file.read()
+    content = head + await file.read()
     if len(content) > 10 * 1024 * 1024:  # 10MB
         raise HTTPException(status_code=400, detail="图片大小不能超过10MB")
 
-    ext = Path(file.filename).suffix.lower()
-    if ext not in {".png", ".jpg", ".jpeg"}:
-        raise HTTPException(status_code=400, detail="仅支持PNG/JPG/JPEG格式")
-
-    # 保存上传的文件
-    file_path = UPLOADS_DIR / f"{file.filename}"
-    file_path.write_bytes(content)
+    colors = extract_dominant_colors(content)
+    if not colors:
+        raise HTTPException(status_code=500, detail="无法提取图片颜色信息")
 
     try:
-        if not is_valid_image(file_path):
-            file_path.unlink()
-            raise HTTPException(status_code=400, detail="上传的图片文件已损坏")
-
-        colors = extract_dominant_colors(file_path)
-        if not colors:
-            raise HTTPException(status_code=500, detail="无法提取图片颜色信息")
-
-        emotion_text = await analyze_image_emotion(file_path, colors, word_count)
-        return AnalysisResponse(
-            code=1, msg="success", data={"colors": colors, "emotion": emotion_text}
-        )
-
-    except HTTPException:
-        raise
+        emotion_text = await analyze_image_emotion(content, colors, word_count)
+        return {"colors": colors, "emotion": emotion_text}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        # 清理临时文件
-        if file_path.exists():
-            file_path.unlink()
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/student/{student_id}", response_model=StudentAnalysisResponse)
@@ -200,10 +174,10 @@ def analyze_comments(comments: list[str]) -> str:
     negative_keywords = ["错误", "偏差", "困难", "不高", "不够"]
 
     positive_count = sum(
-        1 for comment in comments for keyword in positive_keywords if keyword in comment
+        keyword in comment for comment in comments for keyword in positive_keywords
     )
     negative_count = sum(
-        1 for comment in comments for keyword in negative_keywords if keyword in comment
+        keyword in comment for comment in comments for keyword in negative_keywords
     )
 
     total = positive_count + negative_count

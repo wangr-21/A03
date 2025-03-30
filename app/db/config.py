@@ -31,7 +31,7 @@ DBSession = Annotated[sa_async.AsyncSession, Depends(get_session)]
 def _init_orm() -> None:
     global _engine, _session_factory, DBSession
 
-    url = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///db.sqlite3")
+    url = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///data/db.sqlite3")
 
     # 根据数据库类型选择不同的配置
     if url.startswith("sqlite"):
