@@ -12,6 +12,7 @@ from .routers import (  # noqa: E402
     interactive,
     question_bank,
     students,
+    style_transfer,
     teaching,
 )
 
@@ -35,6 +36,7 @@ for router in (
     interactive.router,
     question_bank.router,
     cultural_corridor.router,
+    style_transfer.router,
 ):
     app.include_router(router, prefix="/api")
 
