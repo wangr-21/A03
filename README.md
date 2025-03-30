@@ -27,13 +27,12 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ### 调试配置
 
-- 在项目根目录下创建 `.env` 文件，填写 `OPENAI_API_KEY`、`OPENAI_BASE_URL` 和 `OPENAI_MODEL_NAME`
+- 在项目根目录下创建 `.env` 文件，填写 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`GEMINI_API_KEY`和 `OPENAI_MODEL_NAME`
 
 ```env
 # 必填(其中图片生成功能调用的是GEMINI模型下专用于图像生成的模型，需要单独申请GEMINI API Key)
 OPENAI_API_KEY=sk-xxxxxx
-OPENAI_API_GEMINI_KEY=AIzaSyBxxxxxx
-
+GEMINI_API_KEYY=AIzaSyBxxxxxx
 
 # 可选，默认值为 OpenAI API
 OPENAI_BASE_URL=https://xxxxxx/v1
