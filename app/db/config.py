@@ -28,20 +28,29 @@ async def get_session():
 DBSession = Annotated[sa_async.AsyncSession, Depends(get_session)]
 
 
-def _init_orm():
-    global _engine, _session_factory
+def _init_orm() -> None:
+    global _engine, _session_factory, DBSession
 
-    url = os.getenv("DATABASE_URL") or "sqlite+aiosqlite:///data/db.sqlite"
+    url = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///db.sqlite3")
 
-    _engine = create_async_engine(
-        url,
-        pool_size=5,
-        max_overflow=10,
-        pool_timeout=30,
-        pool_recycle=1800,
-        # 调试模式下打印SQL语句
-        echo=os.getenv("SQL_ECHO", "false").lower() == "true",
-    )
+    # 根据数据库类型选择不同的配置
+    if url.startswith("sqlite"):
+        # SQLite 配置
+        _engine = create_async_engine(
+            url,
+            future=True,
+            echo=os.getenv("SQL_ECHO", "false").lower() == "true",
+        )
+    else:
+        # 其他数据库配置（如 MySQL、PostgreSQL 等）
+        _engine = create_async_engine(
+            url,
+            future=True,
+            pool_size=5,
+            max_overflow=10,
+            pool_timeout=30,
+            echo=os.getenv("SQL_ECHO", "false").lower() == "true",
+        )
     _session_factory = sa_async.async_sessionmaker(_engine)
 
     async def create_all_tables():
