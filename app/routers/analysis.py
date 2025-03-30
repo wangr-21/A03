@@ -1,11 +1,31 @@
 # ruff: noqa: E501, N815
-from fastapi import APIRouter, HTTPException
+from pathlib import Path
+
+from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel
 from sqlalchemy import func, select
 
 from ..db import DBSession, HomeworkInfo, StudentInfo
+from ..services.analysis import (
+    UPLOADS_DIR,
+    analyze_image_emotion,
+    extract_dominant_colors,
+    is_valid_image,
+)
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
+
+
+# 图片分析响应模型
+class ColorInfo(BaseModel):
+    hex: str
+    percentage: float
+
+
+class AnalysisResponse(BaseModel):
+    code: int
+    msg: str
+    data: dict[str, list[ColorInfo] | str] | None = None
 
 
 # 学生个人分析响应模型
@@ -24,6 +44,56 @@ class StudentAnalysisResponse(BaseModel):
     heatmapData: list[KnowledgePoint]
     scoreTrend: list[ScoreTrendPoint]
     overallAnalysis: str
+
+
+@router.post("/ai-analysis", response_model=AnalysisResponse)
+async def analyze_image(
+    file: UploadFile = File(),
+    word_count: int = 100,
+):
+    """处理图片分析请求"""
+    if not file:
+        raise HTTPException(status_code=400, detail="未上传图片文件")
+
+    if word_count not in {50, 100, 150, 200}:
+        raise HTTPException(
+            status_code=400, detail="字数参数无效，必须为50/100/150/200"
+        )
+
+    content = await file.read()
+    if len(content) > 10 * 1024 * 1024:  # 10MB
+        raise HTTPException(status_code=400, detail="图片大小不能超过10MB")
+
+    ext = Path(file.filename).suffix.lower()
+    if ext not in {".png", ".jpg", ".jpeg"}:
+        raise HTTPException(status_code=400, detail="仅支持PNG/JPG/JPEG格式")
+
+    # 保存上传的文件
+    file_path = UPLOADS_DIR / f"{file.filename}"
+    file_path.write_bytes(content)
+
+    try:
+        if not is_valid_image(file_path):
+            file_path.unlink()
+            raise HTTPException(status_code=400, detail="上传的图片文件已损坏")
+
+        colors = extract_dominant_colors(file_path)
+        if not colors:
+            raise HTTPException(status_code=500, detail="无法提取图片颜色信息")
+
+        emotion_text = await analyze_image_emotion(file_path, colors, word_count)
+        return AnalysisResponse(
+            code=1, msg="success", data={"colors": colors, "emotion": emotion_text}
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # 清理临时文件
+        if file_path.exists():
+            file_path.unlink()
 
 
 @router.get("/student/{student_id}", response_model=StudentAnalysisResponse)
