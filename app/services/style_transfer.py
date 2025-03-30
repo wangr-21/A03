@@ -28,7 +28,7 @@ class StyleTransferService:
 
         # 初始化Gemini客户端
         try:
-            self.client = genai.Client(api_key=os.environ["OPENAI_API_KEY"])
+            self.client = genai.Client(api_key=os.environ["OPENAI_API_GEMINI_KEY"])
             self.GEMINI_MODEL = "gemini-2.0-flash-exp-image-generation"
         except Exception as e:
             raise RuntimeError(f"Gemini API初始化失败: {str(e)}")
