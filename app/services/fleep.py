@@ -1,14 +1,15 @@
+from collections.abc import Sequence
 from typing import Protocol
 
 
 class FleepInfo(Protocol):
-    type: list[str]
-    extension: list[str]
-    mime: list[str]
+    type: Sequence[str]
+    extension: Sequence[str]
+    mime: Sequence[str]
 
-    def type_matches(self, type_: str) -> bool: ...
-    def extension_matches(self, extension: str) -> bool: ...
-    def mime_matches(self, mime: str) -> bool: ...
+    def type_matches(self, type: str, /) -> bool: ...  # noqa: A002
+    def extension_matches(self, extension: str, /) -> bool: ...
+    def mime_matches(self, mime: str, /) -> bool: ...
 
 
 def get(data: bytes) -> FleepInfo:
