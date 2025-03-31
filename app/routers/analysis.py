@@ -43,7 +43,7 @@ class StudentAnalysisResponse(BaseModel):
 
 @router.post("/image", response_model=ImageAnalysisResponse)
 async def analyze_image(
-    word_count: Literal[50, 100, 150, 200] = 100,
+    word_count: Literal["50", "100", "150", "200"] = "100",
     file: UploadFile = File(),
 ):
     """处理图片分析请求"""
@@ -64,7 +64,7 @@ async def analyze_image(
         raise HTTPException(status_code=500, detail="无法提取图片颜色信息")
 
     try:
-        emotion_text = await analyze_image_emotion(content, colors, word_count)
+        emotion_text = await analyze_image_emotion(content, colors, int(word_count))
         return {"colors": colors, "emotion": emotion_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
