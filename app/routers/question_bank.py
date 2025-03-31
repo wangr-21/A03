@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import and_, select
 
 from ..db import DBSession, KnowledgePoint, MistakeRecord, Question, StudentInfo
@@ -28,6 +28,8 @@ class QuestionOption(BaseModel):
 
 
 class QuestionResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: str = Field(description="题目ID")
     title: str = Field(description="题目内容")
     question_type: str = Field(description="题型")
@@ -62,10 +64,12 @@ class MistakeAnalysisResponse(BaseModel):
 
 
 class MistakeRecordResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: str = Field(description="错题记录ID")
     question_id: str = Field(description="题目ID")
     student_id: str = Field(description="学生ID")
-    question: dict | None = Field(default=None, description="题目信息")
+    question: QuestionResponse | None = Field(default=None, description="题目信息")
     answer: str = Field(description="学生错误答案")
     mistake_reason: str | None = Field(default=None, description="错误原因分类")
     is_resolved: bool = Field(description="是否已解决")
@@ -187,40 +191,33 @@ async def list_questions(
     """查询题目列表"""
     try:
         # 构建查询条件
-        conditions = []
-        if subject:
-            conditions.append(Question.subject == subject)
-        if grade:
-            conditions.append(Question.grade == grade)
-        if question_type:
-            conditions.append(Question.question_type == question_type)
-        if difficulty:
-            conditions.append(Question.difficulty == difficulty)
-
-        # 基本查询
         query = select(Question)
-        if conditions:
-            query = query.filter(and_(*conditions))
+        if subject:
+            query.filter(Question.subject == subject)
+        if grade:
+            query.filter(Question.grade == grade)
+        if question_type:
+            query.filter(Question.question_type == question_type)
+        if difficulty:
+            query.filter(Question.difficulty == difficulty)
 
         # 知识点过滤需要单独处理
         if knowledge_point:
             kp_query = select(KnowledgePoint).filter(
                 KnowledgePoint.name == knowledge_point
             )
-            kp_result = await db.execute(kp_query)
-            kp = kp_result.scalar_one_or_none()
-
-            if kp:
-                # 使用关联表过滤
-                query = query.filter(
-                    Question.knowledge_points.any(KnowledgePoint.id == kp.id)
-                )
-            else:
+            kp = await db.scalar(kp_query)
+            if not kp:
                 # 如果知识点不存在，返回空列表
                 return []
 
+            # 使用关联表过滤
+            query = query.filter(
+                Question.knowledge_points.any(KnowledgePoint.id == kp.id)
+            )
+
         # 执行查询
-        questions = (await db.execute(query)).scalars().all()
+        questions = (await db.scalars(query)).all()
 
         # 格式化响应
         response = []
@@ -351,8 +348,7 @@ async def analyze_mistake(request: AnalyzeMistakeRequest, db: DBSession):
             MistakeRecord.student_id == request.student_id,
             MistakeRecord.question_id == request.question_id,
         )
-        mistake_result = await db.execute(mistake_query)
-        mistake = mistake_result.scalar_one_or_none()
+        mistake = await db.scalar(mistake_query)
 
         if mistake:
             # 更新现有记录
@@ -375,7 +371,6 @@ async def analyze_mistake(request: AnalyzeMistakeRequest, db: DBSession):
             db.add(mistake)
 
         await db.commit()
-
         return analysis_result
 
     except Exception as e:
@@ -404,8 +399,7 @@ async def list_mistakes(
             query = query.filter(and_(*conditions))
 
         # 执行查询
-        result = await db.execute(query)
-        mistakes = result.scalars().all()
+        mistakes = (await db.scalars(query)).all()
 
         # 格式化响应
         response = []
@@ -465,48 +459,18 @@ async def list_mistakes(
 @router.patch("/mistakes/{mistake_id}", response_model=MistakeRecordResponse)
 async def update_mistake(mistake_id: str, request: UpdateMistakeRequest, db: DBSession):
     """更新错题状态"""
-    query = select(MistakeRecord).filter(MistakeRecord.id == mistake_id)
-    result = await db.execute(query)
-    mistake = result.scalar_one_or_none()
+    mistake = await db.get(MistakeRecord, mistake_id)
 
     if not mistake:
         raise HTTPException(status_code=404, detail="错题记录不存在")
 
     # 更新状态
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     mistake.is_resolved = request.is_resolved
     if request.is_resolved:
         mistake.resolve_times += 1
-    mistake.updated_at = now
+    mistake.updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     await db.commit()
-
-    # 查询相关题目用于返回
-    question_query = select(Question).filter(Question.id == mistake.question_id)
-    question_result = await db.execute(question_query)
-    question = question_result.scalar_one_or_none()
-
-    # 题目字典
-    question_dict = None
-    if question:
-        question_dict = {
-            "id": question.id,
-            "title": question.title,
-            "question_type": question.question_type,
-            "subject": question.subject,
-            "difficulty": question.difficulty,
-            "answer": question.answer,
-        }
-
-    return {
-        "id": mistake.id,
-        "question_id": mistake.question_id,
-        "student_id": mistake.student_id,
-        "question": question_dict,
-        "answer": mistake.answer,
-        "mistake_reason": mistake.mistake_reason,
-        "is_resolved": mistake.is_resolved,
-        "resolve_times": mistake.resolve_times,
-        "created_at": mistake.created_at,
-        "updated_at": mistake.updated_at,
-    }
+    await db.refresh(mistake)
+    await db.refresh(mistake, ["question"])
+    return mistake

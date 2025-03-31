@@ -26,7 +26,16 @@ async def get_session():
         await session.close()
 
 
-DBSession = Annotated[sa_async.AsyncSession, Depends(get_session)]
+DBSession = Annotated[sa_async.AsyncSession, Depends(get_session, use_cache=True)]
+"""
+依赖注入类型: 数据库会话
+
+- 使用 SQLAlchemy 异步 API
+- 在路由函数中使用时, 声明参数 db: DBSession 即可
+- FastAPI 会自动创建数据库会话并在请求结束后关闭
+- 正常结束时, 自动提交事务
+- 出现错误时, 自动回滚事务
+"""
 
 
 # 数据库驱动配置

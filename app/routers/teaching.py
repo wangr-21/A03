@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
@@ -23,7 +24,7 @@ async def generate_teaching_plan(
     plan = await TeachingPlanGenerator().generate(
         grade, [await img.read() for img in images]
     )
-    plan_id = hex(hash(plan))[2:]
+    plan_id = str(uuid.uuid4())
     teaching_plan_cache[plan_id] = plan
     asyncio.get_event_loop().call_later(3600, teaching_plan_cache.pop, plan_id)
     return {"plan": plan, "plan_id": plan_id}

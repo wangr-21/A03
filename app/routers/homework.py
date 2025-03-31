@@ -2,13 +2,14 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
 
 from ..constant import UPLOAD_DIR
 from ..db import DBSession, HomeworkInfo, StudentInfo
 from ..services import fleep
 from ..services.homework import generate_homework_feedback
+from ._depends import StudentFromId
 
 router = APIRouter(prefix="/homework", tags=["homework"])
 
@@ -30,11 +31,11 @@ async def save_homework_image(file: UploadFile) -> Path:
 class HomeworkResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    student_id: str
-    homework_order: int
-    # homework_image_path: str
-    score: float | None = None
-    comment: str | None = None
+    student_id: str = Field(description="学生学号")
+    homework_order: int = Field(description="作业次序")
+    # homework_image_path: str = Field(description="作业图片路径")
+    score: float | None = Field(default=None, description="作业评分")
+    comment: str | None = Field(default=None, description="作业评语")
 
 
 @router.post("/", response_model=HomeworkResponse)
@@ -47,8 +48,9 @@ async def create_homework(
     """上传学生作业"""
 
     # 检查学生是否存在
-    stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
-    student = (await db.execute(stmt)).scalar()
+    student = await db.scalar(
+        select(StudentInfo).filter(StudentInfo.student_id == student_id)
+    )
     if not student:
         raise HTTPException(status_code=404, detail="未找到该学生，请先添加学生信息")
 
@@ -57,12 +59,12 @@ async def create_homework(
         HomeworkInfo.student_id == student_id,
         HomeworkInfo.homework_order == homework_order,
     )
-
-    if (await db.execute(stmt)).scalar():
+    if await db.scalar(stmt):
         raise HTTPException(
             status_code=409,
             detail=f"该学生的第 {homework_order} 次作业已存在",
         )
+
     # 保存作业图片
     image_path = await save_homework_image(homework_file)
 
@@ -100,7 +102,7 @@ async def update_homework(
         HomeworkInfo.homework_order == homework_order,
     )
 
-    if not (homework := (await db.execute(stmt)).scalar()):
+    if not (homework := await db.scalar(stmt)):
         raise HTTPException(status_code=404, detail="未找到该作业记录")
 
     # 删除旧文件
@@ -118,15 +120,11 @@ async def update_homework(
 
 
 @router.get("/{student_id}", response_model=list[HomeworkResponse])
-async def get_student_homeworks(db: DBSession, student_id: str):
+async def get_student_homeworks(db: DBSession, student: StudentFromId):
     """
     获取指定学生的所有作业信息
     """
 
-    stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
-    student = (await db.execute(stmt)).scalar()
-    if not student:
-        raise HTTPException(status_code=404, detail="未找到该学生")
     await db.refresh(student, ["homeworks"])
     return sorted(student.homeworks, key=lambda hw: hw.homework_order)
 
@@ -141,14 +139,12 @@ async def get_student_homework_by_order(
     获取指定学生的特定次序作业信息
     """
 
-    query = select(HomeworkInfo).filter(
+    stmt = select(HomeworkInfo).filter(
         HomeworkInfo.student_id == student_id,
         HomeworkInfo.homework_order == homework_order,
     )
 
-    homework = (await db.execute(query)).scalar()
-
-    if not homework:
+    if not (homework := await db.scalar(stmt)):
         raise HTTPException(
             status_code=404,
             detail=f"未找到学号为 {student_id} 的学生的第 {homework_order} 次作业",

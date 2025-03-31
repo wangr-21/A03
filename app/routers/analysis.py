@@ -1,8 +1,9 @@
 # ruff: noqa: E501, N815
+from random import Random
 from typing import Literal
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 
 from ..db import DBSession, HomeworkInfo, StudentInfo
@@ -14,31 +15,31 @@ router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 # 图片分析响应模型
 class ColorInfo(BaseModel):
-    hex: str
-    percentage: float
+    hex: str = Field(description="颜色的十六进制表示")
+    percentage: float = Field(description="该颜色在图片中所占的百分比", ge=0, le=100)
 
 
 class ImageAnalysisResponse(BaseModel):
-    colors: list[ColorInfo]
-    emotion: str
+    colors: list[ColorInfo] = Field(description="提取的主要颜色及其占比")
+    emotion: str = Field(description="基于图片颜色分析的情感描述")
 
 
 # 学生个人分析响应模型
 class KnowledgePoint(BaseModel):
-    knowledge: str
-    masteryLevel: float
+    knowledge: str = Field(description="知识点名称")
+    masteryLevel: float = Field(description="知识点掌握程度")
 
 
 class ScoreTrendPoint(BaseModel):
-    homeworkOrder: int
-    score: float
+    homeworkOrder: int = Field(description="作业提交顺序")
+    score: float = Field(description="作业分数")
 
 
 class StudentAnalysisResponse(BaseModel):
-    commentAnalysis: str
-    heatmapData: list[KnowledgePoint]
-    scoreTrend: list[ScoreTrendPoint]
-    overallAnalysis: str
+    commentAnalysis: str = Field(description="评语分析结果")
+    heatmapData: list[KnowledgePoint] = Field(description="知识点掌握程度热力图数据")
+    scoreTrend: list[ScoreTrendPoint] = Field(description="作业分数趋势数据")
+    overallAnalysis: str = Field(description="整体学习分析结果")
 
 
 @router.post("/image", response_model=ImageAnalysisResponse)
@@ -76,22 +77,12 @@ async def analyze_student(db: DBSession, student_id: str):
     分析单个学生的学习情况
     """
     # 验证学生是否存在
-    student_stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
-
-    if not (student := (await db.execute(student_stmt)).scalar()):
-        raise HTTPException(
-            status_code=404, detail="未找到该学生信息，请检查学号、姓名和性别"
-        )
+    if not (student := await db.get(StudentInfo, student_id)):
+        raise HTTPException(status_code=404, detail="未找到该学生信息，请检查学号")
 
     # 获取学生所有作业
-    homework_stmt = (
-        select(HomeworkInfo)
-        .filter(HomeworkInfo.student_id == student_id)
-        .order_by(HomeworkInfo.homework_order)
-    )
-
-    homeworks = list((await db.execute(homework_stmt)).scalars().all())
-
+    await db.refresh(student, ["homeworks"])
+    homeworks = sorted(student.homeworks, key=lambda hw: hw.homework_order)
     if not homeworks:
         raise HTTPException(status_code=404, detail="该学生尚未提交任何作业")
 
@@ -125,13 +116,15 @@ async def analyze_student(db: DBSession, student_id: str):
 
 # 班级分析响应模型
 class ClassKnowledgePoint(BaseModel):
-    knowledge: str
-    averageMastery: float
+    knowledge: str = Field(description="知识点名称")
+    averageMastery: float = Field(description="知识点平均掌握程度")
 
 
 class ClassAnalysisResponse(BaseModel):
-    classHeatmap: list[ClassKnowledgePoint]
-    classAnalysis: str
+    classHeatmap: list[ClassKnowledgePoint] = Field(
+        description="班级知识点掌握情况热力图数据"
+    )
+    classAnalysis: str = Field(description="班级整体学习分析结果")
 
 
 @router.get("/class", response_model=ClassAnalysisResponse)
@@ -140,7 +133,7 @@ async def analyze_class(db: DBSession):
     分析整个班级的学习情况
     """
     # 获取所有学生作业
-    homeworks = list((await db.execute(select(HomeworkInfo))).scalars().all())
+    homeworks = list((await db.scalars(select(HomeworkInfo))).all())
 
     if not homeworks:
         raise HTTPException(status_code=404, detail="尚未有学生提交作业")
@@ -212,10 +205,7 @@ def generate_knowledge_heatmap(homeworks: list[HomeworkInfo]) -> list[KnowledgeP
     avg_score = sum(all_scores) / len(all_scores) if all_scores else 0
 
     # 为不同知识点设置略有差异的掌握度
-    import random
-
-    random.seed(sum(all_scores))  # 使结果可重复
-
+    random = Random(sum(all_scores))  # 使结果可重复
     result: list[KnowledgePoint] = []
     for kp in knowledge_points:
         # 基于平均分生成掌握程度，添加一些随机波动使数据更真实
@@ -281,10 +271,7 @@ def generate_class_knowledge_heatmap(
     avg_score = sum(all_scores) / len(all_scores) if all_scores else 0
 
     # 为不同知识点设置略有差异的掌握度
-    import random
-
-    random.seed(42)  # 固定随机种子
-
+    random = Random(42)  # 使结果可重复
     result: list[ClassKnowledgePoint] = []
     for kp in knowledge_points:
         # 基于平均分生成掌握程度，添加一些随机波动使数据更真实

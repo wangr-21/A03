@@ -1,12 +1,13 @@
 from collections.abc import Iterable
-from typing import Annotated, Literal
+from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, field_validator
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from ..db import DBSession, StudentInfo
+from ._depends import StudentFromId
 from .homework import HomeworkResponse
 
 router = APIRouter(prefix="/students", tags=["students"])
@@ -22,7 +23,7 @@ class StudentResponse(BaseModel):
 
     @field_validator("homeworks", mode="after")
     @classmethod
-    def validate_homework(cls, v: Iterable[HomeworkResponse]) -> list[HomeworkResponse]:
+    def sort_homeworks(cls, v: Iterable[HomeworkResponse]) -> list[HomeworkResponse]:
         return sorted(v, key=lambda hw: hw.homework_order)
 
 
@@ -44,7 +45,7 @@ async def get_students(
         stmt = stmt.filter(StudentInfo.gender == gender)
 
     # 获取符合条件的学生
-    students = (await db.execute(stmt)).scalars().all()
+    students = (await db.scalars(stmt)).all()
     for student in students:
         await db.refresh(student, ["homeworks"])
 
@@ -61,25 +62,15 @@ class CreateStudentRequest(BaseModel):
 async def create_student(db: DBSession, request: CreateStudentRequest):
     """创建新的学生记录"""
     try:
-        db.add(StudentInfo(**request.model_dump()))
+        data = request.model_dump()
+        db.add(StudentInfo(**data))
         await db.commit()
     except IntegrityError as e:
         raise HTTPException(status_code=409, detail="学号已存在，请使用其他学号") from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"添加学生信息失败: {e!s}") from e
     else:
-        return request
-
-
-async def student_from_id(db: DBSession, student_id: str):
-    """根据学号获取学生信息"""
-    stmt = select(StudentInfo).filter(StudentInfo.student_id == student_id)
-    if (student := await db.scalar(stmt)) is None:
-        raise HTTPException(status_code=404, detail="未找到该学生")
-    return student
-
-
-StudentFromId = Annotated[StudentInfo, Depends(student_from_id)]
+        return data
 
 
 @router.get("/{student_id}", response_model=StudentResponse)
