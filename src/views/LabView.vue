@@ -116,7 +116,9 @@ const handleVideoUploadSuccess = (response: UploadResponse, uploadFile: UploadUs
 
 const handleUploadError = (
   error: Error,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   uploadFile: UploadUserFile,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   uploadFiles: UploadUserFile[],
 ): void => {
   ElMessage.error('图片上传失败!')
@@ -655,11 +657,3 @@ const initColorRadarChart = (): void => {
   margin-bottom: 10px;
 }
 </style>
-
-// --- Remove existing script block with hardcoded data --- //
-<script lang="ts">
-// export default {
-//   data() { ... }
-// }
-//
-</script>
