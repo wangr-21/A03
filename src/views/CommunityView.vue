@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue';
 import {
   ElMessage,
   ElDialog,
@@ -17,51 +17,20 @@ import {
   ElUpload,
   ElImage,
   ElEmpty,
-} from 'element-plus'
-import type { UploadProps, UploadUserFile } from 'element-plus'
-
-// 定义类型
-interface Author {
-  name: string
-  title: string
-  avatar: string
-}
-
-interface Attachment {
-  name: string
-  size: string
-}
-
-interface Post {
-  id: number
-  author: Author
-  createdAt: string
-  content: string
-  images: string[]
-  attachments: Attachment[]
-  tags: string[]
-  likes: number
-  comments: number
-  favorites: number
-  isFeatured: boolean
-}
-
-interface PostForm {
-  content: string
-  images: UploadUserFile[]
-  attachments: UploadUserFile[]
-  tags: string[]
-}
+} from 'element-plus';
+import type { UploadUserFile } from 'element-plus';
+import { getPosts, getSidebarData, submitPost, uploadImage } from '@/api';
+import type { Post, PostForm, RecommendedUser } from '@/api';
 
 // --- Post Creation State ---
-const showPostDialog = ref<boolean>(false)
+const showPostDialog = ref<boolean>(false);
 const newPostForm = reactive<PostForm>({
   content: '',
   images: [] as UploadUserFile[],
   attachments: [] as UploadUserFile[],
   tags: [],
-})
-const isPosting = ref<boolean>(false)
+});
+const isPosting = ref<boolean>(false);
 const availableTags = ref<string[]>([
   'AI教学',
   '课堂互动',
@@ -70,212 +39,167 @@ const availableTags = ref<string[]>([
   '新课标',
   '德育教育',
   '家校沟通',
-]) // Example tags
+]); // Example tags
 
 // --- Feed State ---
-const activeTab = ref<string>('latest')
-const searchQuery = ref<string>('')
-const posts = ref<Post[]>([]) // Holds the list of posts
-const loadingMore = ref<boolean>(false)
-const noMorePosts = ref<boolean>(false)
-const currentPage = ref<number>(1)
-// const pageSize = ref<number>(5); // Number of posts per page
+const activeTab = ref<string>('latest');
+const searchQuery = ref<string>('');
+const posts = ref<Post[]>([]); // Holds the list of posts
+const loadingMore = ref<boolean>(false);
+const noMorePosts = ref<boolean>(false);
+const currentPage = ref<number>(1);
 
 // --- Sidebar State ---
-interface RecommendedUser {
-  name: string
-  title: string
-  avatar: string
-}
+const recommendedUsers = ref<RecommendedUser[]>([]);
+const hotTags = ref<string[]>([]);
 
-const recommendedUsers = ref<RecommendedUser[]>([])
-const hotTags = ref<string[]>([])
-
-// --- Placeholder Functions ---
-
+// --- Functions ---
 const openPostDialog = (): void => {
-  // Reset form maybe?
-  newPostForm.content = ''
-  newPostForm.images = []
-  newPostForm.attachments = []
-  newPostForm.tags = []
-  showPostDialog.value = true
-}
+  // Reset form
+  newPostForm.content = '';
+  newPostForm.images = [];
+  newPostForm.attachments = [];
+  newPostForm.tags = [];
+  showPostDialog.value = true;
+};
 
-const handlePostImageUpload = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]): void => {
-  // Limit number of images maybe?
-  newPostForm.images = uploadFiles
-}
+const handlePostImageUpload = (uploadFile: UploadUserFile): void => {
+  console.log('Image file changed:', uploadFile);
+  // 如果需要预览或其他处理，可以在这里实现
+  // 实际上传会在提交表单时进行
 
-const handlePostAttachmentUpload = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]): void => {
-  newPostForm.attachments = uploadFiles
-}
-
-const submitPost = async (): Promise<void> => {
-  if (!newPostForm.content.trim()) {
-    ElMessage.warning('帖子内容不能为空！')
-    return
+  // 如果需要立即上传并获取URL
+  if (uploadFile.raw) {
+    uploadImage(uploadFile.raw as File)
+      .then((response) => {
+        if (response.success) {
+          console.log('Image uploaded successfully:', response.url);
+          // 如果需要，可以在这里更新图片URL
+        } else {
+          ElMessage.warning('图片上传失败');
+        }
+      })
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+        ElMessage.error('图片上传失败，请重试');
+      });
   }
-  isPosting.value = true
-  console.log('Submitting post:', newPostForm)
-  // TODO: Implement actual API call to submit post
-  // This would likely involve uploading files first, then sending content + file URLs + tags
-  await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate delay
+};
 
-  // Add the new post to the top of the feed (simulation)
-  posts.value.unshift({
-    id: Date.now(), // Use timestamp as temporary ID
-    author: { name: '我', title: '当前用户', avatar: '/src/assets/my_avatar.jpg' }, // Replace with actual user data
-    createdAt: '刚刚',
-    content: newPostForm.content,
-    images: newPostForm.images.map((f) => URL.createObjectURL(f.raw!)), // Create preview URLs
-    attachments: newPostForm.attachments.map((f) => ({
-      name: f.name,
-      size: f.size ? `${(f.size / 1024).toFixed(1)}KB` : '未知',
-    })),
-    tags: newPostForm.tags,
-    likes: 0,
-    comments: 0,
-    favorites: 0,
-    isFeatured: false,
-  })
+const handlePostAttachmentUpload = (uploadFile: UploadUserFile): void => {
+  console.log('Attachment file changed:', uploadFile);
+  // 附件处理逻辑，类似于图片上传
+  // 可以根据需要验证文件类型和大小
 
-  isPosting.value = false
-  showPostDialog.value = false
-  ElMessage.success('帖子发布成功！')
-}
+  if (uploadFile.raw) {
+    const fileSize = (uploadFile.raw as File).size / 1024 / 1024; // 转换为MB
+    if (fileSize > 50) {
+      ElMessage.warning('附件大小不能超过50MB');
+      // 从列表中移除超大文件
+      const index = newPostForm.attachments.findIndex((file) => file.uid === uploadFile.uid);
+      if (index !== -1) {
+        newPostForm.attachments.splice(index, 1);
+      }
+      return;
+    }
+
+    // 实际上传会在提交表单时进行
+    // 这里可以添加预上传逻辑，类似于图片上传
+  }
+};
+
+const submitPostFunc = async (): Promise<void> => {
+  if (!newPostForm.content.trim()) {
+    ElMessage.warning('帖子内容不能为空！');
+    return;
+  }
+  isPosting.value = true;
+  console.log('Submitting post:', newPostForm);
+
+  try {
+    const response = await submitPost(newPostForm);
+    if (response.success) {
+      // 可以选择刷新列表，或者直接在前端添加
+      await fetchPosts(); // 刷新列表
+
+      showPostDialog.value = false;
+      ElMessage.success('帖子发布成功！');
+    } else {
+      throw new Error('Failed to submit post');
+    }
+  } catch (error) {
+    console.error('Error submitting post:', error);
+    ElMessage.error('发布失败，请稍后重试');
+  } finally {
+    isPosting.value = false;
+  }
+};
 
 const fetchPosts = async (loadMore: boolean = false): Promise<void> => {
-  if (loadingMore.value) return
-  loadingMore.value = true
+  if (loadingMore.value) return;
+  loadingMore.value = true;
   console.log(
     `Fetching posts: page=${currentPage.value}, tab=${activeTab.value}, search=${searchQuery.value}`,
-  )
+  );
 
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  // Replace with actual API call, passing pagination, filter, sort parameters
-  const newPosts: Post[] = [
-    // Generate some dummy posts for simulation
-    {
-      id: 100 + currentPage.value * 5 - 4,
-      author: { name: '王老师', title: '特级教师', avatar: '/src/assets/teacher1.svg' },
-      createdAt: '2小时前',
-      content: '分享一个关于《红楼梦》人物分析的教学设计...',
-      images: [],
-      attachments: [{ name: '教学设计.docx', size: '1.2MB' }],
-      likes: 125,
-      comments: 32,
-      favorites: 58,
-      isFeatured: true,
-      tags: ['教学设计', '语文'],
-    },
-    {
-      id: 100 + currentPage.value * 5 - 3,
-      author: { name: '李老师', title: '骨干教师', avatar: '/src/assets/teacher2.svg' },
-      createdAt: '5小时前',
-      content: '推荐一个AI批改数学作业的工具... #AI助教',
-      images: ['/src/assets/ai_tool.png'],
-      attachments: [],
-      likes: 88,
-      comments: 15,
-      favorites: 40,
-      isFeatured: false,
-      tags: ['AI教学', '数学'],
-    },
-    {
-      id: 100 + currentPage.value * 5 - 2,
-      author: { name: '张老师', title: '青年教师', avatar: '/src/assets/teacher3.svg' },
-      createdAt: '昨天',
-      content: '用「幻画实验室」的风格迁移功能，看看孩子们的创意大作！',
-      images: ['/src/assets/artwork_styled1.jpg', '/src/assets/artwork_styled2.jpg'],
-      attachments: [],
-      likes: 210,
-      comments: 45,
-      favorites: 95,
-      isFeatured: false,
-      tags: ['美术', 'AI创作'],
-    },
-    {
-      id: 100 + currentPage.value * 5 - 1,
-      author: { name: '赵老师', title: '教研组长', avatar: '/src/assets/teacher4.svg' },
-      createdAt: '2天前',
-      content: '关于项目式学习的一些思考和实践案例分享。',
-      images: [],
-      attachments: [],
-      likes: 150,
-      comments: 28,
-      favorites: 70,
-      isFeatured: false,
-      tags: ['项目式学习'],
-    },
-    {
-      id: 100 + currentPage.value * 5 - 0,
-      author: { name: '孙老师', title: '信息技术教师', avatar: '/src/assets/teacher5.svg' },
-      createdAt: '3天前',
-      content: '如何利用在线工具进行互动课堂测验？',
-      images: [],
-      attachments: [{ name: '工具对比.pdf', size: '800KB' }],
-      likes: 95,
-      comments: 12,
-      favorites: 35,
-      isFeatured: false,
-      tags: ['课堂互动', '在线工具'],
-    },
-  ]
+  try {
+    const response = await getPosts({
+      page: currentPage.value,
+      tab: activeTab.value,
+      search: searchQuery.value,
+    });
 
-  if (loadMore) {
-    posts.value = [...posts.value, ...newPosts]
-  } else {
-    posts.value = newPosts // Replace current posts
+    if (loadMore) {
+      posts.value = [...posts.value, ...response.data.posts];
+    } else {
+      posts.value = response.data.posts;
+    }
+
+    noMorePosts.value = !response.data.hasMore;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    ElMessage.error('获取帖子失败，请稍后重试');
+  } finally {
+    loadingMore.value = false;
   }
-
-  // Simulate end of data
-  if (currentPage.value >= 3) {
-    noMorePosts.value = true
-  } else {
-    noMorePosts.value = false
-  }
-
-  loadingMore.value = false
-}
+};
 
 const handleLoadMore = (): void => {
-  if (noMorePosts.value) return
-  currentPage.value++
-  fetchPosts(true)
-}
+  if (noMorePosts.value) return;
+  currentPage.value++;
+  fetchPosts(true);
+};
 
 const handleTabChange = (): void => {
-  currentPage.value = 1 // Reset page
-  noMorePosts.value = false
-  posts.value = [] // Clear posts before fetching new tab data
-  fetchPosts()
-}
+  currentPage.value = 1; // Reset page
+  noMorePosts.value = false;
+  posts.value = []; // Clear posts before fetching new tab data
+  fetchPosts();
+};
 
 const handleSearch = (): void => {
-  currentPage.value = 1
-  noMorePosts.value = false
-  posts.value = []
-  fetchPosts()
-}
+  currentPage.value = 1;
+  noMorePosts.value = false;
+  posts.value = [];
+  fetchPosts();
+};
 
 const fetchSidebarData = async (): Promise<void> => {
-  // Simulate API call for sidebar recommendations
-  await new Promise((resolve) => setTimeout(resolve, 500))
-  recommendedUsers.value = [
-    { name: '赵教授', title: '教育学专家', avatar: '/src/assets/expert1.svg' },
-    { name: '钱研究员', title: '课程设计顾问', avatar: '/src/assets/expert2.svg' },
-    { name: '孙校长', title: '资深教育管理者', avatar: '/src/assets/expert3.svg' },
-  ]
-  hotTags.value = ['AI教学', '课堂互动', '教学资源', '项目式学习', '新课标', '德育教育']
-}
+  try {
+    const data = await getSidebarData();
+    recommendedUsers.value = data.recommendedUsers;
+    hotTags.value = data.hotTags;
+  } catch (error) {
+    console.error('Error fetching sidebar data:', error);
+    ElMessage.error('获取推荐数据失败');
+  }
+};
 
 // --- Lifecycle ---
 onMounted(() => {
-  fetchPosts() // Fetch initial posts
-  fetchSidebarData() // Fetch sidebar data
-})
+  fetchPosts(); // Fetch initial posts
+  fetchSidebarData(); // Fetch sidebar data
+});
 </script>
 
 <template>
@@ -328,7 +252,7 @@ onMounted(() => {
 
           <!-- 帖子列表 Feed -->
           <div class="post-feed" v-loading="loadingMore && posts.length === 0">
-            <el-card class="post-card" v-for="(post, index) in posts" :key="post.id">
+            <el-card class="post-card" v-for="post in posts" :key="post.id">
               <div class="post-header">
                 <el-avatar :size="40" :src="post.author.avatar"></el-avatar>
                 <div class="author-info">
@@ -515,7 +439,7 @@ onMounted(() => {
           <el-button @click="showPostDialog = false">取消</el-button>
           <el-button
             type="primary"
-            @click="submitPost"
+            @click="submitPostFunc"
             :loading="isPosting"
             :disabled="!newPostForm.content.trim()"
           >

@@ -7,38 +7,38 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
-      meta: { title: '启智学堂' }
+      meta: { title: '启智学堂' },
     },
     {
       path: '/workshop',
       name: 'workshop',
       component: () => import('../views/WorkshopView.vue'),
-      meta: { title: '智课工坊' }
+      meta: { title: '智课工坊' },
     },
     {
       path: '/lab',
       name: 'lab',
       component: () => import('../views/LabView.vue'),
-      meta: { title: '幻画实验室' }
+      meta: { title: '幻画实验室' },
     },
     {
       path: '/lighthouse',
       name: 'lighthouse',
       component: () => import('../views/LighthouseView.vue'),
-      meta: { title: '学海灯塔' }
+      meta: { title: '学海灯塔' },
     },
     {
       path: '/community',
       name: 'community',
       component: () => import('../views/CommunityView.vue'),
-      meta: { title: '师韵星盟' }
-    }
-  ]
+      meta: { title: '师韵星盟' },
+    },
+  ],
 })
 
 // 设置页面标题
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title || 'XXXX教育平台'}`
+router.beforeEach((to, _, next) => {
+  document.title = (to.meta.title as string | undefined) || '启智学堂'
   next()
 })
 

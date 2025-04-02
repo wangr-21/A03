@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick } from 'vue';
 import {
   ElMessage,
   ElUpload,
@@ -11,108 +11,85 @@ import {
   ElButton,
   ElIcon,
   ElImage,
-  ElDialog,
-} from 'element-plus'
-import type { UploadUserFile } from 'element-plus'
-import * as echarts from 'echarts'
-import type { EChartsType } from 'echarts'
-
-// --- 定义接口 ---
-// 样式选项接口
-interface StyleOption {
-  name: string
-  key: string
-  thumb: string
-}
-
-// 颜色分析结果接口
-interface ColorAnalysisResultType {
-  radarData: number[]
-  keywords: string[]
-  dominantColors: string[]
-}
+} from 'element-plus';
+import type { UploadUserFile } from 'element-plus';
+import * as echarts from 'echarts';
+import type { EChartsType } from 'echarts';
+import {
+  uploadImage,
+  getAvailableStyles,
+  applyStyleTransfer,
+  analyzeColorEmotion,
+  generateVideo,
+} from '@/api';
+import type { StyleOption, ColorAnalysisResultType } from '@/api';
 
 // --- General State ---
-const activeToolTab = ref<string>('styleTransfer') // To switch between tools
-
-// 颜色分析结果接口
-interface ColorAnalysisResultType {
-  radarData: number[]
-  keywords: string[]
-  dominantColors: string[]
-}
-
-// --- 类型定义 ---
-interface StyleOption {
-  name: string
-  key: string
-  thumb: string
-}
-
-interface ColorAnalysisResultType {
-  radarData: number[]
-  keywords: string[]
-  dominantColors: string[]
-}
+const activeToolTab = ref<string>('styleTransfer'); // To switch between tools
 
 // --- State for Style Transfer ---
-const styleTransferFile = ref<UploadUserFile | null>(null)
-const styleTransferImageUrl = ref<string>('')
-const styleTransferResultUrl = ref<string>('')
-const availableStyles = ref<StyleOption[]>([
-  { name: '印象派', key: 'impressionism', thumb: '/src/assets/style_thumb1.jpg' },
-  { name: '梵高', key: 'van_gogh', thumb: '/src/assets/style_thumb2.jpg' },
-  { name: '水墨画', key: 'ink_wash', thumb: '/src/assets/style_thumb3.jpg' },
-  { name: '赛博朋克', key: 'cyberpunk', thumb: '/src/assets/style_thumb4.jpg' },
-  { name: '浮世绘', key: 'ukiyo_e', thumb: '/src/assets/style_thumb5.jpg' },
-  // Add more styles
-])
-const selectedStyle = ref<string>(availableStyles.value[0]?.key || '')
-const isApplyingStyle = ref<boolean>(false)
+const styleTransferFile = ref<UploadUserFile | null>(null);
+const styleTransferImageUrl = ref<string>('');
+const styleTransferResultUrl = ref<string>('');
+const availableStyles = ref<StyleOption[]>(getAvailableStyles()); // 直接使用API提供的样式列表
+const selectedStyle = ref<string>(availableStyles.value[0]?.key || '');
+const isApplyingStyle = ref<boolean>(false);
 
 // --- State for Color Emotion Analysis ---
-const colorAnalysisFile = ref<UploadUserFile | null>(null)
-const colorAnalysisImageUrl = ref<string>('')
-const isAnalyzingColor = ref<boolean>(false)
-const colorAnalysisResult = ref<ColorAnalysisResultType | null>(null)
-let colorRadarChart: EChartsType | null = null
+const colorAnalysisFile = ref<UploadUserFile | null>(null);
+const colorAnalysisImageUrl = ref<string>('');
+const isAnalyzingColor = ref<boolean>(false);
+const colorAnalysisResult = ref<ColorAnalysisResultType | null>(null);
+let colorRadarChart: EChartsType | null = null;
 
 // --- State for Image to Video ---
-const imageToVideoFile = ref<UploadUserFile | null>(null)
-const imageToVideoImageUrl = ref<string>('')
-const isGeneratingVideo = ref<boolean>(false)
-const generatedVideoUrl = ref<string>('')
-const selectedMusic = ref<string>('') // Music selection
-const videoScript = ref<string>('') // Generated script
-const showVideoPlayerDialog = ref<boolean>(false)
+const imageToVideoFile = ref<UploadUserFile | null>(null);
+const imageToVideoImageUrl = ref<string>('');
+const isGeneratingVideo = ref<boolean>(false);
+const generatedVideoUrl = ref<string>('');
+const selectedMusic = ref<string>(''); // Music selection
+const videoScript = ref<string>(''); // Generated script
+const showVideoPlayerDialog = ref<boolean>(false);
 
 // --- Upload Handlers (Common Logic Can Be Extracted) ---
 interface UploadResponse {
-  success: boolean
-  url?: string
-  message?: string
+  success: boolean;
+  url?: string;
+  message?: string;
 }
 
-const handleStyleUploadSuccess = (response: UploadResponse, uploadFile: UploadUserFile): void => {
-  console.log('Style Image Upload Success:', response)
-  styleTransferImageUrl.value = URL.createObjectURL(uploadFile.raw!)
-  styleTransferFile.value = uploadFile
-  styleTransferResultUrl.value = '' // Clear previous result
-}
+const handleStyleUploadSuccess = async (
+  response: unknown,
+  uploadFile: UploadUserFile,
+): Promise<void> => {
+  try {
+    const result = await uploadImage(uploadFile.raw as File);
+    if (result.success) {
+      styleTransferImageUrl.value = result.url || URL.createObjectURL(uploadFile.raw!);
+      styleTransferFile.value = uploadFile;
+      styleTransferResultUrl.value = ''; // Clear previous result
+    } else {
+      throw new Error(result.message || 'Upload failed');
+    }
+  } catch (error) {
+    console.error('Style Image Upload Error:', error);
+    ElMessage.error('图片上传失败!');
+  }
+};
 
 const handleColorUploadSuccess = (response: UploadResponse, uploadFile: UploadUserFile): void => {
-  console.log('Color Image Upload Success:', response)
-  colorAnalysisImageUrl.value = URL.createObjectURL(uploadFile.raw!)
-  colorAnalysisFile.value = uploadFile
-  colorAnalysisResult.value = null // Clear previous result
-}
+  console.log('Color Image Upload Success:', response);
+  colorAnalysisImageUrl.value = URL.createObjectURL(uploadFile.raw!);
+  colorAnalysisFile.value = uploadFile;
+  colorAnalysisResult.value = null; // Clear previous result
+};
 
 const handleVideoUploadSuccess = (response: UploadResponse, uploadFile: UploadUserFile): void => {
-  console.log('Video Image Upload Success:', response)
-  imageToVideoImageUrl.value = URL.createObjectURL(uploadFile.raw!)
-  imageToVideoFile.value = uploadFile
-  generatedVideoUrl.value = '' // Clear previous result
-}
+  console.log('Video Image Upload Success:', response);
+  imageToVideoImageUrl.value = URL.createObjectURL(uploadFile.raw!);
+  imageToVideoFile.value = uploadFile;
+  generatedVideoUrl.value = ''; // Clear previous result
+};
 
 const handleUploadError = (
   error: Error,
@@ -121,89 +98,94 @@ const handleUploadError = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   uploadFiles: UploadUserFile[],
 ): void => {
-  ElMessage.error('图片上传失败!')
-  console.error('Upload Error:', error)
-}
+  ElMessage.error('图片上传失败!');
+  console.error('Upload Error:', error);
+};
 
 const beforeUpload = (rawFile: File): boolean | Promise<File> => {
   if (!rawFile.type.startsWith('image/')) {
-    ElMessage.error('只能上传图片文件!')
-    return false
+    ElMessage.error('只能上传图片文件!');
+    return false;
   }
   if (rawFile.size / 1024 / 1024 > 5) {
     // Limit size to 5MB
-    ElMessage.error('图片大小不能超过 5MB!')
-    return false
+    ElMessage.error('图片大小不能超过 5MB!');
+    return false;
   }
-  return true
-}
+  return true;
+};
 
 // --- Tool Logic Functions (Placeholders) ---
-const applyStyleTransfer = async (): Promise<void> => {
+const applyStyleTransferFunc = async (): Promise<void> => {
   if (!styleTransferFile.value || !selectedStyle.value) {
-    ElMessage.warning('请先上传图片并选择风格！')
-    return
+    ElMessage.warning('请先上传图片并选择风格！');
+    return;
   }
-  isApplyingStyle.value = true
-  console.log('Applying style:', selectedStyle.value, 'to file:', styleTransferFile.value.name)
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 3000))
-  // Replace with actual API call, response should contain the result image URL
-  styleTransferResultUrl.value = '/src/assets/styled_result.jpg' // Placeholder result
-  isApplyingStyle.value = false
-  ElMessage.success('风格转换成功！')
-}
+  isApplyingStyle.value = true;
+  console.log('Applying style:', selectedStyle.value, 'to file:', styleTransferFile.value.name);
 
-const analyzeColorEmotion = async (): Promise<void> => {
+  try {
+    const result = await applyStyleTransfer(styleTransferFile.value, selectedStyle.value);
+    styleTransferResultUrl.value = result.resultUrl;
+    ElMessage.success('风格转换成功！');
+  } catch (error) {
+    console.error('Error applying style transfer:', error);
+    ElMessage.error('风格转换失败，请稍后重试');
+  } finally {
+    isApplyingStyle.value = false;
+  }
+};
+
+const analyzeColorEmotionFunc = async (): Promise<void> => {
   if (!colorAnalysisFile.value) {
-    ElMessage.warning('请先上传图片！')
-    return
+    ElMessage.warning('请先上传图片！');
+    return;
   }
-  isAnalyzingColor.value = true
-  colorAnalysisResult.value = null
-  console.log('Analyzing color for file:', colorAnalysisFile.value.name)
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  // Replace with actual API call, response should contain analysis data
-  colorAnalysisResult.value = {
-    radarData: [80, 60, 75, 50, 90], // Example: Warmth, Brightness, Contrast, Saturation, Harmony
-    keywords: ['活泼', '明亮', '温暖', '积极', '对比强烈'],
-    dominantColors: ['#FF7A5A', '#FFB64D', '#FFFFFF', '#7353E5'],
-  }
-  isAnalyzingColor.value = false
-  ElMessage.success('色彩情感分析完成！')
-  // Initialize or update the radar chart
-  nextTick(initColorRadarChart)
-}
+  isAnalyzingColor.value = true;
+  colorAnalysisResult.value = null;
+  console.log('Analyzing color for file:', colorAnalysisFile.value.name);
 
-const generateVideo = async (): Promise<void> => {
-  if (!imageToVideoFile.value) {
-    ElMessage.warning('请先上传图片！')
-    return
+  try {
+    colorAnalysisResult.value = await analyzeColorEmotion(colorAnalysisFile.value);
+    ElMessage.success('色彩情感分析完成！');
+    // Initialize or update the radar chart
+    nextTick(initColorRadarChart);
+  } catch (error) {
+    console.error('Error analyzing color:', error);
+    ElMessage.error('色彩分析失败，请稍后重试');
+  } finally {
+    isAnalyzingColor.value = false;
   }
-  isGeneratingVideo.value = true
-  generatedVideoUrl.value = ''
-  videoScript.value = ''
-  console.log('Generating video for file:', imageToVideoFile.value.name)
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 5000))
-  // Replace with actual API call, response should contain video URL and maybe script
-  generatedVideoUrl.value = '/src/assets/generated_video.mp4' // Placeholder result
-  videoScript.value = `1. 画面拉近，聚焦主体。
-2. 添加轻快背景音乐。
-3. 元素[A]向右移动。
-4. 画面淡出。`
-  isGeneratingVideo.value = false
-  ElMessage.success('视频生成成功！')
-  showVideoPlayerDialog.value = true
-}
+};
+
+const generateVideoFunc = async (): Promise<void> => {
+  if (!imageToVideoFile.value) {
+    ElMessage.warning('请先上传图片！');
+    return;
+  }
+  isGeneratingVideo.value = true;
+  generatedVideoUrl.value = '';
+  videoScript.value = '';
+
+  try {
+    const result = await generateVideo(imageToVideoFile.value, selectedMusic.value);
+    generatedVideoUrl.value = result.videoUrl;
+    videoScript.value = result.script;
+    ElMessage.success('视频生成成功！');
+  } catch (error) {
+    console.error('Error generating video:', error);
+    ElMessage.error('视频生成失败，请稍后重试');
+  } finally {
+    isGeneratingVideo.value = false;
+  }
+};
 
 // --- Chart Initialization (Placeholder) ---
 const initColorRadarChart = (): void => {
-  const chartDom = document.getElementById('colorRadarChart')
-  if (!chartDom || !colorAnalysisResult.value) return
-  if (colorRadarChart) colorRadarChart.dispose() // Dispose previous instance
-  colorRadarChart = echarts.init(chartDom)
+  const chartDom = document.getElementById('colorRadarChart');
+  if (!chartDom || !colorAnalysisResult.value) return;
+  if (colorRadarChart) colorRadarChart.dispose(); // Dispose previous instance
+  colorRadarChart = echarts.init(chartDom);
   const option = {
     tooltip: { trigger: 'item' },
     radar: {
@@ -222,9 +204,9 @@ const initColorRadarChart = (): void => {
         data: [{ value: colorAnalysisResult.value.radarData, name: '分析结果' }],
       },
     ],
-  }
-  colorRadarChart.setOption(option)
-}
+  };
+  colorRadarChart.setOption(option);
+};
 </script>
 
 <template>
@@ -297,7 +279,7 @@ const initColorRadarChart = (): void => {
               </div>
               <el-button
                 type="primary"
-                @click="applyStyleTransfer"
+                @click="applyStyleTransferFunc"
                 :disabled="!styleTransferImageUrl || !selectedStyle || isApplyingStyle"
                 :loading="isApplyingStyle"
                 class="action-button"
@@ -334,7 +316,7 @@ const initColorRadarChart = (): void => {
               </div>
               <el-button
                 type="primary"
-                @click="analyzeColorEmotion"
+                @click="analyzeColorEmotionFunc"
                 :disabled="!colorAnalysisImageUrl || isAnalyzingColor"
                 :loading="isAnalyzingColor"
                 class="action-button"
@@ -422,7 +404,7 @@ const initColorRadarChart = (): void => {
               </el-form>
               <el-button
                 type="primary"
-                @click="generateVideo"
+                @click="generateVideoFunc"
                 :disabled="!imageToVideoImageUrl || isGeneratingVideo"
                 :loading="isGeneratingVideo"
                 class="action-button"

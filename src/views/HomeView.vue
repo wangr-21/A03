@@ -1,18 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import * as echarts from 'echarts'
-import type { EChartsType } from 'echarts'
-import type { TabsPaneContext } from 'element-plus'
-
-// 定义资源类型接口
-interface Resource {
-  id: number;
-  title: string;
-  cover: string;
-  subject: string;
-  grade: string;
-  type: string;
-}
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import * as echarts from 'echarts';
+import type { EChartsType } from 'echarts';
+import { ElMessage, type TabsPaneContext } from 'element-plus';
+import { getResources } from '@/api';
+import type { Resource } from '@/api';
 
 // 定义图谱数据类型
 interface GraphData {
@@ -59,29 +51,29 @@ const initCharts = (): void => {
     const option = {
       title: {
         text: '学习资源访问趋势',
-        left: 'center'
+        left: 'center',
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
       },
       legend: {
         data: ['总访问量', '资源下载', '在线观看'],
-        bottom: 0
+        bottom: 0,
       },
       grid: {
         left: '3%',
         right: '4%',
         bottom: '10%',
         top: '15%',
-        containLabel: true
+        containLabel: true,
       },
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
       },
       series: [
         {
@@ -90,8 +82,8 @@ const initCharts = (): void => {
           data: [820, 932, 901, 934, 1290, 1330, 1320],
           smooth: true,
           lineStyle: {
-            color: '#7353E5'
-          }
+            color: '#7353E5',
+          },
         },
         {
           name: '资源下载',
@@ -99,8 +91,8 @@ const initCharts = (): void => {
           data: [320, 332, 301, 334, 390, 330, 320],
           smooth: true,
           lineStyle: {
-            color: '#54D6FF'
-          }
+            color: '#54D6FF',
+          },
         },
         {
           name: '在线观看',
@@ -108,10 +100,10 @@ const initCharts = (): void => {
           data: [500, 600, 550, 600, 900, 1000, 1000],
           smooth: true,
           lineStyle: {
-            color: '#FFB64D'
-          }
-        }
-      ]
+            color: '#FFB64D',
+          },
+        },
+      ],
     };
     overviewChart.value?.setOption(option);
   }
@@ -123,22 +115,22 @@ const initCharts = (): void => {
     const option = {
       title: {
         text: '学科关联图',
-        left: 'center'
+        left: 'center',
       },
       tooltip: {
-        formatter: function(params: echarts.DefaultLabelFormatterCallbackParams) {
+        formatter: function (params: echarts.DefaultLabelFormatterCallbackParams) {
           if ('dataType' in params && params.dataType === 'edge') {
             const data = params.data as GraphData;
             return `${params.name}: ${data.source} → ${data.target}`;
           }
           return String(params.name);
-        }
+        },
       },
       legend: {
         data: ['核心学科', '自然科学', '应用科学'],
         bottom: 10,
         orient: 'horizontal',
-        left: 'center'
+        left: 'center',
       },
       series: [
         {
@@ -149,46 +141,42 @@ const initCharts = (): void => {
           label: {
             show: true,
             color: '#333',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           },
           edgeSymbol: ['circle', 'arrow'],
           edgeSymbolSize: [4, 10],
           edgeLabel: {
             fontSize: 12,
-            formatter: '{c}'
+            formatter: '{c}',
           },
           data: [
             { name: '数学', category: 0, itemStyle: { color: '#7353E5' } },
             { name: '物理', category: 1, itemStyle: { color: '#54D6FF' } },
             { name: '化学', category: 1, itemStyle: { color: '#FFB64D' } },
             { name: '生物', category: 1, itemStyle: { color: '#FF7A5A' } },
-            { name: '计算机', category: 2, itemStyle: { color: '#FF5454' } }
+            { name: '计算机', category: 2, itemStyle: { color: '#FF5454' } },
           ],
           links: [
             { source: '数学', target: '物理', name: '基础' },
             { source: '数学', target: '化学', name: '基础' },
             { source: '数学', target: '计算机', name: '算法' },
             { source: '物理', target: '化学', name: '交叉' },
-            { source: '生物', target: '化学', name: '交叉' }
+            { source: '生物', target: '化学', name: '交叉' },
           ],
-          categories: [
-            { name: '核心学科' }, 
-            { name: '自然科学' }, 
-            { name: '应用科学' }
-          ],
+          categories: [{ name: '核心学科' }, { name: '自然科学' }, { name: '应用科学' }],
           force: {
             repulsion: 200,
             edgeLength: 80,
-            gravity: 0.1
+            gravity: 0.1,
           },
           emphasis: {
             focus: 'adjacency',
             lineStyle: {
-              width: 4
-            }
-          }
-        }
-      ]
+              width: 4,
+            },
+          },
+        },
+      ],
     };
     knowledgeGraphChart.value?.setOption(option);
   }
@@ -196,15 +184,31 @@ const initCharts = (): void => {
 
 // 轮播数据
 const carouselItems: CarouselItem[] = [
-  { id: 1, title: '优秀教学案例展示', description: '互动式历史课堂设计', image: '/src/assets/carousel1.jpg' },
-  { id: 2, title: '学生创意作品欣赏', description: 'AI赋能美术创作', image: '/src/assets/carousel2.jpg' },
-  { id: 3, title: '最新平台功能介绍', description: '学科星云知识图谱上线', image: '/src/assets/carousel3.jpg' }
+  {
+    id: 1,
+    title: '优秀教学案例展示',
+    description: '互动式历史课堂设计',
+    image: '/src/assets/carousel1.jpg',
+  },
+  {
+    id: 2,
+    title: '学生创意作品欣赏',
+    description: 'AI赋能美术创作',
+    image: '/src/assets/carousel2.jpg',
+  },
+  {
+    id: 3,
+    title: '最新平台功能介绍',
+    description: '学科星云知识图谱上线',
+    image: '/src/assets/carousel3.jpg',
+  },
 ];
 
 // 热点数据
 const hotspot: Hotspot = {
   title: '今日古诗推荐',
-  content: '《望庐山瀑布》 - 李白\n日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。'
+  content:
+    '《望庐山瀑布》 - 李白\n日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。',
 };
 
 // 资源库数据
@@ -212,11 +216,30 @@ const activeLibraryTab = ref<string>('all');
 const selectedSubject = ref<string>('');
 const selectedGrade = ref<string>('');
 const subjects: string[] = [
-  '语文', '数学', '英语', '物理', '化学', '历史', '地理', '生物', '政治', '党建'
+  '语文',
+  '数学',
+  '英语',
+  '物理',
+  '化学',
+  '历史',
+  '地理',
+  '生物',
+  '政治',
+  '党建',
 ];
 const grades: string[] = [
-  '一年级', '二年级', '三年级', '四年级', '五年级', '六年级',
-  '初一', '初二', '初三', '高一', '高二', '高三'
+  '一年级',
+  '二年级',
+  '三年级',
+  '四年级',
+  '五年级',
+  '六年级',
+  '初一',
+  '初二',
+  '初三',
+  '高一',
+  '高二',
+  '高三',
 ];
 const allResources = ref<Resource[]>([]);
 const resourcePageSize = ref<number>(5);
@@ -227,12 +250,12 @@ const resourcesLoading = ref<boolean>(false);
 const contacts: Contact[] = [
   { name: '王小明', title: '数学教师', avatar: '/src/assets/avatar1.jpg' },
   { name: '李晓华', title: '语文组长', avatar: '/src/assets/avatar2.jpg' },
-  { name: '张三', title: '科学教师', avatar: '/src/assets/avatar3.jpg' }
+  { name: '张三', title: '科学教师', avatar: '/src/assets/avatar3.jpg' },
 ];
 
 // 过滤资源
 const filteredResources = computed<Resource[]>(() => {
-  return allResources.value.filter(resource => {
+  return allResources.value.filter((resource) => {
     const typeMatch = activeLibraryTab.value === 'all' || resource.type === activeLibraryTab.value;
     const subjectMatch = !selectedSubject.value || resource.subject === selectedSubject.value;
     const gradeMatch = !selectedGrade.value || resource.grade === selectedGrade.value;
@@ -252,39 +275,48 @@ const viewHotspotDetail = (): void => {
   console.log('View hotspot detail');
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const handleTabClick = (tab: TabsPaneContext): void => {
   resourceCurrentPage.value = 1; // 切换标签时重置页码
 };
 
 const applyFilters = (): void => {
   resourceCurrentPage.value = 1;
-  console.log('Filters applied:', activeLibraryTab.value, selectedSubject.value, selectedGrade.value);
+  console.log(
+    'Filters applied:',
+    activeLibraryTab.value,
+    selectedSubject.value,
+    selectedGrade.value,
+  );
 };
 
 const handleResourcePageChange = (page: number): void => {
   resourceCurrentPage.value = page;
 };
 
-const fetchResources = (): void => {
+const fetchResources = async (): Promise<void> => {
   resourcesLoading.value = true;
   console.log('Fetching resources...');
-  // 模拟 API 调用延迟
-  setTimeout(() => {
-    // 替换为实际 API 调用
-    allResources.value = [
-      { id: 1, title: '人教版语文七年级上册', cover: '/src/assets/resource_cover1.jpg', subject: '语文', grade: '初一', type: 'textbook' },
-      { id: 2, title: '北师大版数学八年级下册', cover: '/src/assets/resource_cover2.jpg', subject: '数学', grade: '初二', type: 'textbook' },
-      { id: 3, title: '《共产党宣言》导读', cover: '/src/assets/resource_cover3.jpg', subject: '党建', grade: '通用', type: 'party' },
-      { id: 4, title: '外研社英语九年级全册', cover: '/src/assets/resource_cover4.jpg', subject: '英语', grade: '初三', type: 'textbook' },
-      { id: 5, title: '党史故事100讲', cover: '/src/assets/resource_cover5.jpg', subject: '党建', grade: '通用', type: 'party' },
-      { id: 6, title: '物理实验精选（高中）', cover: '/src/assets/resource_cover6.jpg', subject: '物理', grade: '高中', type: 'textbook' },
-      { id: 7, title: '化学反应原理探究', cover: '/src/assets/resource_cover7.jpg', subject: '化学', grade: '高中', type: 'textbook' },
-      { id: 8, title: '中国近代史纲要解读', cover: '/src/assets/resource_cover8.jpg', subject: '党建', grade: '通用', type: 'party' },
-      { id: 9, title: '生物进化论浅析', cover: '/src/assets/resource_cover9.jpg', subject: '生物', grade: '高中', type: 'textbook' },
-    ];
+
+  try {
+    const response = await getResources({
+      type: activeLibraryTab.value === 'all' ? undefined : activeLibraryTab.value,
+      subject: selectedSubject.value,
+      grade: selectedGrade.value,
+    });
+
+    if (response.success) {
+      allResources.value = response.data.resources;
+    } else {
+      throw new Error('Failed to fetch resources');
+    }
+  } catch (error) {
+    console.error('Error fetching resources:', error);
+    ElMessage.error('获取资源失败，请稍后重试');
+  } finally {
     resourcesLoading.value = false;
     console.log('Resources fetched.');
-  }, 1000); // 模拟 1 秒延迟
+  }
 };
 
 const viewResource = (id: number): void => {
@@ -321,7 +353,7 @@ onBeforeUnmount(() => {
     <div class="page-header">
       <h1 class="page-title">启智学堂</h1>
     </div>
-    
+
     <!-- 主要统计卡片区域 -->
     <div class="stats-cards">
       <el-card class="stats-card">
@@ -333,7 +365,7 @@ onBeforeUnmount(() => {
           <div class="stats-label">总资源数</div>
         </div>
       </el-card>
-      
+
       <el-card class="stats-card">
         <div class="stats-icon yellow-bg">
           <el-icon><DocumentAdd /></el-icon>
@@ -343,7 +375,7 @@ onBeforeUnmount(() => {
           <div class="stats-label">本周新增教案</div>
         </div>
       </el-card>
-      
+
       <el-card class="stats-card">
         <div class="stats-icon orange-bg">
           <el-icon><UserFilled /></el-icon>
@@ -353,7 +385,7 @@ onBeforeUnmount(() => {
           <div class="stats-label">活跃用户数</div>
         </div>
       </el-card>
-      
+
       <el-card class="stats-card">
         <div class="stats-icon red-bg">
           <el-icon><Flag /></el-icon>
@@ -364,7 +396,7 @@ onBeforeUnmount(() => {
         </div>
       </el-card>
     </div>
-    
+
     <!-- 概览图表区域 -->
     <el-card class="chart-card">
       <div class="card-header">
@@ -377,7 +409,7 @@ onBeforeUnmount(() => {
       </div>
       <div class="chart-container" id="overviewChart"></div>
     </el-card>
-    
+
     <!-- 联系人区域 -->
     <el-card class="contacts-card">
       <div class="card-header">
@@ -390,11 +422,11 @@ onBeforeUnmount(() => {
           class="contact-search"
         ></el-input>
       </div>
-      
+
       <div class="contact-list">
         <div class="contact-item" v-for="(contact, index) in contacts" :key="index">
           <div class="contact-avatar">
-            <img :src="contact.avatar" :alt="contact.name">
+            <img :src="contact.avatar" :alt="contact.name" />
           </div>
           <div class="contact-info">
             <div class="contact-name">{{ contact.name }}</div>
@@ -406,11 +438,12 @@ onBeforeUnmount(() => {
 
     <!-- 流光展台区域 -->
     <el-row :gutter="20" class="showcase-area">
-      <el-col :span="16"> <!-- 调整轮播图宽度 -->
+      <el-col :span="16">
+        <!-- 调整轮播图宽度 -->
         <el-card class="carousel-card">
           <el-carousel height="300px" arrow="always">
             <el-carousel-item v-for="item in carouselItems" :key="item.id">
-              <img :src="item.image" class="carousel-image"/>
+              <img :src="item.image" class="carousel-image" />
               <div class="carousel-caption">
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.description }}</p>
@@ -419,11 +452,14 @@ onBeforeUnmount(() => {
           </el-carousel>
         </el-card>
       </el-col>
-      <el-col :span="8"> <!-- 热点卡片 -->
+      <el-col :span="8">
+        <!-- 热点卡片 -->
         <el-card class="hotspot-card">
           <template #header>
             <div class="card-header">
-              <h3><el-icon><DataLine /></el-icon> 动态学科热点</h3>
+              <h3>
+                <el-icon><DataLine /></el-icon> 动态学科热点
+              </h3>
             </div>
           </template>
           <div class="hotspot-content">
@@ -434,12 +470,14 @@ onBeforeUnmount(() => {
         </el-card>
       </el-col>
     </el-row>
-    
+
     <!-- 智汇文库区域 -->
     <el-card class="resource-library-card">
       <template #header>
         <div class="card-header">
-          <h3><el-icon><Reading /></el-icon> 智汇文库</h3>
+          <h3>
+            <el-icon><Reading /></el-icon> 智汇文库
+          </h3>
           <div class="library-filters">
             <el-tabs v-model="activeLibraryTab" @tab-click="handleTabClick">
               <el-tab-pane label="全部资源" name="all"></el-tab-pane>
@@ -447,29 +485,47 @@ onBeforeUnmount(() => {
               <el-tab-pane label="党建专题" name="party"></el-tab-pane>
             </el-tabs>
             <div class="filter-controls">
-              <el-select v-model="selectedSubject" placeholder="选择学科" size="small" clearable @change="applyFilters">
-                <el-option v-for="subject in subjects" :key="subject" :label="subject" :value="subject"></el-option>
+              <el-select
+                v-model="selectedSubject"
+                placeholder="选择学科"
+                size="small"
+                clearable
+                @change="applyFilters"
+              >
+                <el-option
+                  v-for="subject in subjects"
+                  :key="subject"
+                  :label="subject"
+                  :value="subject"
+                ></el-option>
               </el-select>
-              <el-select v-model="selectedGrade" placeholder="选择年级" size="small" clearable @change="applyFilters">
-                <el-option v-for="grade in grades" :key="grade" :label="grade" :value="grade"></el-option>
+              <el-select
+                v-model="selectedGrade"
+                placeholder="选择年级"
+                size="small"
+                clearable
+                @change="applyFilters"
+              >
+                <el-option
+                  v-for="grade in grades"
+                  :key="grade"
+                  :label="grade"
+                  :value="grade"
+                ></el-option>
               </el-select>
             </div>
           </div>
         </div>
       </template>
-      <div 
-        class="resource-grid" 
-        v-loading="resourcesLoading" 
-        element-loading-text="加载资源中..."
-      >
-        <el-card 
-          class="resource-card" 
-          v-for="resource in paginatedResources" 
+      <div class="resource-grid" v-loading="resourcesLoading" element-loading-text="加载资源中...">
+        <el-card
+          class="resource-card"
+          v-for="resource in paginatedResources"
           :key="resource.id"
           shadow="hover"
         >
           <div class="resource-cover">
-            <img :src="resource.cover" :alt="resource.title">
+            <img :src="resource.cover" :alt="resource.title" />
             <el-tag v-if="resource.type === 'party'" type="danger" class="party-tag">党建</el-tag>
           </div>
           <div class="resource-info">
@@ -482,26 +538,31 @@ onBeforeUnmount(() => {
         </el-card>
       </div>
       <div class="pagination" v-if="filteredResources.length > 0">
-         <el-pagination 
-           background 
-           layout="prev, pager, next" 
-           :total="filteredResources.length" 
-           :page-size="resourcePageSize" 
-           v-model:current-page="resourceCurrentPage"
-           @current-change="handleResourcePageChange"
-         ></el-pagination>
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="filteredResources.length"
+          :page-size="resourcePageSize"
+          v-model:current-page="resourceCurrentPage"
+          @current-change="handleResourcePageChange"
+        ></el-pagination>
       </div>
-      <el-empty v-if="!resourcesLoading && filteredResources.length === 0" description="暂无匹配资源"></el-empty>
+      <el-empty
+        v-if="!resourcesLoading && filteredResources.length === 0"
+        description="暂无匹配资源"
+      ></el-empty>
     </el-card>
 
     <!-- 学科星云区域 (暂时占位) -->
     <el-card class="knowledge-graph-card">
-        <template #header>
-          <div class="card-header">
-            <h3><el-icon><Share /></el-icon> 学科星云</h3>
-          </div>
-        </template>
-        <div class="chart-container" id="knowledgeGraphChart"></div>
+      <template #header>
+        <div class="card-header">
+          <h3>
+            <el-icon><Share /></el-icon> 学科星云
+          </h3>
+        </div>
+      </template>
+      <div class="chart-container" id="knowledgeGraphChart"></div>
     </el-card>
   </div>
 </template>
@@ -548,7 +609,9 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   padding: 20px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -574,19 +637,19 @@ onBeforeUnmount(() => {
 }
 
 .purple-bg {
-  background-color: #7353E5;
+  background-color: #7353e5;
 }
 
 .yellow-bg {
-  background-color: #FFB64D;
+  background-color: #ffb64d;
 }
 
 .orange-bg {
-  background-color: #FF7A5A;
+  background-color: #ff7a5a;
 }
 
 .red-bg {
-  background-color: #FF5454;
+  background-color: #ff5454;
 }
 
 .stats-info {
@@ -630,7 +693,7 @@ onBeforeUnmount(() => {
 }
 
 .card-header h3 .el-icon {
-  color: #7353E5;
+  color: #7353e5;
 }
 
 .chart-container {
@@ -680,7 +743,7 @@ onBeforeUnmount(() => {
   .contact-item {
     width: 100%;
   }
-  
+
   .contact-search {
     width: 100%;
   }
@@ -717,7 +780,7 @@ onBeforeUnmount(() => {
 
 /* 响应式调整展示区域 */
 @media (max-width: 991px) {
-  .el-col[class*=el-col-] {
+  .el-col[class*='el-col-'] {
     width: 100%;
     margin-bottom: 20px;
   }
@@ -812,12 +875,12 @@ onBeforeUnmount(() => {
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .filter-controls {
     margin-top: 10px;
     width: 100%;
   }
-  
+
   .filter-controls .el-select {
     width: 100%;
     margin-bottom: 10px;
@@ -858,7 +921,7 @@ onBeforeUnmount(() => {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .resource-cover {
     width: 100%;
     height: 200px;
@@ -922,7 +985,8 @@ onBeforeUnmount(() => {
 }
 
 /* ECharts图表容器样式 */
-#overviewChart, #knowledgeGraphChart {
+#overviewChart,
+#knowledgeGraphChart {
   width: 100%;
   height: 100%;
 }

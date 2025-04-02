@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { RouterView } from 'vue-router'
-import NotificationDropdown from './components/NotificationDropdown.vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { RouterView } from 'vue-router';
+import NotificationDropdown from './components/NotificationDropdown.vue';
+import { getNotifications, markAllNotificationsAsRead } from '@/api';
+import type { Notification } from '@/api';
+import { ElMessage } from 'element-plus';
 
 // 响应式侧边栏控制
 const sidebarCollapsed = ref(false);
@@ -32,35 +35,72 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 
-// 通知相关状态
-const hasNotifications = ref(true);
+// 通知相关
 const showNotificationDropdown = ref(false);
+const notifications = ref<Notification[]>([]);
+const unreadCount = ref(0);
+const hasNotifications = computed(() => unreadCount.value > 0);
 
-// 切换通知下拉菜单
-const toggleNotificationDropdown = (event: MouseEvent) => {
-  event.stopPropagation(); // 阻止事件冒泡
+const toggleNotificationDropdown = async () => {
+  if (!showNotificationDropdown.value) {
+    await fetchNotifications();
+  }
   showNotificationDropdown.value = !showNotificationDropdown.value;
 };
 
-// 关闭通知下拉菜单
 const closeNotificationDropdown = () => {
   showNotificationDropdown.value = false;
 };
 
-// 标记全部已读
-const markAllAsRead = () => {
-  hasNotifications.value = false;
+const fetchNotifications = async () => {
+  try {
+    const response = await getNotifications();
+    if (response.success) {
+      notifications.value = response.data.notifications;
+      unreadCount.value = response.data.unreadCount;
+    } else {
+      throw new Error('Failed to fetch notifications');
+    }
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+  }
 };
 
-// 查看所有通知
-const viewAllNotifications = () => {
-  // 这里可以添加导航到通知页面的逻辑
-  showNotificationDropdown.value = false;
+const markAllAsRead = async () => {
+  try {
+    const response = await markAllNotificationsAsRead();
+    if (response.success) {
+      unreadCount.value = 0;
+      // 更新通知状态
+      notifications.value = notifications.value.map((n) => ({ ...n, read: true }));
+      ElMessage.success('已将所有通知标记为已读');
+    }
+  } catch (error) {
+    console.error('Error marking notifications as read:', error);
+    ElMessage.error('操作失败，请稍后重试');
+  }
 };
+
+const viewAllNotifications = () => {
+  // 可以导航到通知页面
+  console.log('View all notifications');
+  closeNotificationDropdown();
+};
+
+onMounted(() => {
+  // 现有的 onMounted 代码...
+  handleResize(); // 初始检查
+  window.addEventListener('resize', handleResize);
+  fetchNotifications(); // 初始加载通知
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+});
 </script>
 
 <template>
-  <div class="app-container" :class="{ 'sidebar-collapsed': sidebarCollapsed, 'mobile': isMobile }">
+  <div class="app-container" :class="{ 'sidebar-collapsed': sidebarCollapsed, mobile: isMobile }">
     <!-- 侧边栏 -->
     <div class="sidebar">
       <div class="logo-container">
@@ -135,8 +175,8 @@ const viewAllNotifications = () => {
             <el-badge is-dot :hidden="!hasNotifications">
               <el-icon class="tool-icon" @click="toggleNotificationDropdown"><Bell /></el-icon>
             </el-badge>
-            <NotificationDropdown 
-              :is-active="showNotificationDropdown" 
+            <NotificationDropdown
+              :is-active="showNotificationDropdown"
               @close="closeNotificationDropdown"
               @read-all="markAllAsRead"
               @view-all="viewAllNotifications"
@@ -168,7 +208,8 @@ const viewAllNotifications = () => {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -202,7 +243,7 @@ body {
 /* 侧边栏样式 */
 .sidebar {
   width: 260px;
-  background: linear-gradient(to bottom, #7353E5, #6B42E8);
+  background: linear-gradient(to bottom, #7353e5, #6b42e8);
   color: white;
   display: flex;
   flex-direction: column;
@@ -273,7 +314,7 @@ body {
 .open-btn {
   width: 100%;
   margin-top: 0.9375rem; /* 使用rem代替px */
-  background-color: #54D6FF;
+  background-color: #54d6ff;
   border: none;
 }
 
@@ -483,20 +524,20 @@ body {
 }
 
 .el-input__wrapper:hover {
-  box-shadow: 0 0 0 1px #7353E5 inset;
+  box-shadow: 0 0 0 1px #7353e5 inset;
 }
 
 .el-input__wrapper.is-focus {
-  box-shadow: 0 0 0 1px #7353E5 inset !important;
+  box-shadow: 0 0 0 1px #7353e5 inset !important;
 }
 
 .el-button--primary {
-  --el-button-bg-color: #7353E5;
-  --el-button-border-color: #7353E5;
-  --el-button-hover-bg-color: #8A6AFF;
-  --el-button-hover-border-color: #8A6AFF;
-  --el-button-active-bg-color: #6B42E8;
-  --el-button-active-border-color: #6B42E8;
+  --el-button-bg-color: #7353e5;
+  --el-button-border-color: #7353e5;
+  --el-button-hover-bg-color: #8a6aff;
+  --el-button-hover-border-color: #8a6aff;
+  --el-button-active-bg-color: #6b42e8;
+  --el-button-active-border-color: #6b42e8;
 }
 
 /* 通知图标包装器 */

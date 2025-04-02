@@ -102,53 +102,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ref, computed, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import { getStudents, getStatistics } from '@/api';
+import type { Student, StatItem } from '@/api';
 
 // 数据
-const stats = ref([
-  {
-    label: '总学生数',
-    value: '256',
-    icon: 'User',
-    colorClass: 'blue-bg',
-  },
-  {
-    label: '平均成绩',
-    value: '86.5',
-    icon: 'DataLine',
-    colorClass: 'green-bg',
-  },
-  {
-    label: '出勤率',
-    value: '97%',
-    icon: 'Calendar',
-    colorClass: 'orange-bg',
-  },
-  {
-    label: '成长指数',
-    value: '+15%',
-    icon: 'TrendCharts',
-    colorClass: 'purple-bg',
-  },
-])
-
-const students = ref<
-  Array<{
-    id: string
-    name: string
-    avatar?: string
-    grade: string
-    class: string
-    score: number
-    attendance: number
-  }>
->([])
-
-const loading = ref(true)
-const searchText = ref('')
-const currentPage = ref(1)
-const pageSize = ref(10)
+const stats = ref<StatItem[]>([]);
+const students = ref<Student[]>([]);
+const loading = ref<boolean>(false);
+const searchText = ref<string>('');
+const currentPage = ref<number>(1);
+const pageSize = ref<number>(10);
 
 // 计算属性
 const filteredStudents = computed(() => {
@@ -156,126 +121,81 @@ const filteredStudents = computed(() => {
     return students.value.slice(
       (currentPage.value - 1) * pageSize.value,
       currentPage.value * pageSize.value,
-    )
+    );
   }
 
   const filtered = students.value.filter(
     (student) =>
       student.name.toLowerCase().includes(searchText.value.toLowerCase()) ||
       student.id.includes(searchText.value),
-  )
+  );
 
   return filtered.slice(
     (currentPage.value - 1) * pageSize.value,
     currentPage.value * pageSize.value,
-  )
-})
+  );
+});
 
 // 方法
-const fetchStudents = () => {
-  loading.value = true
+const fetchStudents = async () => {
+  loading.value = true;
 
-  // 模拟API请求延迟
-  setTimeout(() => {
-    students.value = [
-      {
-        id: '20230001',
-        name: '张明',
-        grade: '七年级',
-        class: '1班',
-        score: 92,
-        attendance: 98,
-        avatar: '/src/assets/avatar1.png',
-      },
-      {
-        id: '20230002',
-        name: '李华',
-        grade: '七年级',
-        class: '1班',
-        score: 85,
-        attendance: 95,
-        avatar: '/src/assets/avatar2.png',
-      },
-      {
-        id: '20230003',
-        name: '王芳',
-        grade: '七年级',
-        class: '2班',
-        score: 78,
-        attendance: 90,
-        avatar: '/src/assets/avatar3.png',
-      },
-      {
-        id: '20230004',
-        name: '赵强',
-        grade: '七年级',
-        class: '2班',
-        score: 88,
-        attendance: 92,
-        avatar: '/src/assets/avatar4.png',
-      },
-      {
-        id: '20230005',
-        name: '刘洋',
-        grade: '七年级',
-        class: '3班',
-        score: 76,
-        attendance: 85,
-        avatar: '/src/assets/avatar5.png',
-      },
-      {
-        id: '20230006',
-        name: '陈思',
-        grade: '七年级',
-        class: '3班',
-        score: 95,
-        attendance: 99,
-        avatar: '/src/assets/avatar6.png',
-      },
-    ]
+  try {
+    const response = await getStudents({
+      search: searchText.value,
+      page: currentPage.value,
+      pageSize: pageSize.value,
+    });
 
-    loading.value = false
-  }, 1000)
-}
+    if (response.success) {
+      students.value = response.data.students;
+    } else {
+      throw new Error('Failed to fetch students');
+    }
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    ElMessage.error('获取学生数据失败，请稍后重试');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const fetchStatistics = async () => {
+  try {
+    stats.value = await getStatistics();
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+    ElMessage.error('获取统计数据失败，请稍后重试');
+  }
+};
 
 const getScoreClass = (score: number): string => {
-  if (score >= 90) return 'score-excellent'
-  if (score >= 80) return 'score-good'
-  if (score >= 70) return 'score-average'
-  return 'score-poor'
-}
+  if (score >= 90) return 'score-excellent';
+  if (score >= 80) return 'score-good';
+  if (score >= 70) return 'score-average';
+  return 'score-poor';
+};
 
 const getProgressColor = (value: number): string => {
-  if (value >= 90) return '#67C23A'
-  if (value >= 80) return '#409EFF'
-  if (value >= 70) return '#E6A23C'
-  return '#F56C6C'
-}
+  if (value >= 90) return '#67C23A';
+  if (value >= 80) return '#409EFF';
+  if (value >= 70) return '#E6A23C';
+  return '#F56C6C';
+};
 
-// 创建一个明确的学生类型接口
-interface Student {
-  id: string
-  name: string
-  avatar?: string
-  grade: string
-  class: string
-  score: number
-  attendance: number
-}
-
-// 使用该接口替换 any 类型
 const viewDetails = (student: Student): void => {
-  ElMessage.info(`查看${student.name}的详细信息`)
-}
+  ElMessage.info(`查看${student.name}的详细信息`);
+};
 
 const evaluateStudent = (student: Student): void => {
-  ElMessage.info(`评价${student.name}`)
-}
+  ElMessage.info(`评价${student.name}`);
+};
 
 // 生命周期钩子
 onMounted(() => {
-  fetchStudents()
-})
+  fetchStudents();
+  fetchStatistics();
+});
 </script>
 
 <style scoped>
