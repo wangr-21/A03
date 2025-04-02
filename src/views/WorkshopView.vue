@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
+import { ElMessage, type UploadFile, type UploadFiles } from 'element-plus';
 import {
   ElDialog,
   ElButton,
@@ -13,13 +13,16 @@ import {
   ElTag,
   ElCheckboxGroup,
   ElCheckbox,
+  ElUpload,
 } from 'element-plus';
+import MarkdownIt from 'markdown-it';
 import {
   generateLessonPlan,
   getRecommendedInteractions,
   getQuestions,
   getCases,
   getSimulationScenario,
+  exportPlanAsDocx,
 } from '@/api';
 import type {
   PlanForm,
@@ -30,11 +33,7 @@ import type {
   CaseFilters,
   SimulationScenario,
 } from '@/api';
-
-interface TeachingStyle {
-  value: string;
-  label: string;
-}
+const md = new MarkdownIt();
 
 interface Difficulty {
   label: string;
@@ -43,52 +42,20 @@ interface Difficulty {
 
 // Reactive form data for lesson plan generation
 const planForm = reactive<PlanForm>({
-  subject: '',
   grade: '',
-  topic: '',
-  duration: 60, // Default duration in minutes
-  objectives: '', // Learning objectives
-  keyPoints: '', // Key and difficult points
-  teachingStyle: 'interactive', // e.g., lecture, interactive, project-based
-  outputFormat: 'full', // full or concise
 });
+
+// 文件上传相关
+const uploadedImages = ref<UploadFile[]>([]);
+const planId = ref<string | null>(null);
+const isExporting = ref<boolean>(false);
 
 // Ref for the generated lesson plan content
 const generatedPlan = ref<string | null>(null);
 const isGenerating = ref<boolean>(false);
 
 // Placeholder subjects and grades (replace with actual data source if needed)
-const subjects = ref<string[]>([
-  '语文',
-  '数学',
-  '英语',
-  '物理',
-  '化学',
-  '历史',
-  '地理',
-  '生物',
-  '政治',
-]);
-const grades = ref<string[]>([
-  '一年级',
-  '二年级',
-  '三年级',
-  '四年级',
-  '五年级',
-  '六年级',
-  '初一',
-  '初二',
-  '初三',
-  '高一',
-  '高二',
-  '高三',
-]);
-const teachingStyles = ref<TeachingStyle[]>([
-  { value: 'interactive', label: '互动探究式' },
-  { value: 'lecture', label: '讲授式' },
-  { value: 'project', label: '项目式' },
-  { value: 'inquiry', label: '问题驱动式' },
-]);
+const grades = ref<string[]>(['初一', '初二', '初三']);
 
 // Ref for recommended interactions
 const recommendedInteractions = ref<InteractionItem[]>([]);
@@ -129,32 +96,85 @@ const isCasesLoading = ref<boolean>(false);
 const showSimulationDialog = ref<boolean>(false);
 const simulationScenario = ref<SimulationScenario | null>(null); // Holds data for the current simulation
 
-// Function to handle lesson plan generation
-const onGenerateLessonPlan = async (): Promise<void> => {
-  if (!planForm.subject || !planForm.grade || !planForm.topic) {
-    ElMessage.warning('请至少填写学科、年级和课题！');
+const handlePlanImageChange = (file: UploadFile, files: UploadFiles) => {
+  // 验证文件类型
+  const isImage = ['image/jpeg', 'image/png', 'image/gif'].includes(file.raw?.type || 'unknown');
+  if (!isImage) {
+    ElMessage.error('只能上传图片文件!');
+    return false;
+  }
+
+  // 验证文件大小（示例限制5MB）
+  const isLt5M = (file.raw?.size || 0) / 1024 / 1024 < 5;
+  if (!isLt5M) {
+    ElMessage.error('图片大小不能超过5MB!');
+    return false;
+  }
+
+  uploadedImages.value = files;
+};
+
+const handleRemoveImage = (file: UploadFile) => {
+  uploadedImages.value = uploadedImages.value.filter((f) => f.uid !== file.uid);
+};
+
+// 生成教案
+const generateLessonPlanFunc = async (): Promise<void> => {
+  if (!planForm.grade || uploadedImages.value.length === 0) {
+    ElMessage.warning('请选择年级并上传至少一张教材图片！');
     return;
   }
 
   isGenerating.value = true;
-  generatedPlan.value = null; // Clear previous result
-  console.log('Generating lesson plan with data:', planForm);
+  generatedPlan.value = null; // 清除之前的结果
 
   try {
-    const response = await generateLessonPlan(planForm);
+    // 提取上传的文件
+    const imageFiles = uploadedImages.value
+      .map((file) => file.raw)
+      .filter((file) => file !== undefined) as File[];
 
-    if (response.success) {
-      // Format the content slightly for display (e.g., handling newlines)
-      generatedPlan.value = response.data.content.replace(/\n/g, '<br/>');
-      ElMessage.success('教案生成成功！');
-    } else {
-      throw new Error('AI generation failed');
-    }
+    // 调用API模块中的函数
+    const result = await generateLessonPlan(planForm.grade, imageFiles);
+
+    // 存储计划ID用于后续导出
+    planId.value = result.plan_id;
+    // 使用 markdown-it 渲染 Markdown 内容
+    generatedPlan.value = md.render(result.plan);
+    ElMessage.success('教案生成成功！');
   } catch (error) {
     console.error('Error generating lesson plan:', error);
     ElMessage.error('教案生成失败，请稍后重试。');
   } finally {
     isGenerating.value = false;
+  }
+};
+
+// 导出为Word文档
+const exportPlanAsDocxFunc = async (): Promise<void> => {
+  if (!planId.value) return;
+
+  isExporting.value = true;
+
+  try {
+    // 调用API模块中的函数
+    const blob = await exportPlanAsDocx(planId.value);
+
+    // 下载文件
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `教案_${planId.value}.docx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    ElMessage.success('教案导出成功！');
+  } catch (error) {
+    console.error('Error exporting document:', error);
+    ElMessage.error('教案导出失败，请稍后重试。');
+  } finally {
+    isExporting.value = false;
   }
 };
 
@@ -164,10 +184,10 @@ const fetchRecommendedInteractions = async (): Promise<void> => {
 
   isLoadingInteractions.value = true;
   recommendedInteractions.value = []; // Clear previous recommendations
-  console.log('Fetching recommended interactions based on:', planForm.topic);
+  console.log('Fetching recommended interactions based on:', '{topic}');
 
   try {
-    const response = await getRecommendedInteractions(planForm.topic);
+    const response = await getRecommendedInteractions('{topic}');
 
     if (response.success) {
       recommendedInteractions.value = response.data;
@@ -256,6 +276,10 @@ const viewCaseDetails = (caseId: number): void => {
   // TODO: Navigate to case detail page or open modal
 };
 
+const renderMarkdown = (content: string): string => {
+  return md.render(content);
+};
+
 // Initial data fetch on mount (optional)
 onMounted(() => {
   filterQuestions();
@@ -294,76 +318,38 @@ onMounted(() => {
         </div>
       </template>
       <el-form :model="planForm" label-width="100px" class="generator-form">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="学科" required>
-              <el-select v-model="planForm.subject" placeholder="请选择学科">
-                <el-option
-                  v-for="item in subjects"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="年级" required>
-              <el-select v-model="planForm.grade" placeholder="请选择年级">
-                <el-option
-                  v-for="item in grades"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="课题/单元" required>
-          <el-input v-model="planForm.topic" placeholder="请输入教学课题或单元名称"></el-input>
+        <el-form-item label="年级" required>
+          <el-select v-model="planForm.grade" placeholder="请选择年级">
+            <el-option v-for="item in grades" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="教学目标">
-          <el-input
-            type="textarea"
-            :rows="2"
-            v-model="planForm.objectives"
-            placeholder="简述主要教学目标（可选）"
-          ></el-input>
+
+        <el-form-item label="教材图片" required>
+          <el-upload
+            class="upload-demo"
+            action="#"
+            :on-remove="handleRemoveImage"
+            :on-change="handlePlanImageChange"
+            :file-list="uploadedImages"
+            :limit="5"
+            multiple
+            :auto-upload="false"
+            list-type="picture-card"
+          >
+            <el-icon><Plus /></el-icon>
+            <template #tip>
+              <div class="el-upload__tip">请上传教材内容图片，支持多图上传（最多5张）</div>
+            </template>
+          </el-upload>
         </el-form-item>
-        <el-form-item label="重难点">
-          <el-input
-            type="textarea"
-            :rows="2"
-            v-model="planForm.keyPoints"
-            placeholder="简述教学重难点（可选）"
-          ></el-input>
-        </el-form-item>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="课时(分钟)">
-              <el-input-number v-model="planForm.duration" :min="15" :max="120" :step="5" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="教学风格">
-              <el-select v-model="planForm.teachingStyle">
-                <el-option
-                  v-for="style in teachingStyles"
-                  :key="style.value"
-                  :label="style.label"
-                  :value="style.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+
         <el-form-item>
           <el-button
             type="primary"
-            @click="onGenerateLessonPlan"
+            @click="generateLessonPlanFunc"
             :loading="isGenerating"
             icon="MagicStick"
+            :disabled="!planForm.grade || uploadedImages.length === 0"
           >
             {{ isGenerating ? '正在生成...' : '智能生成教案' }}
           </el-button>
@@ -378,15 +364,18 @@ onMounted(() => {
           <h3>
             <el-icon><Document /></el-icon> 生成结果
           </h3>
-          <el-radio-group
-            v-model="planForm.outputFormat"
-            size="small"
-            v-if="generatedPlan && !isGenerating"
-          >
-            <el-radio-button label="full">完整版</el-radio-button>
-            <el-radio-button label="concise" disabled>速览版</el-radio-button>
-            <!-- 速览版待实现 -->
-          </el-radio-group>
+          <div>
+            <el-button
+              type="primary"
+              size="small"
+              :disabled="!planId || isExporting"
+              @click="exportPlanAsDocxFunc"
+              :loading="isExporting"
+            >
+              <el-icon><Download /></el-icon>
+              {{ isExporting ? '导出中...' : '导出Word文档' }}
+            </el-button>
+          </div>
         </div>
       </template>
       <div v-if="isGenerating" class="loading-placeholder">
@@ -396,7 +385,7 @@ onMounted(() => {
     </el-card>
 
     <!-- 思辨剧场 - 互动推荐区域 -->
-    <el-card class="interactions-card" v-if="generatedPlan && !isGenerating">
+    <el-card class="interactions-card">
       <template #header>
         <div class="card-header">
           <h3>
@@ -422,7 +411,11 @@ onMounted(() => {
 
       <!-- Recommendation List (using el-collapse) -->
       <el-collapse v-else-if="recommendedInteractions.length > 0" accordion>
-        <el-collapse-item v-for="(item, index) in recommendedInteractions" :key="index" :name="index">
+        <el-collapse-item
+          v-for="(item, index) in recommendedInteractions"
+          :key="index"
+          :name="index"
+        >
           <template #title>
             <el-tag
               size="small"
@@ -439,7 +432,7 @@ onMounted(() => {
             </el-tag>
             <span class="interaction-title">{{ item.title }}</span>
           </template>
-          <div class="interaction-content" v-html="item.content.replace(/\n/g, '<br/>')"></div>
+          <div class="interaction-content" v-html="renderMarkdown(item.content)"></div>
         </el-collapse-item>
       </el-collapse>
 
@@ -980,6 +973,100 @@ onMounted(() => {
 
 .case-footer .el-tag {
   margin-right: 5px;
+}
+
+.generated-content {
+  line-height: 1.8;
+  font-family: 'KaiTi', 'Times New Roman', serif;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background-color: #fdfdfd;
+}
+
+/* Markdown 样式 */
+.generated-content ::v-deep(h1),
+.generated-content ::v-deep(h2),
+.generated-content ::v-deep(h3),
+.generated-content ::v-deep(h4),
+.generated-content ::v-deep(h5),
+.generated-content ::v-deep(h6) {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+}
+
+.generated-content ::v-deep(h1) {
+  font-size: 1.5em;
+}
+
+.generated-content ::v-deep(h2) {
+  font-size: 1.3em;
+}
+
+.generated-content ::v-deep(h3) {
+  font-size: 1.2em;
+}
+
+.generated-content ::v-deep(p) {
+  margin-bottom: 1em;
+}
+
+.generated-content ::v-deep(ul),
+.generated-content ::v-deep(ol) {
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+
+.generated-content ::v-deep(li) {
+  margin-bottom: 0.5em;
+}
+
+.generated-content ::v-deep(strong) {
+  font-weight: bold;
+}
+
+.generated-content ::v-deep(em) {
+  font-style: italic;
+}
+
+.generated-content ::v-deep(blockquote) {
+  border-left: 4px solid #ddd;
+  padding-left: 1em;
+  color: #666;
+  margin-bottom: 1em;
+}
+
+.generated-content ::v-deep(code) {
+  background-color: #f5f5f5;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: Consolas, Monaco, monospace;
+}
+
+.generated-content ::v-deep(pre) {
+  background-color: #f5f5f5;
+  padding: 1em;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+
+.generated-content ::v-deep(table) {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.generated-content ::v-deep(th),
+.generated-content ::v-deep(td) {
+  border: 1px solid #ddd;
+  padding: 0.5em;
+  text-align: left;
+}
+
+.generated-content ::v-deep(th) {
+  background-color: #f5f5f5;
 }
 </style>
 
