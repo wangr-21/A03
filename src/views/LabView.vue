@@ -1,17 +1,30 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { ElMessage, ElUpload, ElTabs, ElTabPane, ElCard, ElRow, ElCol, ElSlider, ElColorPicker, ElButton, ElIcon, ElImage, ElDialog } from 'element-plus'
+import { ref,  nextTick } from 'vue'
+import { ElMessage, ElUpload, ElTabs, ElTabPane, ElCard, ElRow, ElCol,  ElButton, ElIcon, ElImage, ElDialog } from 'element-plus'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import * as echarts from 'echarts'; // For potential charts
 
+// --- 类型定义 ---
+interface StyleOption {
+  name: string;
+  key: string;
+  thumb: string;
+}
+
+interface ColorAnalysisResultType {
+  radarData: number[];
+  keywords: string[];
+  dominantColors: string[];
+}
+
 // --- General State --- 
-const activeToolTab = ref('styleTransfer'); // To switch between tools
+const activeToolTab = ref<string>('styleTransfer'); // To switch between tools
 
 // --- State for Style Transfer --- 
 const styleTransferFile = ref<UploadUserFile | null>(null);
-const styleTransferImageUrl = ref('');
-const styleTransferResultUrl = ref('');
-const availableStyles = ref([
+const styleTransferImageUrl = ref<string>('');
+const styleTransferResultUrl = ref<string>('');
+const availableStyles = ref<StyleOption[]>([
     { name: '印象派', key: 'impressionism', thumb: '/src/assets/style_thumb1.jpg' },
     { name: '梵高', key: 'van_gogh', thumb: '/src/assets/style_thumb2.jpg' },
     { name: '水墨画', key: 'ink_wash', thumb: '/src/assets/style_thumb3.jpg' },
@@ -19,24 +32,24 @@ const availableStyles = ref([
     { name: '浮世绘', key: 'ukiyo_e', thumb: '/src/assets/style_thumb5.jpg' },
     // Add more styles
 ]);
-const selectedStyle = ref(availableStyles.value[0]?.key || '');
-const isApplyingStyle = ref(false);
+const selectedStyle = ref<string>(availableStyles.value[0]?.key || '');
+const isApplyingStyle = ref<boolean>(false);
 
 // --- State for Color Emotion Analysis ---
 const colorAnalysisFile = ref<UploadUserFile | null>(null);
-const colorAnalysisImageUrl = ref('');
-const isAnalyzingColor = ref(false);
-const colorAnalysisResult = ref(null); // To store radar data, keywords, etc.
+const colorAnalysisImageUrl = ref<string>('');
+const isAnalyzingColor = ref<boolean>(false);
+const colorAnalysisResult = ref<ColorAnalysisResultType | null>(null); // To store radar data, keywords, etc.
 let colorRadarChart: echarts.ECharts | null = null;
 
 // --- State for Image to Video ---
 const imageToVideoFile = ref<UploadUserFile | null>(null);
-const imageToVideoImageUrl = ref('');
-const isGeneratingVideo = ref(false);
-const generatedVideoUrl = ref('');
-const selectedMusic = ref(''); // Music selection
-const videoScript = ref(''); // Generated script
-const showVideoPlayerDialog = ref(false);
+const imageToVideoImageUrl = ref<string>('');
+const isGeneratingVideo = ref<boolean>(false);
+const generatedVideoUrl = ref<string>('');
+const selectedMusic = ref<string>(''); // Music selection
+const videoScript = ref<string>(''); // Generated script
+const showVideoPlayerDialog = ref<boolean>(false);
 
 // --- Upload Handlers (Common Logic Can Be Extracted) ---
 const handleStyleUploadSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
@@ -60,12 +73,12 @@ const handleVideoUploadSuccess: UploadProps['onSuccess'] = (response, uploadFile
   generatedVideoUrl.value = ''; // Clear previous result
 }
 
-const handleUploadError: UploadProps['onError'] = (error) => {
+const handleUploadError: UploadProps['onError'] = (error: Error) => {
   ElMessage.error('图片上传失败!');
   console.error('Upload Error:', error);
 }
 
-const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
+const beforeUpload: UploadProps['beforeUpload'] = (rawFile: File) => {
   if (!rawFile.type.startsWith('image/')) {
     ElMessage.error('只能上传图片文件!');
     return false;
@@ -575,4 +588,4 @@ const initColorRadarChart = () => {
 // export default {
 //   data() { ... }
 // }
-// </script> 
+// </script>
