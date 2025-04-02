@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterView } from 'vue-router'
+import NotificationDropdown from './components/NotificationDropdown.vue'
 
 // 响应式侧边栏控制
 const sidebarCollapsed = ref(false);
@@ -31,8 +32,31 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 
-// 模拟通知数据
+// 通知相关状态
 const hasNotifications = ref(true);
+const showNotificationDropdown = ref(false);
+
+// 切换通知下拉菜单
+const toggleNotificationDropdown = (event: MouseEvent) => {
+  event.stopPropagation(); // 阻止事件冒泡
+  showNotificationDropdown.value = !showNotificationDropdown.value;
+};
+
+// 关闭通知下拉菜单
+const closeNotificationDropdown = () => {
+  showNotificationDropdown.value = false;
+};
+
+// 标记全部已读
+const markAllAsRead = () => {
+  hasNotifications.value = false;
+};
+
+// 查看所有通知
+const viewAllNotifications = () => {
+  // 这里可以添加导航到通知页面的逻辑
+  showNotificationDropdown.value = false;
+};
 </script>
 
 <template>
@@ -107,9 +131,17 @@ const hasNotifications = ref(true);
         </div>
 
         <div class="right-tools">
-          <el-badge is-dot :hidden="!hasNotifications">
-            <el-icon class="tool-icon"><Bell /></el-icon>
-          </el-badge>
+          <div class="notification-icon-wrapper">
+            <el-badge is-dot :hidden="!hasNotifications">
+              <el-icon class="tool-icon" @click="toggleNotificationDropdown"><Bell /></el-icon>
+            </el-badge>
+            <NotificationDropdown 
+              :is-active="showNotificationDropdown" 
+              @close="closeNotificationDropdown"
+              @read-all="markAllAsRead"
+              @view-all="viewAllNotifications"
+            />
+          </div>
           <el-icon class="tool-icon"><Setting /></el-icon>
           <div class="user-avatar">
             <img src="@/assets/avatar.svg" alt="用户头像" />
@@ -323,17 +355,22 @@ body {
 }
 
 .tool-icon {
-  font-size: 1.375rem; /* 使用rem代替px */
+  font-size: 1.375rem;
   color: #606266;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 2.25rem;
 }
 
 .user-avatar {
-  width: 2.25rem; /* 使用rem代替px */
-  height: 2.25rem; /* 使用rem代替px */
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 0 0 2px rgba(115, 83, 229, 0.2);
+  display: flex;
+  align-items: center;
 }
 
 .user-avatar img {
@@ -460,5 +497,10 @@ body {
   --el-button-hover-border-color: #8A6AFF;
   --el-button-active-bg-color: #6B42E8;
   --el-button-active-border-color: #6B42E8;
+}
+
+/* 通知图标包装器 */
+.notification-icon-wrapper {
+  position: relative;
 }
 </style>
