@@ -4,7 +4,7 @@
       <h1 class="page-title">学海灯塔</h1>
       <p class="page-description">智能学生成长追踪与评价系统</p>
     </div>
-    
+
     <div class="dashboard-content">
       <!-- 统计卡片 -->
       <div class="stats-cards">
@@ -32,9 +32,9 @@
             <div class="card-header">
               <div class="title">学生成长追踪</div>
               <div class="controls">
-                <el-input 
-                  v-model="searchText" 
-                  placeholder="搜索学生" 
+                <el-input
+                  v-model="searchText"
+                  placeholder="搜索学生"
                   class="search-input"
                   clearable
                 >
@@ -46,16 +46,15 @@
               </div>
             </div>
           </template>
-          
-          <el-table 
-            :data="filteredStudents" 
-            style="width: 100%"
-            v-loading="loading"
-          >
+
+          <el-table :data="filteredStudents" style="width: 100%" v-loading="loading">
             <el-table-column label="学生" min-width="160">
               <template #default="scope">
                 <div class="student-info-cell">
-                  <el-avatar :size="40" :src="scope.row.avatar || '/src/assets/default-avatar.png'" />
+                  <el-avatar
+                    :size="40"
+                    :src="scope.row.avatar || '/src/assets/default-avatar.png'"
+                  />
                   <div class="student-details">
                     <div class="student-name">{{ scope.row.name }}</div>
                     <div class="student-id">{{ scope.row.id }}</div>
@@ -72,20 +71,22 @@
             </el-table-column>
             <el-table-column label="出勤率" width="180">
               <template #default="scope">
-                <el-progress 
-                  :percentage="scope.row.attendance" 
+                <el-progress
+                  :percentage="scope.row.attendance"
                   :color="getProgressColor(scope.row.attendance)"
                 />
               </template>
             </el-table-column>
             <el-table-column label="操作" width="180">
               <template #default="scope">
-                <el-button size="small" type="primary" @click="viewDetails(scope.row)">详情</el-button>
+                <el-button size="small" type="primary" @click="viewDetails(scope.row)"
+                  >详情</el-button
+                >
                 <el-button size="small" plain @click="evaluateStudent(scope.row)">评价</el-button>
               </template>
             </el-table-column>
           </el-table>
-          
+
           <div class="pagination-container">
             <el-pagination
               v-model:currentPage="currentPage"
@@ -106,160 +107,175 @@ import { ElMessage } from 'element-plus'
 
 // 数据
 const stats = ref([
-  { 
+  {
     label: '总学生数',
     value: '256',
     icon: 'User',
-    colorClass: 'blue-bg'
+    colorClass: 'blue-bg',
   },
-  { 
+  {
     label: '平均成绩',
     value: '86.5',
     icon: 'DataLine',
-    colorClass: 'green-bg'
+    colorClass: 'green-bg',
   },
-  { 
+  {
     label: '出勤率',
     value: '97%',
     icon: 'Calendar',
-    colorClass: 'orange-bg'
+    colorClass: 'orange-bg',
   },
-  { 
+  {
     label: '成长指数',
     value: '+15%',
     icon: 'TrendCharts',
-    colorClass: 'purple-bg'
-  }
-]);
+    colorClass: 'purple-bg',
+  },
+])
 
-const students = ref<Array<{
-  id: string;
-  name: string;
-  avatar?: string;
-  grade: string;
-  class: string;
-  score: number;
-  attendance: number;
-}>>([]);
+const students = ref<
+  Array<{
+    id: string
+    name: string
+    avatar?: string
+    grade: string
+    class: string
+    score: number
+    attendance: number
+  }>
+>([])
 
-const loading = ref(true);
-const searchText = ref('');
-const currentPage = ref(1);
-const pageSize = ref(10);
+const loading = ref(true)
+const searchText = ref('')
+const currentPage = ref(1)
+const pageSize = ref(10)
 
 // 计算属性
 const filteredStudents = computed(() => {
   if (!searchText.value) {
     return students.value.slice(
       (currentPage.value - 1) * pageSize.value,
-      currentPage.value * pageSize.value
-    );
+      currentPage.value * pageSize.value,
+    )
   }
-  
-  const filtered = students.value.filter(student => 
-    student.name.toLowerCase().includes(searchText.value.toLowerCase()) ||
-    student.id.includes(searchText.value)
-  );
-  
+
+  const filtered = students.value.filter(
+    (student) =>
+      student.name.toLowerCase().includes(searchText.value.toLowerCase()) ||
+      student.id.includes(searchText.value),
+  )
+
   return filtered.slice(
     (currentPage.value - 1) * pageSize.value,
-    currentPage.value * pageSize.value
-  );
-});
+    currentPage.value * pageSize.value,
+  )
+})
 
 // 方法
 const fetchStudents = () => {
-  loading.value = true;
-  
+  loading.value = true
+
   // 模拟API请求延迟
   setTimeout(() => {
     students.value = [
-      { 
-        id: '20230001', 
-        name: '张明', 
-        grade: '七年级', 
-        class: '1班', 
-        score: 92, 
+      {
+        id: '20230001',
+        name: '张明',
+        grade: '七年级',
+        class: '1班',
+        score: 92,
         attendance: 98,
-        avatar: '/src/assets/avatar1.png'
+        avatar: '/src/assets/avatar1.png',
       },
-      { 
-        id: '20230002', 
-        name: '李华', 
-        grade: '七年级', 
-        class: '1班', 
-        score: 85, 
+      {
+        id: '20230002',
+        name: '李华',
+        grade: '七年级',
+        class: '1班',
+        score: 85,
         attendance: 95,
-        avatar: '/src/assets/avatar2.png'
+        avatar: '/src/assets/avatar2.png',
       },
-      { 
-        id: '20230003', 
-        name: '王芳', 
-        grade: '七年级', 
-        class: '2班', 
-        score: 78, 
+      {
+        id: '20230003',
+        name: '王芳',
+        grade: '七年级',
+        class: '2班',
+        score: 78,
         attendance: 90,
-        avatar: '/src/assets/avatar3.png'
+        avatar: '/src/assets/avatar3.png',
       },
-      { 
-        id: '20230004', 
-        name: '赵强', 
-        grade: '七年级', 
-        class: '2班', 
-        score: 88, 
+      {
+        id: '20230004',
+        name: '赵强',
+        grade: '七年级',
+        class: '2班',
+        score: 88,
         attendance: 92,
-        avatar: '/src/assets/avatar4.png'
+        avatar: '/src/assets/avatar4.png',
       },
-      { 
-        id: '20230005', 
-        name: '刘洋', 
-        grade: '七年级', 
-        class: '3班', 
-        score: 76, 
+      {
+        id: '20230005',
+        name: '刘洋',
+        grade: '七年级',
+        class: '3班',
+        score: 76,
         attendance: 85,
-        avatar: '/src/assets/avatar5.png'
+        avatar: '/src/assets/avatar5.png',
       },
-      { 
-        id: '20230006', 
-        name: '陈思', 
-        grade: '七年级', 
-        class: '3班', 
-        score: 95, 
+      {
+        id: '20230006',
+        name: '陈思',
+        grade: '七年级',
+        class: '3班',
+        score: 95,
         attendance: 99,
-        avatar: '/src/assets/avatar6.png'
-      }
-    ];
-    
-    loading.value = false;
-  }, 1000);
-};
+        avatar: '/src/assets/avatar6.png',
+      },
+    ]
+
+    loading.value = false
+  }, 1000)
+}
 
 const getScoreClass = (score: number): string => {
-  if (score >= 90) return 'score-excellent';
-  if (score >= 80) return 'score-good';
-  if (score >= 70) return 'score-average';
-  return 'score-poor';
-};
+  if (score >= 90) return 'score-excellent'
+  if (score >= 80) return 'score-good'
+  if (score >= 70) return 'score-average'
+  return 'score-poor'
+}
 
 const getProgressColor = (value: number): string => {
-  if (value >= 90) return '#67C23A';
-  if (value >= 80) return '#409EFF';
-  if (value >= 70) return '#E6A23C';
-  return '#F56C6C';
-};
+  if (value >= 90) return '#67C23A'
+  if (value >= 80) return '#409EFF'
+  if (value >= 70) return '#E6A23C'
+  return '#F56C6C'
+}
 
-const viewDetails = (student: any) => {
-  ElMessage.info(`查看${student.name}的详细信息`);
-};
+// 创建一个明确的学生类型接口
+interface Student {
+  id: string
+  name: string
+  avatar?: string
+  grade: string
+  class: string
+  score: number
+  attendance: number
+}
 
-const evaluateStudent = (student: any) => {
-  ElMessage.info(`评价${student.name}`);
-};
+// 使用该接口替换 any 类型
+const viewDetails = (student: Student): void => {
+  ElMessage.info(`查看${student.name}的详细信息`)
+}
+
+const evaluateStudent = (student: Student): void => {
+  ElMessage.info(`评价${student.name}`)
+}
 
 // 生命周期钩子
 onMounted(() => {
-  fetchStudents();
-});
+  fetchStudents()
+})
 </script>
 
 <style scoped>
@@ -295,12 +311,14 @@ onMounted(() => {
 
 .stat-card {
   border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .stat-content {
@@ -324,19 +342,19 @@ onMounted(() => {
 }
 
 .blue-bg {
-  background-color: #409EFF;
+  background-color: #409eff;
 }
 
 .green-bg {
-  background-color: #67C23A;
+  background-color: #67c23a;
 }
 
 .orange-bg {
-  background-color: #E6A23C;
+  background-color: #e6a23c;
 }
 
 .purple-bg {
-  background-color: #7353E5;
+  background-color: #7353e5;
 }
 
 .stat-info {
@@ -409,22 +427,22 @@ onMounted(() => {
 }
 
 .score-excellent {
-  color: #67C23A;
+  color: #67c23a;
   font-weight: bold;
 }
 
 .score-good {
-  color: #409EFF;
+  color: #409eff;
   font-weight: bold;
 }
 
 .score-average {
-  color: #E6A23C;
+  color: #e6a23c;
   font-weight: bold;
 }
 
 .score-poor {
-  color: #F56C6C;
+  color: #f56c6c;
   font-weight: bold;
 }
 
@@ -439,12 +457,12 @@ onMounted(() => {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .card-header .controls {
     width: 100%;
     flex-direction: column;
   }
-  
+
   .search-input {
     width: 100%;
   }
