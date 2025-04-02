@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterView } from 'vue-router'
-import { ElMessage } from 'element-plus'
 
 // 响应式侧边栏控制
 const sidebarCollapsed = ref(false);
