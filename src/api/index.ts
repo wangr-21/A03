@@ -39,3 +39,4 @@ export * from './community';
 export * from './user';
 export * from './lab';
 export * from './lighthouse';
+export * from './thinking';

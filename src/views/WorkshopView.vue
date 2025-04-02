@@ -274,7 +274,9 @@ onMounted(() => {
     <div class="tool-cards">
       <el-card class="tool-card" v-for="(tool, index) in tools" :key="index">
         <div class="tool-icon">
-          <el-icon :size="40" :color="tool.color"><component :is="tool.icon" /></el-icon>
+          <el-icon :size="40" :color="tool.color">
+            <component :is="tool.icon" />
+          </el-icon>
         </div>
         <h3 class="tool-title">{{ tool.title }}</h3>
         <p class="tool-desc">{{ tool.description }}</p>
@@ -420,11 +422,7 @@ onMounted(() => {
 
       <!-- Recommendation List (using el-collapse) -->
       <el-collapse v-else-if="recommendedInteractions.length > 0" accordion>
-        <el-collapse-item
-          v-for="(item, index) in recommendedInteractions"
-          :key="index"
-          :name="index"
-        >
+        <el-collapse-item v-for="(item, index) in recommendedInteractions" :key="index" :name="index">
           <template #title>
             <el-tag
               size="small"
@@ -448,6 +446,9 @@ onMounted(() => {
       <!-- Empty State -->
       <el-empty v-else description="暂无推荐，请先点击按钮获取推荐"></el-empty>
     </el-card>
+
+    <!-- 思辨剧场组件 -->
+    <ThinkingTheater />
 
     <!-- 题海星图 -->
     <el-card class="question-bank-card">
@@ -649,7 +650,9 @@ onMounted(() => {
         <el-table-column prop="title" label="教案名称" min-width="200">
           <template #default="scope">
             <div class="plan-title-cell">
-              <el-icon><Document /></el-icon>
+              <el-icon>
+                <Document />
+              </el-icon>
               <span>{{ scope.row.title }}</span>
             </div>
           </template>
