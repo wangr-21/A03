@@ -1,23 +1,61 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import * as echarts from 'echarts'
+import type { EChartsType } from 'echarts'
+import type { TabsPaneContext } from 'element-plus'
+
+// 定义资源类型接口
+interface Resource {
+  id: number;
+  title: string;
+  cover: string;
+  subject: string;
+  grade: string;
+  type: string;
+}
+
+// 定义图谱数据类型
+interface GraphData {
+  source: string;
+  target: string;
+  name: string;
+}
+
+// 定义轮播项接口
+interface CarouselItem {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
+
+// 定义热点数据接口
+interface Hotspot {
+  title: string;
+  content: string;
+}
+
+// 定义联系人接口
+interface Contact {
+  name: string;
+  title: string;
+  avatar: string;
+}
 
 // 图表实例
-const overviewChart = ref(null);
-const customerChart = ref(null);
-const revenueChart = ref(null);
-const knowledgeGraphChart = ref(null);
+const overviewChart = ref<EChartsType | null>(null);
+const knowledgeGraphChart = ref<EChartsType | null>(null);
 
 // 数据
-const overviewTimeRange = ref('month');
-const customerTimeRange = ref('month');
-const searchContact = ref('');
+const overviewTimeRange = ref<string>('month');
+const searchContact = ref<string>('');
 
 // 图表初始化
-const initCharts = () => {
+const initCharts = (): void => {
   // 概览图表
-  if (document.getElementById('overviewChart')) {
-    overviewChart.value = echarts.init(document.getElementById('overviewChart'));
+  const overviewDom = document.getElementById('overviewChart');
+  if (overviewDom) {
+    overviewChart.value = echarts.init(overviewDom);
     const option = {
       title: {
         text: '学习资源访问趋势',
@@ -75,140 +113,25 @@ const initCharts = () => {
         }
       ]
     };
-    overviewChart.value.setOption(option);
-  }
-
-  // 客户来源图表
-  if (document.getElementById('customerChart')) {
-    customerChart.value = echarts.init(document.getElementById('customerChart'));
-    const option = {
-      title: {
-        text: '用户来源分布',
-        left: 'center'
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
-      },
-      legend: {
-        bottom: 0,
-        data: ['直接访问', '搜索引擎', '社交媒体', '邮件推广', '广告']
-      },
-      series: [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius: ['50%', '70%'],
-          center: ['50%', '45%'],
-          avoidLabelOverlap: false,
-          itemStyle: {
-            borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2
-          },
-          label: {
-            show: false,
-            position: 'center'
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: '16',
-              fontWeight: 'bold'
-            }
-          },
-          labelLine: {
-            show: false
-          },
-          data: [
-            { value: 1048, name: '直接访问' },
-            { value: 735, name: '搜索引擎' },
-            { value: 580, name: '社交媒体' },
-            { value: 484, name: '邮件推广' },
-            { value: 300, name: '广告' }
-          ]
-        }
-      ]
-    };
-    customerChart.value.setOption(option);
-  }
-
-  // 收益统计图表
-  if (document.getElementById('revenueChart')) {
-    revenueChart.value = echarts.init(document.getElementById('revenueChart'));
-    const option = {
-      title: {
-        text: '平台收益统计',
-        left: 'center'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        }
-      },
-      legend: {
-        bottom: 0,
-        data: ['直接收入', '间接收入']
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '15%',
-        top: '15%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'category',
-        data: ['一月', '二月', '三月', '四月', '五月', '六月']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          name: '直接收入',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            color: '#FF7A5A'
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [320, 302, 301, 334, 390, 330]
-        },
-        {
-          name: '间接收入',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            color: '#7353E5'
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [120, 132, 101, 134, 90, 230]
-        }
-      ]
-    };
-    revenueChart.value.setOption(option);
+    overviewChart.value?.setOption(option);
   }
 
   // 知识图谱
-  if (document.getElementById('knowledgeGraphChart')) {
-    knowledgeGraphChart.value = echarts.init(document.getElementById('knowledgeGraphChart'));
+  const knowledgeDom = document.getElementById('knowledgeGraphChart');
+  if (knowledgeDom) {
+    knowledgeGraphChart.value = echarts.init(knowledgeDom);
     const option = {
       title: {
         text: '学科关联图',
         left: 'center'
       },
       tooltip: {
-        formatter: function(params) {
-          if (params.dataType === 'edge') {
-            return params.name + ': ' + params.data.source + ' → ' + params.data.target;
+        formatter: function(params: echarts.DefaultLabelFormatterCallbackParams) {
+          if ('dataType' in params && params.dataType === 'edge') {
+            const data = params.data as GraphData;
+            return `${params.name}: ${data.source} → ${data.target}`;
           }
-          return params.name;
+          return String(params.name);
         }
       },
       legend: {
@@ -267,48 +190,48 @@ const initCharts = () => {
         }
       ]
     };
-    knowledgeGraphChart.value.setOption(option);
+    knowledgeGraphChart.value?.setOption(option);
   }
 };
 
 // 轮播数据
-const carouselItems = [
+const carouselItems: CarouselItem[] = [
   { id: 1, title: '优秀教学案例展示', description: '互动式历史课堂设计', image: '/src/assets/carousel1.jpg' },
   { id: 2, title: '学生创意作品欣赏', description: 'AI赋能美术创作', image: '/src/assets/carousel2.jpg' },
   { id: 3, title: '最新平台功能介绍', description: '学科星云知识图谱上线', image: '/src/assets/carousel3.jpg' }
 ];
 
 // 热点数据
-const hotspot = {
+const hotspot: Hotspot = {
   title: '今日古诗推荐',
   content: '《望庐山瀑布》 - 李白\n日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。'
 };
 
 // 资源库数据
-const activeLibraryTab = ref('all');
-const selectedSubject = ref('');
-const selectedGrade = ref('');
-const subjects = [
+const activeLibraryTab = ref<string>('all');
+const selectedSubject = ref<string>('');
+const selectedGrade = ref<string>('');
+const subjects: string[] = [
   '语文', '数学', '英语', '物理', '化学', '历史', '地理', '生物', '政治', '党建'
 ];
-const grades = [
+const grades: string[] = [
   '一年级', '二年级', '三年级', '四年级', '五年级', '六年级',
   '初一', '初二', '初三', '高一', '高二', '高三'
 ];
-const allResources = ref([]);
-const resourcePageSize = ref(5);
-const resourceCurrentPage = ref(1);
-const resourcesLoading = ref(false);
+const allResources = ref<Resource[]>([]);
+const resourcePageSize = ref<number>(5);
+const resourceCurrentPage = ref<number>(1);
+const resourcesLoading = ref<boolean>(false);
 
 // 联系人数据
-const contacts = [
+const contacts: Contact[] = [
   { name: '王小明', title: '数学教师', avatar: '/src/assets/avatar1.jpg' },
   { name: '李晓华', title: '语文组长', avatar: '/src/assets/avatar2.jpg' },
   { name: '张三', title: '科学教师', avatar: '/src/assets/avatar3.jpg' }
 ];
 
 // 过滤资源
-const filteredResources = computed(() => {
+const filteredResources = computed<Resource[]>(() => {
   return allResources.value.filter(resource => {
     const typeMatch = activeLibraryTab.value === 'all' || resource.type === activeLibraryTab.value;
     const subjectMatch = !selectedSubject.value || resource.subject === selectedSubject.value;
@@ -318,31 +241,31 @@ const filteredResources = computed(() => {
 });
 
 // 分页资源
-const paginatedResources = computed(() => {
+const paginatedResources = computed<Resource[]>(() => {
   const start = (resourceCurrentPage.value - 1) * resourcePageSize.value;
   const end = start + resourcePageSize.value;
   return filteredResources.value.slice(start, end);
 });
 
 // 方法
-const viewHotspotDetail = () => {
+const viewHotspotDetail = (): void => {
   console.log('View hotspot detail');
 };
 
-const handleTabClick = (tab) => {
+const handleTabClick = (tab: TabsPaneContext): void => {
   resourceCurrentPage.value = 1; // 切换标签时重置页码
 };
 
-const applyFilters = () => {
+const applyFilters = (): void => {
   resourceCurrentPage.value = 1;
   console.log('Filters applied:', activeLibraryTab.value, selectedSubject.value, selectedGrade.value);
 };
 
-const handleResourcePageChange = (page) => {
+const handleResourcePageChange = (page: number): void => {
   resourceCurrentPage.value = page;
 };
 
-const fetchResources = () => {
+const fetchResources = (): void => {
   resourcesLoading.value = true;
   console.log('Fetching resources...');
   // 模拟 API 调用延迟
@@ -364,16 +287,14 @@ const fetchResources = () => {
   }, 1000); // 模拟 1 秒延迟
 };
 
-const viewResource = (id) => {
+const viewResource = (id: number): void => {
   console.log('View resource:', id);
 };
 
 // 响应窗口大小变化
-const handleResize = () => {
-  if (overviewChart.value) overviewChart.value.resize();
-  if (customerChart.value) customerChart.value.resize();
-  if (revenueChart.value) revenueChart.value.resize();
-  if (knowledgeGraphChart.value) knowledgeGraphChart.value.resize();
+const handleResize = (): void => {
+  overviewChart.value?.resize();
+  knowledgeGraphChart.value?.resize();
 };
 
 // 生命周期钩子
@@ -384,16 +305,14 @@ onMounted(() => {
     setTimeout(() => {
       initCharts();
       window.addEventListener('resize', handleResize);
-    }, 300); // 给予足够的时间进行DOM渲染
+    }, 300);
   });
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
-  if (overviewChart.value) overviewChart.value.dispose();
-  if (customerChart.value) customerChart.value.dispose();
-  if (revenueChart.value) revenueChart.value.dispose();
-  if (knowledgeGraphChart.value) knowledgeGraphChart.value.dispose();
+  overviewChart.value?.dispose();
+  knowledgeGraphChart.value?.dispose();
 });
 </script>
 
@@ -458,28 +377,6 @@ onBeforeUnmount(() => {
       </div>
       <div class="chart-container" id="overviewChart"></div>
     </el-card>
-    
-    <!-- 底部卡片区 -->
-    <div class="bottom-cards">
-      <el-card class="chart-card half-width">
-        <div class="card-header">
-          <h3>客户来源</h3>
-          <el-select v-model="customerTimeRange" placeholder="Month" size="small">
-            <el-option label="Month" value="month"></el-option>
-            <el-option label="Week" value="week"></el-option>
-            <el-option label="Year" value="year"></el-option>
-          </el-select>
-        </div>
-        <div class="chart-container" id="customerChart"></div>
-      </el-card>
-      
-      <el-card class="chart-card half-width">
-        <div class="card-header">
-          <h3>收益统计</h3>
-        </div>
-        <div class="chart-container" id="revenueChart"></div>
-      </el-card>
-    </div>
     
     <!-- 联系人区域 -->
     <el-card class="contacts-card">
@@ -740,30 +637,6 @@ onBeforeUnmount(() => {
   height: 350px;
   width: 100%;
   padding: 0 10px;
-}
-
-.bottom-cards {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-/* 响应式调整底部卡片 */
-@media (max-width: 991px) {
-  .bottom-cards {
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .half-width {
-    width: 100% !important;
-  }
-}
-
-.half-width {
-  width: 50%;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .contacts-card {
@@ -1049,7 +922,7 @@ onBeforeUnmount(() => {
 }
 
 /* ECharts图表容器样式 */
-#overviewChart, #customerChart, #revenueChart, #knowledgeGraphChart {
+#overviewChart, #knowledgeGraphChart {
   width: 100%;
   height: 100%;
 }
