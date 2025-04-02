@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ElDialog, ElButton, ElInput, ElSelect, ElOption, ElTable, ElTableColumn, ElPagination, ElTag, ElCheckboxGroup, ElCheckbox } from 'element-plus'
+import ThinkingTheater from '../components/ThinkingTheater.vue'
 
 // 定义类型
 interface PlanForm {
@@ -298,7 +299,9 @@ const viewCaseDetails = (caseId: number): void => {
     <div class="tool-cards">
       <el-card class="tool-card" v-for="(tool, index) in tools" :key="index">
         <div class="tool-icon">
-          <el-icon :size="40" :color="tool.color"><component :is="tool.icon" /></el-icon>
+          <el-icon :size="40" :color="tool.color">
+            <component :is="tool.icon" />
+          </el-icon>
         </div>
         <h3 class="tool-title">{{ tool.title }}</h3>
         <p class="tool-desc">{{ tool.description }}</p>
@@ -310,7 +313,9 @@ const viewCaseDetails = (caseId: number): void => {
     <el-card class="generator-card">
       <template #header>
         <div class="card-header">
-          <h3><el-icon><EditPen /></el-icon> 灵犀教案生成器</h3>
+          <h3><el-icon>
+              <EditPen />
+            </el-icon> 灵犀教案生成器</h3>
         </div>
       </template>
       <el-form :model="planForm" label-width="100px" class="generator-form">
@@ -336,30 +341,26 @@ const viewCaseDetails = (caseId: number): void => {
         <el-form-item label="教学目标">
           <el-input type="textarea" :rows="2" v-model="planForm.objectives" placeholder="简述主要教学目标（可选）"></el-input>
         </el-form-item>
-         <el-form-item label="重难点">
+        <el-form-item label="重难点">
           <el-input type="textarea" :rows="2" v-model="planForm.keyPoints" placeholder="简述教学重难点（可选）"></el-input>
         </el-form-item>
         <el-row :gutter="20">
-           <el-col :span="12">
+          <el-col :span="12">
             <el-form-item label="课时(分钟)">
               <el-input-number v-model="planForm.duration" :min="15" :max="120" :step="5" />
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-             <el-form-item label="教学风格">
+          <el-col :span="12">
+            <el-form-item label="教学风格">
               <el-select v-model="planForm.teachingStyle">
-                <el-option v-for="style in teachingStyles" :key="style.value" :label="style.label" :value="style.value"></el-option>
+                <el-option v-for="style in teachingStyles" :key="style.value" :label="style.label"
+                  :value="style.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item>
-          <el-button
-            type="primary"
-            @click="generateLessonPlan"
-            :loading="isGenerating"
-            icon="MagicStick"
-          >
+          <el-button type="primary" @click="generateLessonPlan" :loading="isGenerating" icon="MagicStick">
             {{ isGenerating ? '正在生成...' : '智能生成教案' }}
           </el-button>
         </el-form-item>
@@ -368,9 +369,11 @@ const viewCaseDetails = (caseId: number): void => {
 
     <!-- 灵犀教案 - 展示区域 -->
     <el-card class="display-card" v-if="generatedPlan || isGenerating">
-       <template #header>
+      <template #header>
         <div class="card-header">
-          <h3><el-icon><Document /></el-icon> 生成结果</h3>
+          <h3><el-icon>
+              <Document />
+            </el-icon> 生成结果</h3>
           <el-radio-group v-model="planForm.outputFormat" size="small" v-if="generatedPlan && !isGenerating">
             <el-radio-button label="full">完整版</el-radio-button>
             <el-radio-button label="concise" disabled>速览版</el-radio-button> <!-- 速览版待实现 -->
@@ -386,35 +389,29 @@ const viewCaseDetails = (caseId: number): void => {
     <!-- 思辨剧场 - 互动推荐区域 -->
     <el-card class="interactions-card" v-if="generatedPlan && !isGenerating">
       <template #header>
-         <div class="card-header">
-          <h3><el-icon><ChatDotRound /></el-icon> 思辨剧场 - 互动推荐</h3>
-          <el-button
-            type="primary"
-            plain
-            @click="fetchRecommendedInteractions"
-            :loading="isLoadingInteractions"
-            icon="Pointer"
-            size="small"
-           >
+        <div class="card-header">
+          <h3><el-icon>
+              <ChatDotRound />
+            </el-icon> 思辨剧场 - 互动推荐</h3>
+          <el-button type="primary" plain @click="fetchRecommendedInteractions" :loading="isLoadingInteractions"
+            icon="Pointer" size="small">
             {{ isLoadingInteractions ? '正在获取...' : '获取互动推荐' }}
           </el-button>
         </div>
       </template>
 
       <!-- Loading State -->
-       <div v-if="isLoadingInteractions" class="loading-placeholder">
+      <div v-if="isLoadingInteractions" class="loading-placeholder">
         <el-skeleton :rows="3" animated />
       </div>
 
       <!-- Recommendation List (using el-collapse) -->
       <el-collapse v-else-if="recommendedInteractions.length > 0" accordion>
-        <el-collapse-item
-          v-for="(item, index) in recommendedInteractions"
-          :key="index"
-          :name="index"
-        >
+        <el-collapse-item v-for="(item, index) in recommendedInteractions" :key="index" :name="index">
           <template #title>
-            <el-tag size="small" :type="item.type === '提问策略' ? 'primary' : (item.type === '小组活动' ? 'success' : 'warning')" style="margin-right: 8px;">
+            <el-tag size="small"
+              :type="item.type === '提问策略' ? 'primary' : (item.type === '小组活动' ? 'success' : 'warning')"
+              style="margin-right: 8px;">
               {{ item.type }}
             </el-tag>
             <span class="interaction-title">{{ item.title }}</span>
@@ -428,141 +425,146 @@ const viewCaseDetails = (caseId: number): void => {
 
     </el-card>
 
+    <!-- 思辨剧场组件 -->
+    <ThinkingTheater />
+
     <!-- 题海星图 -->
     <el-card class="question-bank-card">
-        <template #header>
-           <div class="card-header">
-            <h3><el-icon><Files /></el-icon> 题海星图 - 智能题库</h3>
-          </div>
-        </template>
-
-        <!-- Filters -->
-        <div class="filters">
-            <el-form :inline="true" :model="questionFilters">
-                <el-form-item label="题型">
-                    <el-checkbox-group v-model="questionFilters.type">
-                        <el-checkbox v-for="t in questionTypes" :key="t" :label="t">{{t}}</el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
-                 <el-form-item label="难度">
-                    <el-select v-model="questionFilters.difficulty" placeholder="选择难度" clearable size="small">
-                        <el-option v-for="d in difficulties" :key="d.value" :label="d.label" :value="d.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                 <el-form-item label="知识点">
-                     <el-select v-model="questionFilters.knowledgePoint" placeholder="选择知识点" clearable filterable size="small">
-                        <el-option v-for="k in knowledgePoints" :key="k" :label="k" :value="k"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="filterQuestions" icon="Search" size="small">筛选题目</el-button>
-                </el-form-item>
-            </el-form>
+      <template #header>
+        <div class="card-header">
+          <h3><el-icon>
+              <Files />
+            </el-icon> 题海星图 - 智能题库</h3>
         </div>
+      </template>
 
-        <!-- Question List Table -->
-        <el-table :data="questions" v-loading="isQuestionsLoading" style="width: 100%" empty-text="暂无题目，请调整筛选条件">
-            <el-table-column prop="type" label="题型" width="100"></el-table-column>
-            <el-table-column prop="difficulty" label="难度" width="100">
-                 <template #default="scope">
-                    <el-tag :type="scope.row.difficulty === 'easy' ? 'success' : (scope.row.difficulty === 'medium' ? 'warning' : 'danger')" size="small">
-                        {{ difficulties.find(d => d.value === scope.row.difficulty)?.label || scope.row.difficulty }}
-                    </el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column prop="point" label="知识点" width="150"></el-table-column>
-            <el-table-column prop="stem" label="题干"></el-table-column>
-            <el-table-column label="操作" width="120">
-                <template #default="">
-                    <el-button text type="primary" size="small">查看详情</el-button>
-                    <el-button text type="success" size="small">加入试卷</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+      <!-- Filters -->
+      <div class="filters">
+        <el-form :inline="true" :model="questionFilters">
+          <el-form-item label="题型">
+            <el-checkbox-group v-model="questionFilters.type">
+              <el-checkbox v-for="t in questionTypes" :key="t" :label="t">{{t}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="难度">
+            <el-select v-model="questionFilters.difficulty" placeholder="选择难度" clearable size="small">
+              <el-option v-for="d in difficulties" :key="d.value" :label="d.label" :value="d.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="知识点">
+            <el-select v-model="questionFilters.knowledgePoint" placeholder="选择知识点" clearable filterable size="small">
+              <el-option v-for="k in knowledgePoints" :key="k" :label="k" :value="k"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="filterQuestions" icon="Search" size="small">筛选题目</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 
-        <!-- Pagination -->
-        <div class="pagination">
-            <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="totalQuestions"
-                :page-size="questionPageSize"
-                v-model:current-page="questionCurrentPage"
-                @current-change="handleQuestionPageChange">
-            </el-pagination>
-        </div>
+      <!-- Question List Table -->
+      <el-table :data="questions" v-loading="isQuestionsLoading" style="width: 100%" empty-text="暂无题目，请调整筛选条件">
+        <el-table-column prop="type" label="题型" width="100"></el-table-column>
+        <el-table-column prop="difficulty" label="难度" width="100">
+          <template #default="scope">
+            <el-tag
+              :type="scope.row.difficulty === 'easy' ? 'success' : (scope.row.difficulty === 'medium' ? 'warning' : 'danger')"
+              size="small">
+              {{ difficulties.find(d => d.value === scope.row.difficulty)?.label || scope.row.difficulty }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="point" label="知识点" width="150"></el-table-column>
+        <el-table-column prop="stem" label="题干"></el-table-column>
+        <el-table-column label="操作" width="120">
+          <template #default="">
+            <el-button text type="primary" size="small">查看详情</el-button>
+            <el-button text type="success" size="small">加入试卷</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-        <!-- TODO: Add button/tab for 错题本 -->
+      <!-- Pagination -->
+      <div class="pagination">
+        <el-pagination background layout="prev, pager, next" :total="totalQuestions" :page-size="questionPageSize"
+          v-model:current-page="questionCurrentPage" @current-change="handleQuestionPageChange">
+        </el-pagination>
+      </div>
+
+      <!-- TODO: Add button/tab for 错题本 -->
 
     </el-card>
 
     <!-- 时空走廊 -->
-     <el-card class="case-library-card">
-        <template #header>
-           <div class="card-header">
-            <h3><el-icon><Clock /></el-icon> 时空走廊 - 故事与案例</h3>
+    <el-card class="case-library-card">
+      <template #header>
+        <div class="card-header">
+          <h3><el-icon>
+              <Clock />
+            </el-icon> 时空走廊 - 故事与案例</h3>
+        </div>
+      </template>
+
+      <!-- Filters -->
+      <div class="filters">
+        <el-form :inline="true" :model="caseFilters">
+          <el-form-item label="分类">
+            <el-select v-model="caseFilters.category" placeholder="选择分类" clearable size="small">
+              <el-option v-for="c in caseCategories" :key="c" :label="c" :value="c"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="朝代/时期">
+            <el-select v-model="caseFilters.era" placeholder="选择朝代/时期" clearable size="small">
+              <el-option v-for="e in eras" :key="e" :label="e" :value="e"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="主题">
+            <el-select v-model="caseFilters.theme" placeholder="选择主题" clearable size="small">
+              <el-option v-for="t in themes" :key="t" :label="t" :value="t"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="filterCases" icon="Search" size="small">筛选案例</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <!-- Case List (Cards) -->
+      <div class="case-list" v-loading="isCasesLoading">
+        <el-card shadow="hover" v-for="item in cases" :key="item.id" class="case-card">
+          <template #header>
+            <div class="card-header">
+              <span>{{ item.title }}</span>
+              <el-tag size="small">{{ item.category }}</el-tag>
+            </div>
+          </template>
+          <p class="case-summary">{{ item.summary || '暂无简介...' }}</p>
+          <div class="case-footer">
+            <el-tag type="info" size="small" v-if="item.era">{{ item.era }}</el-tag>
+            <el-tag type="warning" size="small" v-if="item.theme">{{ item.theme }}</el-tag>
+            <el-button text type="primary" @click="viewCaseDetails(item.id)">查看详情</el-button>
           </div>
-        </template>
-
-        <!-- Filters -->
-        <div class="filters">
-            <el-form :inline="true" :model="caseFilters">
-                 <el-form-item label="分类">
-                    <el-select v-model="caseFilters.category" placeholder="选择分类" clearable size="small">
-                        <el-option v-for="c in caseCategories" :key="c" :label="c" :value="c"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="朝代/时期">
-                    <el-select v-model="caseFilters.era" placeholder="选择朝代/时期" clearable size="small">
-                        <el-option v-for="e in eras" :key="e" :label="e" :value="e"></el-option>
-                    </el-select>
-                </el-form-item>
-                 <el-form-item label="主题">
-                     <el-select v-model="caseFilters.theme" placeholder="选择主题" clearable size="small">
-                        <el-option v-for="t in themes" :key="t" :label="t" :value="t"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="filterCases" icon="Search" size="small">筛选案例</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
-
-        <!-- Case List (Cards) -->
-        <div class="case-list" v-loading="isCasesLoading">
-            <el-card shadow="hover" v-for="item in cases" :key="item.id" class="case-card">
-                 <template #header>
-                    <div class="card-header">
-                        <span>{{ item.title }}</span>
-                        <el-tag size="small">{{ item.category }}</el-tag>
-                    </div>
-                </template>
-                <p class="case-summary">{{ item.summary || '暂无简介...' }}</p>
-                <div class="case-footer">
-                     <el-tag type="info" size="small" v-if="item.era">{{ item.era }}</el-tag>
-                     <el-tag type="warning" size="small" v-if="item.theme">{{ item.theme }}</el-tag>
-                     <el-button text type="primary" @click="viewCaseDetails(item.id)">查看详情</el-button>
-                </div>
-            </el-card>
-            <el-empty v-if="!isCasesLoading && cases.length === 0" description="暂无案例，请调整筛选条件"></el-empty>
-        </div>
-        <!-- TODO: Add pagination if needed -->
+        </el-card>
+        <el-empty v-if="!isCasesLoading && cases.length === 0" description="暂无案例，请调整筛选条件"></el-empty>
+      </div>
+      <!-- TODO: Add pagination if needed -->
 
     </el-card>
 
     <!-- 思辨剧场 - 情景模拟沙盘 (Dialog Placeholder) -->
     <el-dialog v-model="showSimulationDialog" :title="simulationScenario?.title || '情景模拟'" width="60%">
-        <div v-if="simulationScenario">
-            <p>{{ simulationScenario.description }}</p>
-            <!-- TODO: Add interactive elements for the simulation based on scenario data -->
-            <el-input type="textarea" :rows="5" placeholder="在此处输入您的模拟操作或回应..."></el-input>
-        </div>
-         <template #footer>
-            <span class="dialog-footer">
-            <el-button @click="showSimulationDialog = false">关闭</el-button>
-            <el-button type="primary" @click="showSimulationDialog = false">提交模拟</el-button> <!-- TODO: Add submit logic -->
-            </span>
-        </template>
+      <div v-if="simulationScenario">
+        <p>{{ simulationScenario.description }}</p>
+        <!-- TODO: Add interactive elements for the simulation based on scenario data -->
+        <el-input type="textarea" :rows="5" placeholder="在此处输入您的模拟操作或回应..."></el-input>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="showSimulationDialog = false">关闭</el-button>
+          <el-button type="primary" @click="showSimulationDialog = false">提交模拟</el-button>
+          <!-- TODO: Add submit logic -->
+        </span>
+      </template>
     </el-dialog>
 
     <!-- 最近教案 -->
@@ -576,7 +578,9 @@ const viewCaseDetails = (caseId: number): void => {
         <el-table-column prop="title" label="教案名称" min-width="200">
           <template #default="scope">
             <div class="plan-title-cell">
-              <el-icon><Document /></el-icon>
+              <el-icon>
+                <Document />
+              </el-icon>
               <span>{{ scope.row.title }}</span>
             </div>
           </template>
@@ -621,8 +625,12 @@ const viewCaseDetails = (caseId: number): void => {
           <div class="resource-footer">
             <span class="resource-date">{{ resource.date }}</span>
             <div class="resource-stats">
-              <span><el-icon><View /></el-icon> {{ resource.views }}</span>
-              <span><el-icon><Star /></el-icon> {{ resource.stars }}</span>
+              <span><el-icon>
+                  <View />
+                </el-icon> {{ resource.views }}</span>
+              <span><el-icon>
+                  <Star />
+                </el-icon> {{ resource.stars }}</span>
             </div>
           </div>
         </el-card>
