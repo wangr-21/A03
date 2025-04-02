@@ -3,11 +3,74 @@ import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ElDialog, ElButton, ElInput, ElSelect, ElOption, ElTable, ElTableColumn, ElPagination, ElTag, ElCheckboxGroup, ElCheckbox } from 'element-plus'
 
+// 定义类型
+interface PlanForm {
+  subject: string
+  grade: string
+  topic: string
+  duration: number
+  objectives: string
+  keyPoints: string
+  teachingStyle: string
+  outputFormat: string
+}
+
+interface TeachingStyle {
+  value: string
+  label: string
+}
+
+interface InteractionItem {
+  type: string
+  title: string
+  content: string
+}
+
+interface QuestionFilters {
+  type: string[]
+  difficulty: string
+  knowledgePoint: string
+}
+
+interface Difficulty {
+  label: string
+  value: string
+}
+
+interface Question {
+  id: number
+  type: string
+  difficulty: string
+  point: string
+  stem: string
+  answer: string
+}
+
+interface CaseFilters {
+  category: string
+  era: string
+  theme: string
+}
+
+interface CaseItem {
+  id: number
+  title: string
+  category: string
+  era: string
+  theme: string
+  summary: string
+}
+
+interface SimulationScenario {
+  title: string
+  description: string
+}
+
 // Reactive form data for lesson plan generation
-const planForm = reactive({
+const planForm = reactive<PlanForm>({
   subject: '',
   grade: '',
-  topic: '', 
+  topic: '',
   duration: 60, // Default duration in minutes
   objectives: '', // Learning objectives
   keyPoints: '', // Key and difficult points
@@ -17,80 +80,86 @@ const planForm = reactive({
 
 // Ref for the generated lesson plan content
 const generatedPlan = ref<string | null>(null);
-const isGenerating = ref(false);
+const isGenerating = ref<boolean>(false);
 
 // Placeholder subjects and grades (replace with actual data source if needed)
-const subjects = ['语文', '数学', '英语', '物理', '化学', '历史', '地理', '生物', '政治'];
-const grades = ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二', '高三'];
-const teachingStyles = [
+const subjects = ref<string[]>(['语文', '数学', '英语', '物理', '化学', '历史', '地理', '生物', '政治']);
+const grades = ref<string[]>(['一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二', '高三']);
+const teachingStyles = ref<TeachingStyle[]>([
   { value: 'interactive', label: '互动探究式' },
   { value: 'lecture', label: '讲授式' },
   { value: 'project', label: '项目式' },
   { value: 'inquiry', label: '问题驱动式' }
-];
+]);
 
 // Ref for recommended interactions
-const recommendedInteractions = ref<Array<{ type: string; title: string; content: string }>>([]);
-const isLoadingInteractions = ref(false);
+const recommendedInteractions = ref<InteractionItem[]>([]);
+const isLoadingInteractions = ref<boolean>(false);
 
 // --- State for 题海星图 ---
-const questionFilters = reactive({
+const questionFilters = reactive<QuestionFilters>({
   type: [], // e.g., ['选择题', '填空题']
   difficulty: '', // e.g., 'easy', 'medium', 'hard'
   knowledgePoint: ''
 });
-const questionTypes = ['选择题', '填空题', '判断题', '简答题'];
-const difficulties = [{label:'简单', value:'easy'}, {label:'中等', value:'medium'}, {label:'困难', value:'hard'}];
-const knowledgePoints = ['函数', '几何', '代数', '力学', '光学']; // Placeholder
-const questions = ref([]); // Will hold fetched questions
-const isQuestionsLoading = ref(false);
-const questionCurrentPage = ref(1);
-const questionPageSize = ref(10);
-const totalQuestions = ref(0);
+const questionTypes = ref<string[]>(['选择题', '填空题', '判断题', '简答题']);
+const difficulties = ref<Difficulty[]>([{label:'简单', value:'easy'}, {label:'中等', value:'medium'}, {label:'困难', value:'hard'}]);
+const knowledgePoints = ref<string[]>(['函数', '几何', '代数', '力学', '光学']); // Placeholder
+const questions = ref<Question[]>([]); // Will hold fetched questions
+const isQuestionsLoading = ref<boolean>(false);
+const questionCurrentPage = ref<number>(1);
+const questionPageSize = ref<number>(10);
+const totalQuestions = ref<number>(0);
 
 // --- State for 时空走廊 ---
-const caseFilters = reactive({
+const caseFilters = reactive<CaseFilters>({
   category: '', // e.g., '传统故事', '跨学科案例'
   era: '', // e.g., '唐代', '宋代'
   theme: ''
 });
-const caseCategories = ['传统故事', '跨学科案例'];
-const eras = ['先秦', '秦汉', '魏晋', '隋唐', '宋元', '明清']; // Placeholder
-const themes = ['爱国主义', '科学探索', '文化艺术', '哲学思辨']; // Placeholder
-const cases = ref([]); // Will hold fetched cases
-const isCasesLoading = ref(false);
+const caseCategories = ref<string[]>(['传统故事', '跨学科案例']);
+const eras = ref<string[]>(['先秦', '秦汉', '魏晋', '隋唐', '宋元', '明清']); // Placeholder
+const themes = ref<string[]>(['爱国主义', '科学探索', '文化艺术', '哲学思辨']); // Placeholder
+const cases = ref<CaseItem[]>([]); // Will hold fetched cases
+const isCasesLoading = ref<boolean>(false);
 
 // --- State for 思辨剧场 - 沙盘 ---
-const showSimulationDialog = ref(false);
-const simulationScenario = ref(null); // Holds data for the current simulation
+const showSimulationDialog = ref<boolean>(false);
+const simulationScenario = ref<SimulationScenario | null>(null); // Holds data for the current simulation
 
 // Function to handle lesson plan generation
-const generateLessonPlan = async () => {
+const generateLessonPlan = async (): Promise<void> => {
   if (!planForm.subject || !planForm.grade || !planForm.topic) {
     ElMessage.warning('请至少填写学科、年级和课题！');
     return;
   }
-  
+
   isGenerating.value = true;
   generatedPlan.value = null; // Clear previous result
   console.log('Generating lesson plan with data:', planForm);
-  
-  // --- Simulate AI API Call --- 
+
+  // --- Simulate AI API Call ---
   try {
     await new Promise(resolve => setTimeout(resolve, 2500)); // Simulate network delay
-    
+
     // Replace this with your actual API call to the AI generation endpoint
     // Example response structure:
-    const mockApiResponse = {
+    const mockApiResponse: {
+      success: boolean,
+      data: {
+        title: string,
+        content: string
+      }
+    } = {
       success: true,
       data: {
         title: `《${planForm.topic}》教学设计 (${planForm.subject} - ${planForm.grade})`,
-        content: 
+        content:
 `**一、 教学目标**\n${planForm.objectives || '- 知识与技能：[根据课题自动填充或留空]\n- 过程与方法：[根据课题自动填充或留空]\n- 情感态度与价值观：[根据课题自动填充或留空]'}\n\n` +
 `**二、 教学重难点**\n- 重点：${planForm.keyPoints || '[根据课题自动填充或留空]'}\n- 难点：[根据课题自动填充或留空]\n\n` +
 `**三、 教学准备**\n- 教师：课件、相关视频/图片资料\n- 学生：预习相关内容\n\n` +
 `**四、 教学过程 (${planForm.duration}分钟)**\n` +
-`  1. 导入新课 (约5分钟)\n     - [${teachingStyles.find(s => s.value === planForm.teachingStyle)?.label || '互动'}方式引入课题 ${planForm.topic}]\n` +
+`  1. 导入新课 (约5分钟)\n     - [${teachingStyles.value.find(s => s.value === planForm.teachingStyle)?.label || '互动'}方式引入课题 ${planForm.topic}]\n` +
 `  2. 新知探究 (约${Math.floor(planForm.duration * 0.6)}分钟)\n     - [引导学生围绕重点 ${planForm.keyPoints || '?'} 进行学习]\n     - [设计活动/提问，突破难点]\n` +
 `  3. 巩固练习 (约${Math.floor(planForm.duration * 0.2)}分钟)\n     - [设计相关练习题或小组讨论]\n` +
 `  4. 课堂小结与作业布置 (约5分钟)\n     - [师生共同总结，布置课后作业]\n\n` +
@@ -101,7 +170,7 @@ const generateLessonPlan = async () => {
 
     if (mockApiResponse.success) {
       // Format the content slightly for display (e.g., handling newlines)
-      generatedPlan.value = mockApiResponse.data.content.replace(/\n/g, '<br/>'); 
+      generatedPlan.value = mockApiResponse.data.content.replace(/\n/g, '<br/>');
       ElMessage.success('教案生成成功！');
     } else {
       throw new Error('AI generation failed');
@@ -115,7 +184,7 @@ const generateLessonPlan = async () => {
 };
 
 // Function to fetch recommended interactions
-const fetchRecommendedInteractions = async () => {
+const fetchRecommendedInteractions = async (): Promise<void> => {
   if (!generatedPlan.value) return; // Ensure plan exists
 
   isLoadingInteractions.value = true;
@@ -127,7 +196,10 @@ const fetchRecommendedInteractions = async () => {
     await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
 
     // Replace with actual API call, potentially sending planForm or generatedPlan context
-    const mockInteractionResponse = {
+    const mockInteractionResponse: {
+      success: boolean,
+      data: InteractionItem[]
+    } = {
       success: true,
       data: [
         {
@@ -163,8 +235,8 @@ const fetchRecommendedInteractions = async () => {
   }
 };
 
-// --- Placeholder Functions --- 
-const filterQuestions = () => {
+// --- Placeholder Functions ---
+const filterQuestions = (): void => {
   console.log('Filtering questions:', questionFilters);
   // TODO: Implement API call to fetch filtered questions
   isQuestionsLoading.value = true;
@@ -178,12 +250,12 @@ const filterQuestions = () => {
   }, 1000);
 };
 
-const handleQuestionPageChange = (page: number) => {
+const handleQuestionPageChange = (page: number): void => {
   questionCurrentPage.value = page;
   filterQuestions(); // Refetch questions for the new page
 };
 
-const filterCases = () => {
+const filterCases = (): void => {
   console.log('Filtering cases:', caseFilters);
   // TODO: Implement API call to fetch filtered cases
   isCasesLoading.value = true;
@@ -196,14 +268,14 @@ const filterCases = () => {
   }, 1000);
 };
 
-const openSimulation = (type: string) => {
-  console.log('Opening simulation:', type);
-  // TODO: Fetch scenario data based on type or context
-  simulationScenario.value = { title: '古诗创作场景模拟', description: '你身处盛唐长安，请根据以下情景创作一首七言绝句...' }; 
-  showSimulationDialog.value = true;
-};
+// const openSimulation = (type: string): void => {
+//   console.log('Opening simulation:', type);
+//   // TODO: Fetch scenario data based on type or context
+//   simulationScenario.value = { title: '古诗创作场景模拟', description: '你身处盛唐长安，请根据以下情景创作一首七言绝句...' };
+//   showSimulationDialog.value = true;
+// };
 
-const viewCaseDetails = (caseId: number) => {
+const viewCaseDetails = (caseId: number): void => {
     console.log('Viewing case details:', caseId);
     // TODO: Navigate to case detail page or open modal
 };
@@ -213,7 +285,6 @@ const viewCaseDetails = (caseId: number) => {
 //   filterQuestions();
 //   filterCases();
 // });
-
 </script>
 
 <template>
@@ -222,7 +293,7 @@ const viewCaseDetails = (caseId: number) => {
       <h1 class="page-title">智课工坊</h1>
       <el-button type="primary" icon="Plus">创建新教案</el-button>
     </div>
-    
+
     <!-- 工具卡片区域 -->
     <div class="tool-cards">
       <el-card class="tool-card" v-for="(tool, index) in tools" :key="index">
@@ -234,7 +305,7 @@ const viewCaseDetails = (caseId: number) => {
         <el-button class="tool-btn" :type="tool.buttonType">{{ tool.buttonText }}</el-button>
       </el-card>
     </div>
-    
+
     <!-- 灵犀教案 - 生成区域 -->
     <el-card class="generator-card">
       <template #header>
@@ -283,9 +354,9 @@ const viewCaseDetails = (caseId: number) => {
           </el-col>
         </el-row>
         <el-form-item>
-          <el-button 
-            type="primary" 
-            @click="generateLessonPlan" 
+          <el-button
+            type="primary"
+            @click="generateLessonPlan"
             :loading="isGenerating"
             icon="MagicStick"
           >
@@ -317,10 +388,10 @@ const viewCaseDetails = (caseId: number) => {
       <template #header>
          <div class="card-header">
           <h3><el-icon><ChatDotRound /></el-icon> 思辨剧场 - 互动推荐</h3>
-          <el-button 
-            type="primary" 
-            plain 
-            @click="fetchRecommendedInteractions" 
+          <el-button
+            type="primary"
+            plain
+            @click="fetchRecommendedInteractions"
             :loading="isLoadingInteractions"
             icon="Pointer"
             size="small"
@@ -329,7 +400,7 @@ const viewCaseDetails = (caseId: number) => {
           </el-button>
         </div>
       </template>
-      
+
       <!-- Loading State -->
        <div v-if="isLoadingInteractions" class="loading-placeholder">
         <el-skeleton :rows="3" animated />
@@ -337,9 +408,9 @@ const viewCaseDetails = (caseId: number) => {
 
       <!-- Recommendation List (using el-collapse) -->
       <el-collapse v-else-if="recommendedInteractions.length > 0" accordion>
-        <el-collapse-item 
-          v-for="(item, index) in recommendedInteractions" 
-          :key="index" 
+        <el-collapse-item
+          v-for="(item, index) in recommendedInteractions"
+          :key="index"
           :name="index"
         >
           <template #title>
@@ -351,12 +422,12 @@ const viewCaseDetails = (caseId: number) => {
           <div class="interaction-content" v-html="item.content.replace(/\n/g, '<br/>')"></div>
         </el-collapse-item>
       </el-collapse>
-      
+
       <!-- Empty State -->
       <el-empty v-else description="暂无推荐，请先点击按钮获取推荐"></el-empty>
 
     </el-card>
-    
+
     <!-- 题海星图 -->
     <el-card class="question-bank-card">
         <template #header>
@@ -364,7 +435,7 @@ const viewCaseDetails = (caseId: number) => {
             <h3><el-icon><Files /></el-icon> 题海星图 - 智能题库</h3>
           </div>
         </template>
-        
+
         <!-- Filters -->
         <div class="filters">
             <el-form :inline="true" :model="questionFilters">
@@ -388,7 +459,7 @@ const viewCaseDetails = (caseId: number) => {
                 </el-form-item>
             </el-form>
         </div>
-        
+
         <!-- Question List Table -->
         <el-table :data="questions" v-loading="isQuestionsLoading" style="width: 100%" empty-text="暂无题目，请调整筛选条件">
             <el-table-column prop="type" label="题型" width="100"></el-table-column>
@@ -402,13 +473,13 @@ const viewCaseDetails = (caseId: number) => {
             <el-table-column prop="point" label="知识点" width="150"></el-table-column>
             <el-table-column prop="stem" label="题干"></el-table-column>
             <el-table-column label="操作" width="120">
-                <template #default="{ row }">
+                <template #default="">
                     <el-button text type="primary" size="small">查看详情</el-button>
                     <el-button text type="success" size="small">加入试卷</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        
+
         <!-- Pagination -->
         <div class="pagination">
             <el-pagination
@@ -420,11 +491,11 @@ const viewCaseDetails = (caseId: number) => {
                 @current-change="handleQuestionPageChange">
             </el-pagination>
         </div>
-        
+
         <!-- TODO: Add button/tab for 错题本 -->
-        
+
     </el-card>
-    
+
     <!-- 时空走廊 -->
      <el-card class="case-library-card">
         <template #header>
@@ -432,7 +503,7 @@ const viewCaseDetails = (caseId: number) => {
             <h3><el-icon><Clock /></el-icon> 时空走廊 - 故事与案例</h3>
           </div>
         </template>
-        
+
         <!-- Filters -->
         <div class="filters">
             <el-form :inline="true" :model="caseFilters">
@@ -456,7 +527,7 @@ const viewCaseDetails = (caseId: number) => {
                 </el-form-item>
             </el-form>
         </div>
-        
+
         <!-- Case List (Cards) -->
         <div class="case-list" v-loading="isCasesLoading">
             <el-card shadow="hover" v-for="item in cases" :key="item.id" class="case-card">
@@ -476,7 +547,7 @@ const viewCaseDetails = (caseId: number) => {
             <el-empty v-if="!isCasesLoading && cases.length === 0" description="暂无案例，请调整筛选条件"></el-empty>
         </div>
         <!-- TODO: Add pagination if needed -->
-        
+
     </el-card>
 
     <!-- 思辨剧场 - 情景模拟沙盘 (Dialog Placeholder) -->
@@ -500,7 +571,7 @@ const viewCaseDetails = (caseId: number) => {
         <h2>最近教案</h2>
         <el-button text type="primary">查看全部</el-button>
       </div>
-      
+
       <el-table :data="recentPlans" style="width: 100%">
         <el-table-column prop="title" label="教案名称" min-width="200">
           <template #default="scope">
@@ -529,14 +600,14 @@ const viewCaseDetails = (caseId: number) => {
         </el-table-column>
       </el-table>
     </div>
-    
+
     <!-- 推荐资源 -->
     <div class="resources-section">
       <div class="section-header">
         <h2>推荐资源</h2>
         <el-button text type="primary">更多推荐</el-button>
       </div>
-      
+
       <div class="resource-cards">
         <el-card class="resource-card" v-for="(resource, index) in resources" :key="index">
           <div class="resource-header">
@@ -839,7 +910,7 @@ export default {
           icon: 'EditPen',
           color: '#6B42E8',
           buttonText: '生成教案',
-          buttonType: 'primary'
+          buttonType: 'primary' as const
         },
         {
           title: '思辨剧场',
@@ -847,7 +918,7 @@ export default {
           icon: 'ChatDotRound',
           color: '#FF7A5A',
           buttonText: '创建剧场',
-          buttonType: 'warning'
+          buttonType: 'warning' as const
         },
         {
           title: '题海星图',
@@ -855,7 +926,7 @@ export default {
           icon: 'Document',
           color: '#54D6FF',
           buttonText: '题库探索',
-          buttonType: 'info'
+          buttonType: 'info' as const
         },
         {
           title: '时空走廊',
@@ -863,7 +934,7 @@ export default {
           icon: 'Clock',
           color: '#FFB64D',
           buttonText: '浏览案例',
-          buttonType: 'success'
+          buttonType: 'success' as const
         }
       ],
       recentPlans: [
@@ -928,4 +999,4 @@ export default {
     }
   }
 }
-</script> 
+</script>
