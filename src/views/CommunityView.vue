@@ -102,12 +102,12 @@ const openPostDialog = (): void => {
   showPostDialog.value = true
 }
 
-const handlePostImageUpload: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
+const handlePostImageUpload = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]): void => {
   // Limit number of images maybe?
   newPostForm.images = uploadFiles
 }
 
-const handlePostAttachmentUpload: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
+const handlePostAttachmentUpload = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]): void => {
   newPostForm.attachments = uploadFiles
 }
 

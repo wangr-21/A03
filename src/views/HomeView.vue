@@ -21,16 +21,37 @@ interface GraphData {
   name: string;
 }
 
+// 定义轮播项接口
+interface CarouselItem {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
+
+// 定义热点数据接口
+interface Hotspot {
+  title: string;
+  content: string;
+}
+
+// 定义联系人接口
+interface Contact {
+  name: string;
+  title: string;
+  avatar: string;
+}
+
 // 图表实例
 const overviewChart = ref<EChartsType | null>(null);
 const knowledgeGraphChart = ref<EChartsType | null>(null);
 
 // 数据
-const overviewTimeRange = ref('month');
-const searchContact = ref('');
+const overviewTimeRange = ref<string>('month');
+const searchContact = ref<string>('');
 
 // 图表初始化
-const initCharts = () => {
+const initCharts = (): void => {
   // 概览图表
   const overviewDom = document.getElementById('overviewChart');
   if (overviewDom) {
@@ -174,43 +195,43 @@ const initCharts = () => {
 };
 
 // 轮播数据
-const carouselItems = [
+const carouselItems: CarouselItem[] = [
   { id: 1, title: '优秀教学案例展示', description: '互动式历史课堂设计', image: '/src/assets/carousel1.jpg' },
   { id: 2, title: '学生创意作品欣赏', description: 'AI赋能美术创作', image: '/src/assets/carousel2.jpg' },
   { id: 3, title: '最新平台功能介绍', description: '学科星云知识图谱上线', image: '/src/assets/carousel3.jpg' }
 ];
 
 // 热点数据
-const hotspot = {
+const hotspot: Hotspot = {
   title: '今日古诗推荐',
   content: '《望庐山瀑布》 - 李白\n日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。'
 };
 
 // 资源库数据
-const activeLibraryTab = ref('all');
-const selectedSubject = ref('');
-const selectedGrade = ref('');
-const subjects = [
+const activeLibraryTab = ref<string>('all');
+const selectedSubject = ref<string>('');
+const selectedGrade = ref<string>('');
+const subjects: string[] = [
   '语文', '数学', '英语', '物理', '化学', '历史', '地理', '生物', '政治', '党建'
 ];
-const grades = [
+const grades: string[] = [
   '一年级', '二年级', '三年级', '四年级', '五年级', '六年级',
   '初一', '初二', '初三', '高一', '高二', '高三'
 ];
 const allResources = ref<Resource[]>([]);
-const resourcePageSize = ref(5);
-const resourceCurrentPage = ref(1);
-const resourcesLoading = ref(false);
+const resourcePageSize = ref<number>(5);
+const resourceCurrentPage = ref<number>(1);
+const resourcesLoading = ref<boolean>(false);
 
 // 联系人数据
-const contacts = [
+const contacts: Contact[] = [
   { name: '王小明', title: '数学教师', avatar: '/src/assets/avatar1.jpg' },
   { name: '李晓华', title: '语文组长', avatar: '/src/assets/avatar2.jpg' },
   { name: '张三', title: '科学教师', avatar: '/src/assets/avatar3.jpg' }
 ];
 
 // 过滤资源
-const filteredResources = computed(() => {
+const filteredResources = computed<Resource[]>(() => {
   return allResources.value.filter(resource => {
     const typeMatch = activeLibraryTab.value === 'all' || resource.type === activeLibraryTab.value;
     const subjectMatch = !selectedSubject.value || resource.subject === selectedSubject.value;
@@ -220,31 +241,31 @@ const filteredResources = computed(() => {
 });
 
 // 分页资源
-const paginatedResources = computed(() => {
+const paginatedResources = computed<Resource[]>(() => {
   const start = (resourceCurrentPage.value - 1) * resourcePageSize.value;
   const end = start + resourcePageSize.value;
   return filteredResources.value.slice(start, end);
 });
 
 // 方法
-const viewHotspotDetail = () => {
+const viewHotspotDetail = (): void => {
   console.log('View hotspot detail');
 };
 
-const handleTabClick = (tab: TabsPaneContext) => {
+const handleTabClick = (tab: TabsPaneContext): void => {
   resourceCurrentPage.value = 1; // 切换标签时重置页码
 };
 
-const applyFilters = () => {
+const applyFilters = (): void => {
   resourceCurrentPage.value = 1;
   console.log('Filters applied:', activeLibraryTab.value, selectedSubject.value, selectedGrade.value);
 };
 
-const handleResourcePageChange = (page: number) => {
+const handleResourcePageChange = (page: number): void => {
   resourceCurrentPage.value = page;
 };
 
-const fetchResources = () => {
+const fetchResources = (): void => {
   resourcesLoading.value = true;
   console.log('Fetching resources...');
   // 模拟 API 调用延迟
@@ -266,12 +287,12 @@ const fetchResources = () => {
   }, 1000); // 模拟 1 秒延迟
 };
 
-const viewResource = (id: number) => {
+const viewResource = (id: number): void => {
   console.log('View resource:', id);
 };
 
 // 响应窗口大小变化
-const handleResize = () => {
+const handleResize = (): void => {
   overviewChart.value?.resize();
   knowledgeGraphChart.value?.resize();
 };
