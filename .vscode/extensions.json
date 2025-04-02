@@ -4,6 +4,10 @@
     "esbenp.prettier-vscode",
     "ms-python.python",
     "charliermarsh.ruff",
-    "detachhead.basedpyright"
+    "detachhead.basedpyright",
+    "Vue.volar",
+    "vitest.explorer",
+    "dbaeumer.vscode-eslint",
+    "EditorConfig.EditorConfig"
   ]
 }
