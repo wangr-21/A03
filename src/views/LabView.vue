@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import { ElMessage, ElUpload, ElTabs, ElTabPane, ElCard, ElRow, ElCol, ElButton, ElIcon, ElImage, ElDialog } from 'element-plus'
-import type { UploadUserFile } from 'element-plus'
+import type {  UploadUserFile } from 'element-plus'
 import * as echarts from 'echarts'
 import type { EChartsType } from 'echarts'
 
@@ -12,6 +12,16 @@ interface StyleOption {
   key: string;
   thumb: string;
 }
+
+// 颜色分析结果接口
+interface ColorAnalysisResultType {
+  radarData: number[];
+  keywords: string[];
+  dominantColors: string[];
+}
+
+// --- General State ---
+const activeToolTab = ref<string>('styleTransfer'); // To switch between tools
 
 // 颜色分析结果接口
 interface ColorAnalysisResultType {
@@ -32,9 +42,6 @@ interface ColorAnalysisResultType {
   keywords: string[];
   dominantColors: string[];
 }
-
-// --- General State ---
-const activeToolTab = ref<string>('styleTransfer'); // To switch between tools
 
 // --- State for Style Transfer ---
 const styleTransferFile = ref<UploadUserFile | null>(null);
