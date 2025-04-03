@@ -45,7 +45,7 @@ export async function getStudents(params: {
       class: '1班',
       score: 92,
       attendance: 98,
-      avatar: '/src/assets/avatar1.png',
+      avatar: '/src/assets/avatar1.svg',
     },
     {
       id: '20230002',
@@ -54,7 +54,7 @@ export async function getStudents(params: {
       class: '1班',
       score: 85,
       attendance: 95,
-      avatar: '/src/assets/avatar2.png',
+      avatar: '/src/assets/avatar2.svg',
     },
     {
       id: '20230003',
@@ -63,7 +63,7 @@ export async function getStudents(params: {
       class: '2班',
       score: 78,
       attendance: 90,
-      avatar: '/src/assets/avatar3.png',
+      avatar: '/src/assets/avatar3.svg',
     },
     {
       id: '20230004',
@@ -72,7 +72,7 @@ export async function getStudents(params: {
       class: '2班',
       score: 88,
       attendance: 92,
-      avatar: '/src/assets/avatar4.png',
+      avatar: '/src/assets/avatar.svg',
     },
     {
       id: '20230005',
@@ -81,7 +81,7 @@ export async function getStudents(params: {
       class: '3班',
       score: 76,
       attendance: 85,
-      avatar: '/src/assets/avatar5.png',
+      avatar: '/src/assets/avatar.svg',
     },
     {
       id: '20230006',
@@ -90,7 +90,7 @@ export async function getStudents(params: {
       class: '3班',
       score: 95,
       attendance: 99,
-      avatar: '/src/assets/avatar6.png',
+      avatar: '/src/assets/avatar.svg',
     },
   ];
 
