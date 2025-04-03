@@ -13,6 +13,9 @@ from ._depends import StudentFromId
 
 router = APIRouter(prefix="/homework", tags=["homework"])
 
+HOMEWORK_UPLOAD_DIR = UPLOAD_DIR / "homeworks"
+HOMEWORK_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
 
 async def save_homework_image(file: UploadFile) -> Path:
     """保存上传的作业图片并返回相对路径"""
@@ -23,7 +26,7 @@ async def save_homework_image(file: UploadFile) -> Path:
 
     # 生成唯一文件名
     filename = f"{uuid.uuid4()}.{info.extension[0]}"
-    file_path = UPLOAD_DIR / filename
+    file_path = HOMEWORK_UPLOAD_DIR / filename
     file_path.write_bytes(head + await file.read())
     return file_path.relative_to(Path.cwd())
 

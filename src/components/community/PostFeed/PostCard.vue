@@ -22,9 +22,9 @@ defineProps<{
 
       <!-- 标签 -->
       <div class="post-tags" v-if="post.tags && post.tags.length">
-        <el-tag v-for="tag in post.tags" :key="tag" type="info" size="small" effect="plain"
-          ># {{ tag }}</el-tag
-        >
+        <el-tag v-for="tag in post.tags" :key="tag" type="info" size="small" effect="plain">
+          # {{ tag }}
+        </el-tag>
       </div>
 
       <!-- 图片 -->
@@ -54,15 +54,15 @@ defineProps<{
     </div>
 
     <div class="post-actions">
-      <span
-        ><el-icon><Pointer /></el-icon> {{ post.likes }}</span
-      >
-      <span
-        ><el-icon><ChatDotRound /></el-icon> {{ post.comments }}</span
-      >
-      <span
-        ><el-icon><Star /></el-icon> {{ post.favorites }}</span
-      >
+      <span>
+        <el-icon><Pointer /></el-icon> {{ post.likes }}
+      </span>
+      <span>
+        <el-icon><ChatDotRound /></el-icon> {{ post.comments }}
+      </span>
+      <span>
+        <el-icon><Star /></el-icon> {{ post.favorites }}
+      </span>
       <el-button text type="primary" class="share-btn" icon="Share">分享</el-button>
     </div>
   </el-card>
@@ -184,7 +184,7 @@ defineProps<{
 .post-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
   color: #666;
   font-size: 14px;
   border-top: 1px solid #f0f0f0;
