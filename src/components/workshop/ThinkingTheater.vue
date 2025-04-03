@@ -6,7 +6,8 @@ import type { SimulationScenario } from '@/api';
 
 // --- State for 思辨剧场 - 沙盘 ---
 const showSimulationDialog = ref<boolean>(false);
-const simulationScenario = ref<SimulationScenario | null>(null); // Holds data for the current simulation
+// Holds data for the current simulation
+const simulationScenario = ref<SimulationScenario | null>(null);
 
 const openSimulation = async (type: string): Promise<void> => {
   console.log('Opening simulation:', type);

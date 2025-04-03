@@ -1,6 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  resources: Array<{
+import { ref } from 'vue';
+
+interface RecommendedResource {
     title: string;
     author: string;
     content: string;
@@ -8,8 +9,38 @@ defineProps<{
     views: number;
     stars: number;
     avatar: string;
-  }>;
-}>();
+};
+
+// 推荐资源数据
+const resources = ref<RecommendedResource[]>([
+  {
+    title: '如何让数学课更有趣',
+    author: '李明 · 特级教师',
+    content: '分享10种让学生爱上数学的互动教学方法，通过游戏化和生活实例激发学习兴趣...',
+    date: '2023-03-15',
+    views: 2341,
+    stars: 189,
+    avatar: '/src/assets/avatar1.jpg',
+  },
+  {
+    title: '传统文化融入语文教学',
+    author: '王华 · 教研组长',
+    content: '详解如何将传统节日、古代礼仪等文化元素自然融入语文课堂，增强文化认同感...',
+    date: '2023-03-12',
+    views: 1892,
+    stars: 156,
+    avatar: '/src/assets/avatar2.jpg',
+  },
+  {
+    title: '物理实验创新设计指南',
+    author: '张科 · 学科带头人',
+    content: '使用简单材料设计有趣的物理实验，让抽象概念变得直观可感，提升教学效果...',
+    date: '2023-03-08',
+    views: 1654,
+    stars: 142,
+    avatar: '/src/assets/avatar3.jpg',
+  },
+]);
 </script>
 
 <template>

@@ -1,13 +1,45 @@
 <script setup lang="ts">
-defineProps<{
-  recentPlans: Array<{
-    title: string;
-    subject: string;
-    grade: string;
-    createdAt: string;
-    status: string;
-  }>;
-}>();
+import { ref } from 'vue';
+
+interface RecentPlan {
+  title: string;
+  subject: string;
+  grade: string;
+  createdAt: string;
+  status: string;
+}
+
+// 最近教案数据
+const recentPlans = ref<RecentPlan[]>([
+  {
+    title: '《九章算术》与现代数学的联系',
+    subject: '数学',
+    grade: '初三',
+    createdAt: '2023-03-20 14:30',
+    status: '已完成',
+  },
+  {
+    title: '春秋战国的历史变革',
+    subject: '历史',
+    grade: '初二',
+    createdAt: '2023-03-18 09:15',
+    status: '进行中',
+  },
+  {
+    title: '光的折射与日常生活',
+    subject: '物理',
+    grade: '初三',
+    createdAt: '2023-03-15 16:40',
+    status: '已完成',
+  },
+  {
+    title: '诗词中的意象分析',
+    subject: '语文',
+    grade: '高一',
+    createdAt: '2023-03-10 10:20',
+    status: '已完成',
+  },
+]);
 </script>
 
 <template>
