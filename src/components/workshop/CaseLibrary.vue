@@ -40,6 +40,7 @@ const filterCases = async (): Promise<void> => {
 const viewCaseDetails = (caseId: number): void => {
   console.log('Viewing case details:', caseId);
   // TODO: Navigate to case detail page or open modal
+  ElMessage.info('Not implemented yet: ' + caseId);
 };
 
 // Initial data fetch on mount
