@@ -32,7 +32,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ```env
 # 必填(其中图片生成功能调用的是GEMINI模型下专用于图像生成的模型，需要单独申请GEMINI API Key)
 OPENAI_API_KEY=sk-xxxxxx
-GEMINI_API_KEYY=AIzaSyBxxxxxx
+GEMINI_API_KEY=AIzaSyBxxxxxx
 
 # 可选，默认值为 OpenAI API
 OPENAI_BASE_URL=https://xxxxxx/v1
