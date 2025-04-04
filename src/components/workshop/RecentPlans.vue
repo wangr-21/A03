@@ -72,9 +72,11 @@ const recentPlans = ref<RecentPlan[]>([
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template #default>
-          <el-button text type="primary" icon="Edit"></el-button>
-          <el-button text type="primary" icon="View"></el-button>
-          <el-button text type="danger" icon="Delete"></el-button>
+          <div class="operation-buttons">
+            <el-button text type="primary" icon="Edit" size="small"></el-button>
+            <el-button text type="primary" icon="View" size="small"></el-button>
+            <el-button text type="danger" icon="Delete" size="small"></el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -104,5 +106,24 @@ const recentPlans = ref<RecentPlan[]>([
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.operation-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.operation-buttons :deep(.el-button) {
+  padding: 6px;
+  min-width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.operation-buttons :deep(.el-icon) {
+  font-size: 16px;
 }
 </style>
