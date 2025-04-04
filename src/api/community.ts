@@ -27,10 +27,13 @@ export interface Post {
 }
 
 export interface PostForm {
+  title: string;
   content: string;
+  type: string;
   images: UploadUserFile[];
   attachments: UploadUserFile[];
   tags: string[];
+  mentionedUsers: string[];
 }
 
 export interface RecommendedUser {

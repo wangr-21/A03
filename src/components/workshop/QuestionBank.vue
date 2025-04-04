@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Files, Document, Timer, Edit, View, Delete } from '@element-plus/icons-vue';
+import { Files, Document, Timer } from '@element-plus/icons-vue';
 import { getQuestions } from '@/api';
 import type { Question, QuestionFilters } from '@/api';
 import PaperPreview from './PaperPreview.vue';
@@ -71,7 +71,7 @@ const handleQuestionPageChange = (page: number): void => {
 const addToPaper = (question: Question) => {
   if (paperPreviewRef.value) {
     const existingQuestions = paperPreviewRef.value.selectedQuestions;
-    if (existingQuestions.some(q => q.id === question.id)) {
+    if (existingQuestions.some((q) => q.id === question.id)) {
       ElMessage.warning('该题目已在试卷中');
       return;
     }
@@ -209,7 +209,9 @@ onMounted(() => {
             <template #default="scope">
               <div class="operation-buttons">
                 <el-button text type="primary" size="small">查看详情</el-button>
-                <el-button text type="success" size="small" @click="addToPaper(scope.row)">加入试卷</el-button>
+                <el-button text type="success" size="small" @click="addToPaper(scope.row)"
+                  >加入试卷</el-button
+                >
               </div>
             </template>
           </el-table-column>

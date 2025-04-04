@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { Edit, Picture, Paperclip, QuestionFilled } from '@element-plus/icons-vue';
 
 const emit = defineEmits(['open-dialog']);
@@ -35,7 +35,7 @@ const openPostDialogWithTopic = (topic: string) => {
 
 <template>
   <el-card class="post-creator-card">
-    <div class="creator-main" @click="openPostDialog">
+    <div class="creator-main" @click="openPostDialog()">
       <el-avatar class="user-avatar" size="small" src="/src/assets/my_avatar.svg"></el-avatar>
       <div class="input-placeholder">
         <span class="placeholder-text">{{ getRandomPlaceholder() }}</span>
@@ -63,11 +63,11 @@ const openPostDialogWithTopic = (topic: string) => {
     <div class="hot-topics" v-if="hotTopics.length > 0">
       <div class="topics-title">热门话题:</div>
       <div class="topics-list">
-        <el-tag 
-          v-for="topic in hotTopics" 
-          :key="topic" 
-          size="small" 
-          effect="plain" 
+        <el-tag
+          v-for="topic in hotTopics"
+          :key="topic"
+          size="small"
+          effect="plain"
           class="topic-tag"
           @click="openPostDialogWithTopic(topic)"
         >

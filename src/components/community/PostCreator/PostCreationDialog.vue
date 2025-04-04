@@ -1,5 +1,6 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
-import { reactive, ref, watch, computed } from 'vue';
+import { reactive, ref, watch, computed, capitalize } from 'vue';
 import type { UploadUserFile } from 'element-plus';
 import { uploadImage } from '@/api';
 import type { PostForm } from '@/api';
@@ -120,16 +121,16 @@ const togglePreview = () => {
 
 // 编辑器功能
 const toggleFormat = (type: 'bold' | 'italic' | 'list') => {
-  editorState[`is${type.charAt(0).toUpperCase() + type.slice(1)}`] = 
-    !editorState[`is${type.charAt(0).toUpperCase() + type.slice(1)}`];
-  
+  const key = `is${capitalize(type)}` as const;
+  editorState[key] = !editorState[key];
+
   const textarea = document.querySelector('.content-editor') as HTMLTextAreaElement;
   if (!textarea) return;
-  
+
   const start = textarea.selectionStart;
   const end = textarea.selectionEnd;
   const selectedText = postForm.content.substring(start, end);
-  
+
   let newText = '';
   switch (type) {
     case 'bold':
@@ -142,10 +143,10 @@ const toggleFormat = (type: 'bold' | 'italic' | 'list') => {
       newText = selectedText.split('\n').map(line => `- ${line}`).join('\n');
       break;
   }
-  
-  postForm.content = 
-    postForm.content.substring(0, start) + 
-    newText + 
+
+  postForm.content =
+    postForm.content.substring(0, start) +
+    newText +
     postForm.content.substring(end);
 };
 
@@ -153,13 +154,13 @@ const toggleFormat = (type: 'bold' | 'italic' | 'list') => {
 const insertEmoji = (emoji: string) => {
   const textarea = document.querySelector('.content-editor') as HTMLTextAreaElement;
   if (!textarea) return;
-  
+
   const start = textarea.selectionStart;
-  postForm.content = 
-    postForm.content.substring(0, start) + 
-    emoji + 
+  postForm.content =
+    postForm.content.substring(0, start) +
+    emoji +
     postForm.content.substring(start);
-  
+
   editorState.showEmojiPicker = false;
 };
 
@@ -167,17 +168,17 @@ const insertEmoji = (emoji: string) => {
 const mentionUser = (username: string) => {
   const textarea = document.querySelector('.content-editor') as HTMLTextAreaElement;
   if (!textarea) return;
-  
+
   const start = textarea.selectionStart;
-  postForm.content = 
-    postForm.content.substring(0, start) + 
-    `@${username} ` + 
+  postForm.content =
+    postForm.content.substring(0, start) +
+    `@${username} ` +
     postForm.content.substring(start);
-  
+
   if (!postForm.mentionedUsers.includes(username)) {
     postForm.mentionedUsers.push(username);
   }
-  
+
   editorState.showMentionPanel = false;
 };
 
@@ -188,7 +189,7 @@ const handlePostImageUpload = (uploadFile: UploadUserFile) => {
       ElMessage.warning('图片大小不能超过5MB');
       return;
     }
-    
+
     uploadImage(uploadFile.raw as File)
       .then((response) => {
         if (response.success) {
@@ -229,7 +230,7 @@ const submitPost = () => {
     ElMessage.warning('请输入内容');
     return;
   }
-  
+
   emit('submit-post', { ...postForm });
   localStorage.removeItem('post_draft');
 };
@@ -247,7 +248,7 @@ const closeDialog = () => {
   <el-dialog
     :model-value="visible"
     @update:model-value="(val: boolean) => emit('update:visible', val)"
-    :title="postForm.type === 'article' ? '发布文章' : 
+    :title="postForm.type === 'article' ? '发布文章' :
             postForm.type === 'image' ? '图片分享' :
             postForm.type === 'resource' ? '资源分享' : '提问求助'"
     width="65%"
@@ -273,8 +274,8 @@ const closeDialog = () => {
 
     <div class="post-content" v-show="!showPreview">
       <el-form :model="postForm" label-position="top">
-        <el-form-item 
-          label="标题" 
+        <el-form-item
+          label="标题"
           required
           :rules="[{ required: true, message: '请输入标题', trigger: 'blur' }]"
         >

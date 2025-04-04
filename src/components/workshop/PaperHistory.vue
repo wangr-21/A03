@@ -49,12 +49,14 @@ const fetchHistoryPapers = async () => {
 };
 
 // 查看历史试卷详情
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const viewPaperDetail = (paper: HistoryPaper) => {
   // TODO: 实现查看详情逻辑
   ElMessage.info('查看试卷详情功能开发中');
 };
 
 // 复用历史试卷
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const reusePaper = (paper: HistoryPaper) => {
   // TODO: 实现复用逻辑
   ElMessage.success('试卷复用功能开发中');
@@ -155,4 +157,4 @@ onMounted(() => {
   margin-top: 10px;
   gap: 15px;
 }
-</style> 
+</style>

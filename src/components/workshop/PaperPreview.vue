@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
+import { ArrowUp, ArrowDown, Delete } from '@element-plus/icons-vue';
 import type { Question } from '@/api';
 
 interface PaperInfo {
@@ -40,10 +41,10 @@ const removeQuestion = (index: number) => {
 // 调整试题顺序
 const moveQuestion = (index: number, direction: 'up' | 'down') => {
   if (direction === 'up' && index > 0) {
-    [selectedQuestions.value[index], selectedQuestions.value[index - 1]] = 
+    [selectedQuestions.value[index], selectedQuestions.value[index - 1]] =
     [selectedQuestions.value[index - 1], selectedQuestions.value[index]];
   } else if (direction === 'down' && index < selectedQuestions.value.length - 1) {
-    [selectedQuestions.value[index], selectedQuestions.value[index + 1]] = 
+    [selectedQuestions.value[index], selectedQuestions.value[index + 1]] =
     [selectedQuestions.value[index + 1], selectedQuestions.value[index]];
   }
 };
@@ -118,7 +119,7 @@ defineExpose({
         <h4>已选题目</h4>
         <span class="total-score">总分：{{ calculateTotalScore() }}分</span>
       </div>
-      
+
       <el-empty v-if="selectedQuestions.length === 0" description="暂无已选题目"></el-empty>
       <el-table
         v-else
@@ -131,7 +132,7 @@ defineExpose({
         <el-table-column prop="stem" label="题干" show-overflow-tooltip></el-table-column>
         <el-table-column label="分值" width="80">
           <template #default="scope">
-            {{ defaultScores[scope.row.type] }}分
+            {{ defaultScores[scope.row.type as keyof typeof defaultScores] }}分
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150" fixed="right">
@@ -216,4 +217,4 @@ defineExpose({
   padding-top: 20px;
   border-top: 1px solid #eee;
 }
-</style> 
+</style>
