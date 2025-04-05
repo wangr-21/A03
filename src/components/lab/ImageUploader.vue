@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus';
-import type { UploadUserFile } from 'element-plus';
-import { uploadImage } from '@/api';
+import type { UploadFile, UploadUserFile } from 'element-plus';
 
 defineProps<{
   title?: string;
@@ -13,32 +12,14 @@ const emit = defineEmits<{
   'upload-error': [error: Error];
 }>();
 
-const handleUploadSuccess = async (
-  response: unknown,
-  uploadFile: UploadUserFile,
-): Promise<void> => {
+const onChange = async (file: UploadFile): Promise<void> => {
   try {
-    const result = await uploadImage(uploadFile.raw as File);
-    if (result.success) {
-      emit('upload-success', result.url || URL.createObjectURL(uploadFile.raw!), uploadFile);
-    } else {
-      throw new Error(result.message || 'Upload failed');
-    }
+    emit('upload-success', URL.createObjectURL(file.raw!), file);
   } catch (error) {
     console.error('Image Upload Error:', error);
     ElMessage.error('图片上传失败!');
     emit('upload-error', error as Error);
   }
-};
-
-const handleUploadError = (
-  error: Error,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  uploadFile: UploadUserFile,
-): void => {
-  ElMessage.error('图片上传失败!');
-  console.error('Upload Error:', error);
-  emit('upload-error', error);
 };
 
 const beforeUpload = (rawFile: File): boolean | Promise<File> => {
@@ -60,11 +41,12 @@ const beforeUpload = (rawFile: File): boolean | Promise<File> => {
     <h4 v-if="title">{{ title }}</h4>
     <el-upload
       class="image-uploader"
-      action="/api/upload"
+      action="#"
+      :auto-upload="false"
       :show-file-list="false"
-      :on-success="handleUploadSuccess"
-      :on-error="handleUploadError"
+      :limit="1"
       :before-upload="beforeUpload"
+      :on-change="onChange"
       drag
     >
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>

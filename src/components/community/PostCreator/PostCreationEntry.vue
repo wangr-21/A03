@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { Edit, Picture, Paperclip, QuestionFilled } from '@element-plus/icons-vue';
 
-// const emit = defineEmits(['open-dialog']);
 const emit = defineEmits<{
   'open-dialog': [payload: { type?: string; tags?: string[] }];
 }>();

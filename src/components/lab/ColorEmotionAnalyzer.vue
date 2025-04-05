@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import type { UploadUserFile } from 'element-plus';
 import { analyzeColorEmotion } from '@/api';
-import type { ColorAnalysisResultType } from '@/api';
+import type { ColorAnalysisResponse } from '@/api';
 import ImageUploader from './ImageUploader.vue';
 import ColorRadarChart from './ColorRadarChart.vue';
 
@@ -11,17 +11,29 @@ import ColorRadarChart from './ColorRadarChart.vue';
 const colorAnalysisFile = ref<UploadUserFile | null>(null);
 const colorAnalysisImageUrl = ref<string>('');
 const isAnalyzingColor = ref<boolean>(false);
-const colorAnalysisResult = ref<ColorAnalysisResultType | null>(null);
+const colorAnalysisResult = ref<ColorAnalysisResponse | null>(null);
+
+const getEmotionDimensions = (data: ColorAnalysisResponse): number[] => {
+  return ['warmth', 'brightness', 'contrast', 'saturation', 'harmony'].map(
+    (key) => data.dimensions[key],
+  );
+};
 
 // Upload handler
-const handleColorUploadSuccess = (result: { url: string; file: UploadUserFile }) => {
-  colorAnalysisImageUrl.value = result.url;
-  colorAnalysisFile.value = result.file;
+const handleColorUploadSuccess = (url: string, file: UploadUserFile) => {
+  colorAnalysisImageUrl.value = url;
+  colorAnalysisFile.value = file;
   colorAnalysisResult.value = null; // Clear previous result
 };
 
+const handleReupload = () => {
+  colorAnalysisImageUrl.value = '';
+  colorAnalysisFile.value = null;
+  colorAnalysisResult.value = null;
+};
+
 // Analyze color emotion
-const analyzeColorEmotionFunc = async (): Promise<void> => {
+const handleAnalyzeColorEmotion = async (): Promise<void> => {
   if (!colorAnalysisFile.value) {
     ElMessage.warning('请先上传图片！');
     return;
@@ -47,24 +59,32 @@ const analyzeColorEmotionFunc = async (): Promise<void> => {
     <el-row :gutter="30">
       <!-- Left: Upload & Image -->
       <el-col :span="8">
-        <ImageUploader
-          title="1. 上传作品图片"
-          @upload-success="handleColorUploadSuccess"
-        />
-        <div class="image-preview" v-if="colorAnalysisImageUrl">
-          <h5>作品预览</h5>
-          <el-image :src="colorAnalysisImageUrl" fit="contain"></el-image>
+        <h4>1. 上传作品图片</h4>
+        <template v-if="!colorAnalysisImageUrl">
+          <ImageUploader @upload-success="handleColorUploadSuccess" />
+        </template>
+        <div v-else>
+          <div class="image-preview">
+            <div class="preview-header">
+              <h5>作品预览</h5>
+              <el-button type="primary" link @click="handleReupload" icon="Refresh">
+                重新上传
+              </el-button>
+            </div>
+            <el-image :src="colorAnalysisImageUrl" fit="contain"></el-image>
+          </div>
+
+          <el-button
+            type="primary"
+            @click="handleAnalyzeColorEmotion"
+            :disabled="isAnalyzingColor"
+            :loading="isAnalyzingColor"
+            class="action-button"
+            icon="Brush"
+          >
+            {{ isAnalyzingColor ? '正在分析...' : '开始色彩分析' }}
+          </el-button>
         </div>
-        <el-button
-          type="primary"
-          @click="analyzeColorEmotionFunc"
-          :disabled="!colorAnalysisImageUrl || isAnalyzingColor"
-          :loading="isAnalyzingColor"
-          class="action-button"
-          icon="Brush"
-        >
-          {{ isAnalyzingColor ? '正在分析...' : '开始色彩分析' }}
-        </el-button>
       </el-col>
 
       <!-- Right: Analysis Results -->
@@ -79,15 +99,15 @@ const analyzeColorEmotionFunc = async (): Promise<void> => {
             <el-row :gutter="20">
               <el-col :span="12">
                 <h5>色彩维度雷达图</h5>
-                <ColorRadarChart :chart-data="colorAnalysisResult.radarData" />
+                <ColorRadarChart :chart-data="getEmotionDimensions(colorAnalysisResult)" />
               </el-col>
               <el-col :span="12">
                 <h5>主要色彩</h5>
                 <div class="dominant-colors">
                   <span
-                    v-for="color in colorAnalysisResult.dominantColors"
-                    :key="color"
-                    :style="{ backgroundColor: color }"
+                    v-for="color in colorAnalysisResult.colors"
+                    :key="color.hex"
+                    :style="{ backgroundColor: color.hex }"
                     class="color-swatch"
                   ></span>
                 </div>
@@ -172,5 +192,15 @@ const analyzeColorEmotionFunc = async (): Promise<void> => {
   padding: 10px;
   background-color: #f8f8f8;
   border-radius: 4px;
+}
+.preview-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.preview-header h5 {
+  margin: 0;
 }
 </style>

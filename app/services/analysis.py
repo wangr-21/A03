@@ -1,6 +1,8 @@
 import io
+import json
 from collections import Counter
 
+from fastapi import HTTPException
 from PIL import Image
 
 from ..constant import ASSETS_DIR
@@ -44,24 +46,41 @@ def extract_dominant_colors(
 
 
 async def analyze_image_emotion(
-    image: bytes, colors: list[dict[str, float | str]], word_count: int
-) -> str:
+    image: bytes, colors: list[dict[str, float | str]]
+) -> dict[str, object]:
     """使用OpenAI API分析图片情感"""
-    try:
-        color_info = "\n".join(
-            f"- {color['hex']} 占比{color['percentage']}%" for color in colors
-        )
-        prompt = (
-            PROMPT_ANALYZE_COLOR.read_text(encoding="utf-8")
-            .replace("{{word_count}}", str(word_count))
-            .replace("{{color_info}}", color_info)
-        )
 
-        client, model_name = get_openai_client()
+    color_info = "\n".join(
+        f"- {color['hex']} 占比{color['percentage']}%" for color in colors
+    )
+    prompt = PROMPT_ANALYZE_COLOR.read_text(encoding="utf-8").replace(
+        "{{color_info}}", color_info
+    )
+
+    client, model_name = get_openai_client()
+
+    try:
         response = await run_sync(client.chat.completions.create)(
             model=model_name,
             messages=[CompletionMessage().text(prompt).image(image).build()],
         )
-        return response.choices[0].message.content or ""
     except Exception as e:
-        return f"分析过程中出现错误: {e}"
+        raise HTTPException(
+            status_code=500,
+            detail="分析图片情感失败，请稍后再试",
+        ) from e
+
+    content = response.choices[0].message.content or ""
+    if not content:
+        raise HTTPException(
+            status_code=500,
+            detail="分析结果为空，请稍后再试",
+        )
+
+    try:
+        return json.loads(content[content.find("{") : content.rfind("}") + 1])
+    except json.JSONDecodeError as e:
+        raise HTTPException(
+            status_code=500,
+            detail="分析结果格式错误，请稍后再试",
+        ) from e

@@ -1,6 +1,5 @@
 # ruff: noqa: E501, N815
 from random import Random
-from typing import Literal
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel, Field
@@ -19,9 +18,18 @@ class ColorInfo(BaseModel):
     percentage: float = Field(description="该颜色在图片中所占的百分比", ge=0, le=100)
 
 
+class ColorEmotionDimension(BaseModel):
+    warmth: int
+    brightness: int
+    contrast: int
+    saturation: int
+    harmony: int
+
+
 class ImageAnalysisResponse(BaseModel):
     colors: list[ColorInfo] = Field(description="提取的主要颜色及其占比")
-    emotion: str = Field(description="基于图片颜色分析的情感描述")
+    keywords: list[str] = Field(description="基于图片颜色分析的情感关键词")
+    dimensions: ColorEmotionDimension = Field(description="基于图片颜色分析的情感维度")
 
 
 # 学生个人分析响应模型
@@ -43,10 +51,7 @@ class StudentAnalysisResponse(BaseModel):
 
 
 @router.post("/image", response_model=ImageAnalysisResponse)
-async def analyze_image(
-    word_count: Literal["50", "100", "150", "200"] = "100",
-    file: UploadFile = File(),
-):
+async def analyze_image(file: UploadFile = File()):
     """处理图片分析请求"""
 
     head = await file.read(256)
@@ -63,12 +68,10 @@ async def analyze_image(
     colors = extract_dominant_colors(content)
     if not colors:
         raise HTTPException(status_code=500, detail="无法提取图片颜色信息")
+    colors.sort(key=lambda x: x["percentage"], reverse=True)
 
-    try:
-        emotion_text = await analyze_image_emotion(content, colors, int(word_count))
-        return {"colors": colors, "emotion": emotion_text}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) from e
+    emotion = await analyze_image_emotion(content, colors)
+    return {"colors": colors, **emotion}
 
 
 @router.get("/student/{student_id}", response_model=StudentAnalysisResponse)

@@ -7,10 +7,15 @@ export interface StyleOption {
   thumb: string;
 }
 
-export interface ColorAnalysisResultType {
-  radarData: number[];
+export interface ColorAnalysisResponse {
+  colors: {
+    hex: string;
+    percentage: number;
+  }[];
   keywords: string[];
-  dominantColors: string[];
+  dimensions: {
+    [key: string]: number;
+  };
 }
 
 export interface UploadResponse {
@@ -22,11 +27,11 @@ export interface UploadResponse {
 // 获取可用风格列表
 export function getAvailableStyles(): StyleOption[] {
   return [
-    { name: '印象派', key: 'impressionism', thumb: '/src/assets/style_thumb1.jpg' },
-    { name: '梵高', key: 'van_gogh', thumb: '/src/assets/style_thumb2.jpg' },
-    { name: '水墨画', key: 'ink_wash', thumb: '/src/assets/style_thumb3.jpg' },
-    { name: '赛博朋克', key: 'cyberpunk', thumb: '/src/assets/style_thumb4.jpg' },
-    { name: '浮世绘', key: 'ukiyo_e', thumb: '/src/assets/style_thumb5.jpg' },
+    { name: '印象派', key: 'impressionism', thumb: '/src/assets/icons/impressionism.svg' },
+    { name: '梵高', key: 'van_gogh', thumb: '/src/assets/icons/van_gogh.svg' },
+    { name: '水墨画', key: 'ink_wash', thumb: '/src/assets/icons/ink_wash.svg' },
+    { name: '赛博朋克', key: 'cyberpunk', thumb: '/src/assets/icons/cyberpunk.svg' },
+    { name: '浮世绘', key: 'ukiyo_e', thumb: '/src/assets/icons/ukiyo_e.svg' },
   ];
 }
 
@@ -47,41 +52,23 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
 }
 
 // 应用风格转换
-export async function applyStyleTransfer(
-  imageFile: UploadUserFile,
-  style: string,
-): Promise<{ resultUrl: string }> {
-  // 真实环境下应该是:
-  // const formData = new FormData();
-  // formData.append('image', imageFile.raw as File);
-  // formData.append('style', style);
-  // return request.post('/lab/style-transfer', formData);
-
-  // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
-  return {
-    resultUrl: '/src/assets/styled_result.jpg', // Placeholder result
-  };
+export async function applyStyleTransfer(imageFile: UploadUserFile, style: string): Promise<Blob> {
+  const formData = new FormData();
+  formData.append('style_prompt', style);
+  formData.append('file', imageFile.raw as File);
+  return request.post('/style-transfer/generate', formData, {
+    responseType: 'blob',
+  });
 }
 
 // 分析色彩情感
 export async function analyzeColorEmotion(
   imageFile: UploadUserFile,
-): Promise<ColorAnalysisResultType> {
+): Promise<ColorAnalysisResponse> {
   // 真实环境下应该是:
-  // const formData = new FormData();
-  // formData.append('image', imageFile.raw as File);
-  // return request.post('/lab/color-analysis', formData);
-
-  // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  return {
-    radarData: [80, 60, 75, 50, 90], // Example: Warmth, Brightness, Contrast, Saturation, Harmony
-    keywords: ['活泼', '明亮', '温暖', '积极', '对比强烈'],
-    dominantColors: ['#FF7A5A', '#FFB64D', '#FFFFFF', '#7353E5'],
-  };
+  const formData = new FormData();
+  formData.append('file', imageFile.raw as File);
+  return request.post('/analysis/image', formData);
 }
 
 // 生成视频

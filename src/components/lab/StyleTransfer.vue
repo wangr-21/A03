@@ -21,6 +21,12 @@ const handleStyleUploadSuccess = (url: string, file: UploadUserFile) => {
   styleTransferResultUrl.value = ''; // Clear previous result
 };
 
+const handleReupload = () => {
+  styleTransferImageUrl.value = '';
+  styleTransferFile.value = null;
+  styleTransferResultUrl.value = '';
+};
+
 // Apply style transfer
 const applyStyleTransferFunc = async (): Promise<void> => {
   if (!styleTransferFile.value || !selectedStyle.value) {
@@ -32,7 +38,7 @@ const applyStyleTransferFunc = async (): Promise<void> => {
 
   try {
     const result = await applyStyleTransfer(styleTransferFile.value, selectedStyle.value);
-    styleTransferResultUrl.value = result.resultUrl;
+    styleTransferResultUrl.value = URL.createObjectURL(result);
     ElMessage.success('风格转换成功！');
   } catch (error) {
     console.error('Error applying style transfer:', error);
@@ -58,13 +64,20 @@ const downloadResult = () => {
     <el-row :gutter="30">
       <!-- Left: Upload & Original Image -->
       <el-col :span="10">
-        <ImageUploader
-          title="1. 上传原始图片"
-          @upload-success="handleStyleUploadSuccess"
-        />
-        <div class="image-preview" v-if="styleTransferImageUrl">
-          <h5>原图预览</h5>
-          <el-image :src="styleTransferImageUrl" fit="contain"></el-image>
+        <h4>1. 上传原始图片</h4>
+        <template v-if="!styleTransferImageUrl">
+          <ImageUploader @upload-success="handleStyleUploadSuccess" />
+        </template>
+        <div v-else>
+          <div class="image-preview">
+            <div class="preview-header">
+              <h5>原图预览</h5>
+              <el-button type="primary" link @click="handleReupload" icon="Refresh">
+                重新上传
+              </el-button>
+            </div>
+            <el-image :src="styleTransferImageUrl" fit="contain"></el-image>
+          </div>
         </div>
       </el-col>
 
@@ -134,19 +147,36 @@ const downloadResult = () => {
   border: 1px solid #eee;
   padding: 10px;
   border-radius: 4px;
-  min-height: 150px; /* Ensure some height even before image loads */
+  min-height: 150px;
+  width: 100%; /* 确保容器占满列宽 */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .image-preview h5 {
   font-size: 14px;
   color: #666;
   margin-bottom: 10px;
 }
 .image-preview .el-image {
-  max-width: 100%;
-  max-height: 300px; /* Limit preview height */
+  width: 100%; /* 调整为100%宽度 */
+  height: auto; /* 高度自适应 */
+  /* max-height: 400px; 增加最大高度 */
+  object-fit: contain; /* 保持图片比例 */
+}
+/* 为结果预览区域添加特殊样式 */
+.result-preview {
+  border: none;
+  padding: 0;
+  margin-top: 0;
+  width: 100%;
+}
+
+.result-preview .el-image {
+  width: 100%;
+  /* max-height: 400px; */
+  object-fit: contain;
 }
 
 .action-button {
@@ -159,7 +189,7 @@ const downloadResult = () => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 400px; /* Allow scrolling for many styles */
+  /* max-height: 400px; Allow scrolling for many styles */
   overflow-y: auto;
 }
 .style-option {
@@ -206,5 +236,17 @@ const downloadResult = () => {
 .result-actions {
   margin-top: 15px;
   text-align: center;
+}
+
+.preview-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.preview-header h5 {
+  margin: 0;
 }
 </style>

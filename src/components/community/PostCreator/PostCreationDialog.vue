@@ -51,6 +51,20 @@ const wordCount = computed(() => {
   return postForm.content.length;
 });
 
+// 文本输入框占位符
+const textAreaPlaceholder = computed(() => {
+  switch (postForm.type) {
+    case 'article':
+      return '分享您的教学经验和见解...';
+    case 'image':
+      return '添加图片说明...';
+    case 'resource':
+      return '描述您要分享的资源...';
+    default:
+      return '详细描述您的问题，以获得更好的帮助...';
+  }
+});
+
 // 监听对话框可见性变化
 watch(
   () => props.visible,
@@ -311,15 +325,7 @@ const closeDialog = () => {
             type="textarea"
             v-model="postForm.content"
             :rows="12"
-            :placeholder="
-              postForm.type === 'article'
-                ? '分享您的教学经验和见解...'
-                : postForm.type === 'image'
-                  ? '添加图片说明...'
-                  : postForm.type === 'resource'
-                    ? '描述您要分享的资源...'
-                    : '详细描述您的问题，以获得更好的帮助...'
-            "
+            :placeholder="textAreaPlaceholder"
             resize="none"
             maxlength="10000"
             show-word-limit
