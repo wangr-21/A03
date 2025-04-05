@@ -33,15 +33,6 @@ const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<
     isLoadingInteractions.value = false;
   }
 };
-
-// Function to render markdown content
-const renderMarkdown = (content: string): string => {
-  return md.render(content);
-};
-
-defineExpose({
-  fetchRecommendedInteractions,
-});
 </script>
 
 <template>
@@ -88,7 +79,7 @@ defineExpose({
           </el-tag>
           <span class="interaction-title">{{ item.title }}</span>
         </template>
-        <div class="interaction-content" v-html="renderMarkdown(item.content)"></div>
+        <div class="interaction-content" v-html="md.render(item.content)"></div>
       </el-collapse-item>
     </el-collapse>
 

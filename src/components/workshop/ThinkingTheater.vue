@@ -23,6 +23,7 @@ const openSimulation = async (type: string): Promise<void> => {
 };
 
 defineExpose({
+  // Used in WorkshopView.vue
   openSimulation,
 });
 </script>
