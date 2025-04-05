@@ -2,7 +2,10 @@
 import { ref } from 'vue';
 import { Edit, Picture, Paperclip, QuestionFilled } from '@element-plus/icons-vue';
 
-const emit = defineEmits(['open-dialog']);
+// const emit = defineEmits(['open-dialog']);
+const emit = defineEmits<{
+  'open-dialog': [payload: { type?: string; tags?: string[] }];
+}>();
 
 // 模拟热门话题数据
 const hotTopics = ref(['教学经验分享', '学科融合', '教学案例', '班级管理']);
@@ -13,7 +16,7 @@ const placeholders = [
   '今天课堂上有什么精彩瞬间？',
   '有什么教学难题需要同行帮助解决？',
   '分享一个教学小技巧吧...',
-  '记录您的教学反思与成长...'
+  '记录您的教学反思与成长...',
 ];
 
 // 获取随机占位符

@@ -15,9 +15,9 @@ const videoScript = ref<string>(''); // Generated script
 const showVideoPlayerDialog = ref<boolean>(false);
 
 // Upload handler
-const handleVideoUploadSuccess = (result: { url: string; file: UploadUserFile }) => {
-  imageToVideoImageUrl.value = result.url;
-  imageToVideoFile.value = result.file;
+const handleVideoUploadSuccess = (url: string, file: UploadUserFile ) => {
+  imageToVideoImageUrl.value = url;
+  imageToVideoFile.value = file;
   generatedVideoUrl.value = ''; // Clear previous result
   videoScript.value = '';
 };

@@ -8,7 +8,10 @@ defineProps<{
   tip?: string;
 }>();
 
-const emit = defineEmits(['upload-success', 'upload-error']);
+const emit = defineEmits<{
+  'upload-success': [url: string, file: UploadUserFile];
+  'upload-error': [error: Error];
+}>();
 
 const handleUploadSuccess = async (
   response: unknown,
@@ -17,17 +20,14 @@ const handleUploadSuccess = async (
   try {
     const result = await uploadImage(uploadFile.raw as File);
     if (result.success) {
-      emit('upload-success', {
-        url: result.url || URL.createObjectURL(uploadFile.raw!),
-        file: uploadFile,
-      });
+      emit('upload-success', result.url || URL.createObjectURL(uploadFile.raw!), uploadFile);
     } else {
       throw new Error(result.message || 'Upload failed');
     }
   } catch (error) {
     console.error('Image Upload Error:', error);
     ElMessage.error('图片上传失败!');
-    emit('upload-error', error);
+    emit('upload-error', error as Error);
   }
 };
 

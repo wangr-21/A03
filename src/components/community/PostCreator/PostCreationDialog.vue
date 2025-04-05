@@ -14,7 +14,10 @@ const props = defineProps<{
   initialTags?: string[];
 }>();
 
-const emit = defineEmits(['update:visible', 'submit-post']);
+const emit = defineEmits<{
+  'update:visible': [val: boolean];
+  'submit-post': [postData: PostForm];
+}>();
 
 // 表单数据
 const postForm = reactive<PostForm>({
@@ -140,14 +143,15 @@ const toggleFormat = (type: 'bold' | 'italic' | 'list') => {
       newText = `*${selectedText}*`;
       break;
     case 'list':
-      newText = selectedText.split('\n').map(line => `- ${line}`).join('\n');
+      newText = selectedText
+        .split('\n')
+        .map((line) => `- ${line}`)
+        .join('\n');
       break;
   }
 
   postForm.content =
-    postForm.content.substring(0, start) +
-    newText +
-    postForm.content.substring(end);
+    postForm.content.substring(0, start) + newText + postForm.content.substring(end);
 };
 
 // 插入表情
@@ -157,9 +161,7 @@ const insertEmoji = (emoji: string) => {
 
   const start = textarea.selectionStart;
   postForm.content =
-    postForm.content.substring(0, start) +
-    emoji +
-    postForm.content.substring(start);
+    postForm.content.substring(0, start) + emoji + postForm.content.substring(start);
 
   editorState.showEmojiPicker = false;
 };
@@ -171,9 +173,7 @@ const mentionUser = (username: string) => {
 
   const start = textarea.selectionStart;
   postForm.content =
-    postForm.content.substring(0, start) +
-    `@${username} ` +
-    postForm.content.substring(start);
+    postForm.content.substring(0, start) + `@${username} ` + postForm.content.substring(start);
 
   if (!postForm.mentionedUsers.includes(username)) {
     postForm.mentionedUsers.push(username);
@@ -248,9 +248,15 @@ const closeDialog = () => {
   <el-dialog
     :model-value="visible"
     @update:model-value="(val: boolean) => emit('update:visible', val)"
-    :title="postForm.type === 'article' ? '发布文章' :
-            postForm.type === 'image' ? '图片分享' :
-            postForm.type === 'resource' ? '资源分享' : '提问求助'"
+    :title="
+      postForm.type === 'article'
+        ? '发布文章'
+        : postForm.type === 'image'
+          ? '图片分享'
+          : postForm.type === 'resource'
+            ? '资源分享'
+            : '提问求助'
+    "
     width="65%"
     top="5vh"
     destroy-on-close
@@ -290,19 +296,30 @@ const closeDialog = () => {
         <el-form-item label="内容" required>
           <div class="editor-toolbar">
             <el-button-group>
-              <el-button text><el-icon><Bold /></el-icon></el-button>
-              <el-button text><el-icon><Italic /></el-icon></el-button>
-              <el-button text><el-icon><List /></el-icon></el-button>
+              <el-button text
+                ><el-icon><Bold /></el-icon
+              ></el-button>
+              <el-button text
+                ><el-icon><Italic /></el-icon
+              ></el-button>
+              <el-button text
+                ><el-icon><List /></el-icon
+              ></el-button>
             </el-button-group>
           </div>
           <el-input
             type="textarea"
             v-model="postForm.content"
             :rows="12"
-            :placeholder="postForm.type === 'article' ? '分享您的教学经验和见解...' :
-                         postForm.type === 'image' ? '添加图片说明...' :
-                         postForm.type === 'resource' ? '描述您要分享的资源...' :
-                         '详细描述您的问题，以获得更好的帮助...'"
+            :placeholder="
+              postForm.type === 'article'
+                ? '分享您的教学经验和见解...'
+                : postForm.type === 'image'
+                  ? '添加图片说明...'
+                  : postForm.type === 'resource'
+                    ? '描述您要分享的资源...'
+                    : '详细描述您的问题，以获得更好的帮助...'
+            "
             resize="none"
             maxlength="10000"
             show-word-limit
@@ -369,7 +386,7 @@ const closeDialog = () => {
           v-for="img in postForm.images"
           :key="img.uid"
           :src="img.url"
-          :preview-src-list="postForm.images.map(i => i.url)"
+          :preview-src-list="postForm.images.map((i) => i.url)"
           fit="cover"
         />
       </div>

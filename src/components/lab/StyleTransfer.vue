@@ -15,9 +15,9 @@ const selectedStyle = ref<string>(availableStyles.value[0]?.key || '');
 const isApplyingStyle = ref<boolean>(false);
 
 // Upload handler
-const handleStyleUploadSuccess = (result: { url: string; file: UploadUserFile }) => {
-  styleTransferImageUrl.value = result.url;
-  styleTransferFile.value = result.file;
+const handleStyleUploadSuccess = (url: string, file: UploadUserFile) => {
+  styleTransferImageUrl.value = url;
+  styleTransferFile.value = file;
   styleTransferResultUrl.value = ''; // Clear previous result
 };
 

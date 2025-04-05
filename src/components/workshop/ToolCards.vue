@@ -11,7 +11,9 @@ defineProps<{
 }>();
 
 // 定义工具卡片点击事件
-const emit = defineEmits(['toolClicked']);
+const emit = defineEmits<{
+  toolClicked: [toolTitle: string];
+}>();
 
 const handleToolClick = (toolTitle: string) => {
   emit('toolClicked', toolTitle);

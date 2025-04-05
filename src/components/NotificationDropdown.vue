@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, onMounted, defineProps, onBeforeUnmount } from 'vue'
+import { ref, defineEmits, onMounted, defineProps, onBeforeUnmount } from 'vue';
 
 // 定义Props
 defineProps({
@@ -7,10 +7,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 
 // 定义Emits
-const emit = defineEmits(['close', 'readAll', 'viewAll'])
+const emit = defineEmits(['close', 'readAll', 'viewAll']);
 
 // 通知状态
 const notifications = ref([
@@ -50,62 +50,62 @@ const notifications = ref([
     avatar: '/src/assets/avatar3.svg',
     read: true,
   },
-])
+]);
 
 // 未读消息数量
-const unreadCount = ref(0)
+const unreadCount = ref(0);
 
 // 计算未读消息数量
 const calculateUnreadCount = () => {
-  unreadCount.value = notifications.value.filter((notification) => !notification.read).length
-}
+  unreadCount.value = notifications.value.filter((notification) => !notification.read).length;
+};
 
 // 标记已读
 const markAsRead = (id: number) => {
-  const notification = notifications.value.find((item) => item.id === id)
+  const notification = notifications.value.find((item) => item.id === id);
   if (notification) {
-    notification.read = true
-    calculateUnreadCount()
+    notification.read = true;
+    calculateUnreadCount();
   }
-}
+};
 
 // 标记全部已读
 const markAllAsRead = () => {
   notifications.value.forEach((notification) => {
-    notification.read = true
-  })
-  calculateUnreadCount()
-  emit('readAll')
-}
+    notification.read = true;
+  });
+  calculateUnreadCount();
+  emit('readAll');
+};
 
 // 查看所有通知
 const viewAllNotifications = () => {
-  emit('viewAll')
-}
+  emit('viewAll');
+};
 
 // 关闭下拉菜单
 const closeDropdown = () => {
-  emit('close')
-}
+  emit('close');
+};
 
 // 点击外部关闭下拉菜单
 const handleClickOutside = (event: MouseEvent) => {
-  const dropdown = document.querySelector('.notification-dropdown')
+  const dropdown = document.querySelector('.notification-dropdown');
   if (dropdown && !dropdown.contains(event.target as Node)) {
-    closeDropdown()
+    closeDropdown();
   }
-}
+};
 
 // 组件挂载后添加点击外部事件监听
 onMounted(() => {
-  calculateUnreadCount()
-  document.addEventListener('click', handleClickOutside)
-})
+  calculateUnreadCount();
+  document.addEventListener('click', handleClickOutside);
+});
 
 // 组件销毁前移除事件监听
 onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <template>

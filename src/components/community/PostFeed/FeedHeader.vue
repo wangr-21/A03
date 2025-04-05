@@ -6,7 +6,10 @@ const props = defineProps<{
   searchQuery: string;
 }>();
 
-const emit = defineEmits(['tab-change', 'search']);
+const emit = defineEmits<{
+  'tab-change': [activeTab: string];
+  search: [searchQuery: string];
+}>();
 
 const localActiveTab = ref(props.activeTab);
 const localSearchQuery = ref(props.searchQuery);
