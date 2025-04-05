@@ -42,7 +42,7 @@ const openPostDialog = (): void => {
   showPostDialog.value = true;
 };
 
-const submitPostFunc = async (postForm: PostForm): Promise<void> => {
+const handleSubmitPost = async (postForm: PostForm): Promise<void> => {
   if (!postForm.content.trim()) {
     ElMessage.warning('帖子内容不能为空！');
     return;
@@ -181,8 +181,7 @@ onMounted(() => {
       v-model:visible="showPostDialog"
       :is-posting="isPosting"
       :available-tags="availableTags"
-      @submit-post="submitPostFunc"
-      @update:visible="showPostDialog = $event"
+      @submit-post="handleSubmitPost"
     />
   </div>
 </template>
