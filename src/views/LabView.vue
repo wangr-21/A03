@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import StyleTransfer from '@/components/lab/StyleTransfer.vue';
-import ColorEmotionAnalyzer from '@/components/lab/ColorEmotionAnalyzer.vue';
-import ImageToVideo from '@/components/lab/ImageToVideo.vue';
+import { StyleTransfer, ColorEmotionAnalyzer, ImageToVideo } from '@/components/lab';
 
 // --- General State ---
 const activeToolTab = ref<string>('styleTransfer'); // To switch between tools

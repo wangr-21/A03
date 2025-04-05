@@ -4,10 +4,7 @@ import { ElMessage } from 'element-plus';
 import { getStudents, getStatistics } from '@/api';
 import type { Student, StatItem } from '@/api';
 
-// 导入拆分后的组件
-import PageHeader from '@/components/lighthouse/PageHeader.vue';
-import StatCards from '@/components/lighthouse/StatCards.vue';
-import StudentTable from '@/components/lighthouse/table/StudentTable.vue';
+import { PageHeader, StatCards, StudentTable } from '@/components/lighthouse';
 
 // 数据
 const stats = ref<StatItem[]>([]);
@@ -82,10 +79,7 @@ onMounted(() => {
 <template>
   <div class="lighthouse-container">
     <!-- 页面标题组件 -->
-    <PageHeader
-      title="学海灯塔"
-      description="智能学生成长追踪与评价系统"
-    />
+    <PageHeader title="学海灯塔" description="智能学生成长追踪与评价系统" />
 
     <div class="dashboard-content">
       <!-- 统计卡片组件 -->
@@ -117,4 +111,3 @@ onMounted(() => {
   gap: 25px;
 }
 </style>
-  

@@ -3,15 +3,15 @@ import { ref, onMounted } from 'vue';
 import { getResources } from '@/api';
 import { ElMessage } from 'element-plus';
 import type { Resource } from '@/api';
-
-// 导入拆分后的组件
-import StatsCards from '@/components/home/StatsCards.vue';
-import OverviewChart from '@/components/home/OverviewChart.vue';
-import ContactList from '@/components/home/ContactList.vue';
-import ShowcaseCarousel from '@/components/home/Showcase/ShowcaseCarousel.vue';
-import HotspotCard from '@/components/home/Showcase/HotspotCard.vue';
-import ResourceLibrary from '@/components/home/ResourceLibrary.vue';
-import KnowledgeGraph from '@/components/home/KnowledgeGraph.vue';
+import {
+  StatsCards,
+  OverviewChart,
+  ContactList,
+  ShowcaseCarousel,
+  HotspotCard,
+  ResourceLibrary,
+  KnowledgeGraph,
+} from '@/components/home';
 
 // 资源库相关数据
 const allResources = ref<Resource[]>([]);

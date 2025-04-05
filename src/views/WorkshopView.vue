@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import ToolCards from '@/components/workshop/ToolCards.vue';
-import LessonPlanGenerator from '@/components/workshop/LessonPlanGenerator.vue';
-import InteractionRecommender from '@/components/workshop/InteractionRecommender.vue';
-import ThinkingTheater from '@/components/workshop/ThinkingTheater.vue';
-import QuestionBank from '@/components/workshop/QuestionBank.vue';
-import CaseLibrary from '@/components/workshop/CaseLibrary.vue';
-import RecentPlans from '@/components/workshop/RecentPlans.vue';
-import RecommendedResources from '@/components/workshop/RecommendedResources.vue';
+import {
+  ToolCards,
+  LessonPlanGenerator,
+  InteractionRecommender,
+  ThinkingTheater,
+  QuestionBank,
+  CaseLibrary,
+  RecentPlans,
+  RecommendedResources,
+} from '@/components/workshop';
 
 // 组件引用
 const thinkingTheaterRef = ref<typeof ThinkingTheater>();

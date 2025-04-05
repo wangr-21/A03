@@ -3,14 +3,14 @@ import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { getPosts, getSidebarData, submitPost } from '@/api';
 import type { Post, PostForm, RecommendedUser } from '@/api';
-
-// 导入拆分后的组件
-import PostCreationEntry from '@/components/community/PostCreator/PostCreationEntry.vue';
-import PostCreationDialog from '@/components/community/PostCreator/PostCreationDialog.vue';
-import FeedHeader from '@/components/community/PostFeed/FeedHeader.vue';
-import PostList from '@/components/community/PostFeed/PostList.vue';
-import RecommendedUsers from '@/components/community/Sidebar/RecommendedUsers.vue';
-import HotTopics from '@/components/community/Sidebar/HotTopics.vue';
+import {
+  PostCreationEntry,
+  PostCreationDialog,
+  FeedHeader,
+  PostList,
+  RecommendedUsers,
+  HotTopics,
+} from '@/components/community';
 
 // --- Post Creation State ---
 const showPostDialog = ref<boolean>(false);
