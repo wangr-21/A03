@@ -5,22 +5,16 @@ import type { UploadUserFile } from 'element-plus';
 import { uploadImage } from '@/api';
 import type { PostForm } from '@/api';
 import { ElMessage } from 'element-plus';
-import { BoldIcon, ItalicIcon } from '@/components/icons';
 
 const props = defineProps<{
-  // visible: boolean;
+  visible: boolean;
   isPosting: boolean;
   availableTags: string[];
   initialType?: string;
   initialTags?: string[];
 }>();
 
-const visible = defineModel('visible', { type: Boolean });
-
-const emit = defineEmits<{
-  // 'update:visible': [val: boolean];
-  'submit-post': [postData: PostForm];
-}>();
+const emit = defineEmits(['update:visible', 'submit-post']);
 
 // 表单数据
 const postForm = reactive<PostForm>({
@@ -54,35 +48,17 @@ const wordCount = computed(() => {
   return postForm.content.length;
 });
 
-// 文本输入框占位符
-const textAreaPlaceholder = computed(() => {
-  switch (postForm.type) {
-    case 'article':
-      return '分享您的教学经验和见解...';
-    case 'image':
-      return '添加图片说明...';
-    case 'resource':
-      return '描述您要分享的资源...';
-    default:
-      return '详细描述您的问题，以获得更好的帮助...';
-  }
-});
-
-const dialogTitleText = computed(() => {
-  switch (postForm.type) {
-    case 'article':
-      return '发布文章';
-    case 'image':
-      return '图片分享';
-    case 'resource':
-      return '资源分享';
-    default:
-      return '提问求助';
-  }
-});
-
 // 监听对话框可见性变化
-watch(visible, (visible) => (visible ? loadDraft() : clearAutoSave()));
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      loadDraft();
+    } else {
+      clearAutoSave();
+    }
+  },
+);
 
 // 监听内容变化，自动保存
 watch(
@@ -261,16 +237,23 @@ const closeDialog = () => {
   if (editorState.isDraft) {
     ElMessage.info('已自动保存为草稿');
   }
-  // emit('update:visible', false);
-  visible.value = false;
+  emit('update:visible', false);
 };
 </script>
 
 <template>
   <el-dialog
     :model-value="visible"
-    @update:model-value="(val: boolean) => (visible = val)"
-    :title="dialogTitleText"
+    @update:model-value="(val: boolean) => emit('update:visible', val)"
+    :title="
+      postForm.type === 'article'
+        ? '发布文章'
+        : postForm.type === 'image'
+          ? '图片分享'
+          : postForm.type === 'resource'
+            ? '资源分享'
+            : '提问求助'
+    "
     width="65%"
     top="5vh"
     destroy-on-close
@@ -310,41 +293,34 @@ const closeDialog = () => {
         <el-form-item label="内容" required>
           <div class="editor-toolbar">
             <el-button-group>
-              <el-button
-                text
-                @click="toggleFormat('bold')"
-                :class="{ 'is-active': editorState.isBold }"
-              >
-                <el-icon><BoldIcon /></el-icon>
-              </el-button>
-              <el-button
-                text
-                @click="toggleFormat('italic')"
-                :class="{ 'is-active': editorState.isItalic }"
-              >
-                <el-icon><ItalicIcon /></el-icon>
-              </el-button>
-              <el-button
-                text
-                @click="toggleFormat('list')"
-                :class="{ 'is-active': editorState.isList }"
-              >
-                <el-icon><List /></el-icon>
-              </el-button>
+              <el-button text
+                ><el-icon><Bold /></el-icon
+              ></el-button>
+              <el-button text
+                ><el-icon><Italic /></el-icon
+              ></el-button>
+              <el-button text
+                ><el-icon><List /></el-icon
+              ></el-button>
             </el-button-group>
           </div>
           <el-input
             type="textarea"
             v-model="postForm.content"
             :rows="12"
-            :placeholder="textAreaPlaceholder"
+            :placeholder="
+              postForm.type === 'article'
+                ? '分享您的教学经验和见解...'
+                : postForm.type === 'image'
+                  ? '添加图片说明...'
+                  : postForm.type === 'resource'
+                    ? '描述您要分享的资源...'
+                    : '详细描述您的问题，以获得更好的帮助...'
+            "
             resize="none"
             maxlength="10000"
             show-word-limit
           ></el-input>
-          <div class="editor-footer">
-            <span class="word-count">当前字数：{{ wordCount }}</span>
-          </div>
         </el-form-item>
 
         <el-form-item v-if="postForm.type === 'image'" label="上传图片">
@@ -475,27 +451,6 @@ const closeDialog = () => {
   background: var(--el-bg-color-page);
 }
 
-.editor-toolbar .el-button.is-active {
-  background-color: var(--el-color-primary-light-9);
-  color: var(--el-color-primary);
-}
-
-.editor-toolbar .el-button:hover {
-  background-color: var(--el-fill-color-light);
-}
-
-.editor-footer {
-  margin-top: 8px;
-  padding: 4px 8px;
-  display: flex;
-  justify-content: flex-end;
-  color: var(--el-text-color-secondary);
-  font-size: 12px;
-}
-
-.word-count {
-  margin-left: auto;
-}
 .form-tip {
   font-size: 12px;
   color: var(--el-text-color-secondary);

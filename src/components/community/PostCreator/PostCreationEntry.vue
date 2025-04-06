@@ -2,9 +2,7 @@
 import { ref } from 'vue';
 import { Edit, Picture, Paperclip, QuestionFilled } from '@element-plus/icons-vue';
 
-const emit = defineEmits<{
-  'open-dialog': [payload: { type?: string; tags?: string[] }];
-}>();
+const emit = defineEmits(['open-dialog']);
 
 // 模拟热门话题数据
 const hotTopics = ref(['教学经验分享', '学科融合', '教学案例', '班级管理']);
