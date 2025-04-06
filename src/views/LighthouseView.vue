@@ -4,7 +4,13 @@ import { ElMessage } from 'element-plus';
 import { getStudents, getStatistics } from '@/api';
 import type { Student, StatItem } from '@/api';
 
-import { PageHeader, StatCards, StudentTable } from '@/components/lighthouse';
+import {
+  PageHeader,
+  StatCards,
+  StudentTable,
+  StudentDetailsDialog,
+  StudentEvaluateDialog,
+} from '@/components/lighthouse';
 
 // 数据
 const stats = ref<StatItem[]>([]);
@@ -13,6 +19,12 @@ const loading = ref<boolean>(false);
 const searchText = ref<string>('');
 const currentPage = ref<number>(1);
 const pageSize = ref<number>(10);
+
+// 对话框状态变量
+const detailsDialogVisible = ref<boolean>(false);
+const evaluateDialogVisible = ref<boolean>(false);
+const currentStudent = ref<Student | null>(null);
+const submittingEvaluation = ref<boolean>(false);
 
 // 方法
 const fetchStudents = async () => {
@@ -58,15 +70,41 @@ const handlePageUpdate = (page: number) => {
 };
 
 const viewDetails = (student: Student): void => {
-  ElMessage.info(`查看${student.name}的详细信息`);
+  currentStudent.value = student;
+  detailsDialogVisible.value = true;
 };
 
 const evaluateStudent = (student: Student): void => {
-  ElMessage.info(`评价${student.name}`);
+  currentStudent.value = student;
+  evaluateDialogVisible.value = true;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const submitEvaluation = async (content: string) => {
+  submittingEvaluation.value = true;
+
+  try {
+    // 这里应该有一个实际的API调用来提交评价
+    // await submitStudentEvaluation(currentStudent.value.id, content);
+
+    // 模拟API调用
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    ElMessage.success(`已成功提交对${currentStudent.value?.name}的评价`);
+    evaluateDialogVisible.value = false;
+  } catch (error) {
+    console.error('提交评价失败:', error);
+    ElMessage.error('提交评价失败，请稍后重试');
+  } finally {
+    submittingEvaluation.value = false;
+  }
 };
 
 const exportData = (): void => {
-  ElMessage.success('正在导出数据...');
+  ElMessage.info('正在导出数据...');
+  new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+    ElMessage.success('数据导出成功');
+  });
 };
 
 // 生命周期钩子
@@ -97,6 +135,17 @@ onMounted(() => {
         @export-data="exportData"
       />
     </div>
+
+    <!-- 学生详情对话框 -->
+    <StudentDetailsDialog v-model:visible="detailsDialogVisible" :student="currentStudent" />
+
+    <!-- 评价对话框 -->
+    <StudentEvaluateDialog
+      v-model:visible="evaluateDialogVisible"
+      :student="currentStudent"
+      :submitting="submittingEvaluation"
+      @submit="submitEvaluation"
+    />
   </div>
 </template>
 

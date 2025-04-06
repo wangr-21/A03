@@ -12,7 +12,6 @@ let chartInstance: EChartsType | null = null;
 
 const initChart = () => {
   if (!chartRef.value) return;
-
   if (chartInstance) chartInstance.dispose();
 
   chartInstance = echarts.init(chartRef.value);
@@ -39,22 +38,16 @@ const initChart = () => {
 };
 
 // 监听窗口变化，重新渲染图表
-window.addEventListener('resize', () => {
-  chartInstance?.resize();
-});
+window.addEventListener('resize', () => chartInstance?.resize());
 
 // 监听数据变化
 watch(
   () => props.chartData,
-  () => {
-    initChart();
-  },
+  () => initChart(),
   { deep: true },
 );
 
-onMounted(() => {
-  initChart();
-});
+onMounted(() => initChart());
 </script>
 
 <template>

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import type { Student } from '@/api';
 import SearchBar from './SearchBar.vue';
+import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElProgress, ElPagination } from 'element-plus';
 
 defineProps<{
   students: Student[];
