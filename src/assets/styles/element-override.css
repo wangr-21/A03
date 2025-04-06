@@ -1,0 +1,71 @@
+/* 定制 Element Plus */
+.el-menu {
+  border-right: none !important;
+}
+
+.el-menu--collapse {
+  width: 64px;
+}
+
+.el-menu-item.is-active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.el-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 确保元素Plus组件在深色背景上的可见性 */
+.el-menu .el-icon,
+.sidebar .el-menu-item {
+  color: white !important;
+}
+
+.sidebar-menu .el-menu-item i {
+  color: white !important;
+}
+
+.el-menu--collapse .el-menu-item span {
+  display: none;
+}
+
+/* 修复各种组件显示问题 */
+.el-table {
+  --el-table-header-bg-color: #f5f7fa;
+  --el-table-row-hover-bg-color: rgba(115, 83, 229, 0.05);
+}
+
+.el-pagination {
+  margin-top: 16px;
+  justify-content: flex-end;
+}
+
+.el-progress-bar__inner {
+  transition: width 0.6s ease;
+}
+
+.el-input__wrapper {
+  box-shadow: 0 0 0 1px #dcdfe6 inset;
+}
+
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px #7353e5 inset;
+}
+
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 1px #7353e5 inset !important;
+}
+
+.el-button--primary {
+  --el-button-bg-color: #7353e5;
+  --el-button-border-color: #7353e5;
+  --el-button-hover-bg-color: #8a6aff;
+  --el-button-hover-border-color: #8a6aff;
+  --el-button-active-bg-color: #6b42e8;
+  --el-button-active-border-color: #6b42e8;
+}
+
+/* 通知图标包装器 */
+.notification-icon-wrapper {
+  position: relative;
+}
