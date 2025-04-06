@@ -56,6 +56,7 @@ export async function getPosts(params: {
   page: number;
   tab: string;
   search?: string;
+  tag?: string;
 }): Promise<PostsResponse> {
   // 真实环境下应该是:
   // return request.get('/community/posts', { params });
@@ -63,10 +64,11 @@ export async function getPosts(params: {
   // 模拟API调用
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const { page } = params;
+  const { page, tag } = params;
   const hasMore = page < 3;
 
-  const posts: Post[] = [
+  // 基础帖子数据
+  let posts: Post[] = [
     {
       id: 100 + page * 5 - 4,
       author: { name: '王老师', title: '特级教师', avatar: '/src/assets/teacher1.svg' },
@@ -134,12 +136,17 @@ export async function getPosts(params: {
     },
   ];
 
+  // 如果指定了标签，过滤出包含该标签的帖子
+  if (tag) {
+    posts = posts.filter((post) => post.tags.includes(tag));
+  }
+
   return {
     success: true,
     data: {
       posts,
       total: hasMore ? 15 : 10,
-      hasMore,
+      hasMore: hasMore && posts.length > 0,
     },
   };
 }

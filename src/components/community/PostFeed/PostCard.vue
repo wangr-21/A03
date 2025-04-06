@@ -75,6 +75,7 @@ defineProps<{
   overflow: hidden;
   border: none;
   animation: fadeIn 0.5s ease forwards;
+  width: 100%;
 }
 
 .post-card:hover {
@@ -87,32 +88,42 @@ defineProps<{
   align-items: center;
   margin-bottom: 15px;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .author-info {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 
 .author-name {
   font-weight: bold;
   color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .post-meta {
   font-size: 12px;
   color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .post-content {
   margin-bottom: 15px;
+  width: 100%;
 }
 
 .post-content p {
   line-height: 1.7;
   color: #333;
   margin-bottom: 10px;
+  word-break: break-word;
 }
 
 .post-tags {
@@ -124,6 +135,7 @@ defineProps<{
 
 .post-tags .el-tag {
   transition: all 0.3s ease;
+  margin-bottom: 4px;
 }
 
 .post-tags .el-tag:hover {
@@ -135,6 +147,7 @@ defineProps<{
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 8px;
   margin-top: 15px;
+  width: 100%;
 }
 
 .post-images .el-image {
@@ -153,6 +166,7 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
 .attachment-item {
@@ -172,6 +186,7 @@ defineProps<{
 
 .attachment-item .el-icon {
   color: #666;
+  flex-shrink: 0;
 }
 
 .attachment-item span {
@@ -179,6 +194,7 @@ defineProps<{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .post-actions {
@@ -189,6 +205,7 @@ defineProps<{
   font-size: 14px;
   border-top: 1px solid #f0f0f0;
   padding-top: 15px;
+  flex-wrap: wrap;
 }
 
 .post-actions span {
@@ -197,6 +214,7 @@ defineProps<{
   gap: 5px;
   cursor: pointer;
   transition: color 0.3s ease;
+  min-width: 50px;
 }
 
 .post-actions span:hover {
@@ -219,8 +237,67 @@ defineProps<{
 }
 
 @media (min-width: 769px) and (max-width: 1200px) {
+  .post-images {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
   .post-images .el-image {
     height: 120px;
+  }
+
+  .post-actions {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .post-images {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .post-images .el-image {
+    height: 100px;
+  }
+
+  .post-actions {
+    gap: 15px;
+    padding-top: 10px;
+  }
+
+  .post-actions span {
+    min-width: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-header {
+    margin-bottom: 10px;
+  }
+
+  .post-content p {
+    font-size: 14px;
+  }
+
+  .post-images {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+
+  .post-images .el-image {
+    height: 90px;
+  }
+
+  .post-actions {
+    gap: 10px;
+    font-size: 12px;
+    justify-content: space-between;
+  }
+
+  .share-btn {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

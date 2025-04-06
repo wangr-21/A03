@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { RouterView } from 'vue-router';
+import { RouterView, useRouter } from 'vue-router';
 import NotificationDropdown from './components/NotificationDropdown.vue';
+import SettingsDropdown from './components/SettingsDropdown.vue';
 import { getNotifications, markAllNotificationsAsRead } from '@/api';
 import type { Notification } from '@/api';
 import { ElMessage } from 'element-plus';
+import { useUserStore } from '@/stores/userStore';
+
+// 获取用户状态
+const userStore = useUserStore();
+
+// 检查用户登录状态
+onMounted(() => {
+  userStore.initUserState();
+});
 
 // 响应式侧边栏控制
 const sidebarCollapsed = ref(false);
@@ -42,6 +52,9 @@ const unreadCount = ref(0);
 const hasNotifications = computed(() => unreadCount.value > 0);
 
 const toggleNotificationDropdown = async () => {
+  // 关闭设置下拉菜单（如果打开）
+  showSettingsDropdown.value = false;
+
   if (!showNotificationDropdown.value) {
     await fetchNotifications();
   }
@@ -85,6 +98,19 @@ const viewAllNotifications = () => {
   // 可以导航到通知页面
   console.log('View all notifications');
   closeNotificationDropdown();
+};
+
+// 设置下拉菜单相关
+const showSettingsDropdown = ref(false);
+
+const toggleSettingsDropdown = () => {
+  // 关闭通知下拉菜单（如果打开）
+  showNotificationDropdown.value = false;
+  showSettingsDropdown.value = !showSettingsDropdown.value;
+};
+
+const closeSettingsDropdown = () => {
+  showSettingsDropdown.value = false;
 };
 
 onMounted(() => {
@@ -182,9 +208,15 @@ onBeforeUnmount(() => {
               @view-all="viewAllNotifications"
             />
           </div>
-          <el-icon class="tool-icon"><Setting /></el-icon>
-          <div class="user-avatar">
-            <img src="@/assets/avatar.svg" alt="用户头像" />
+          <div class="settings-icon-wrapper">
+            <el-icon class="tool-icon" @click="toggleSettingsDropdown"><Setting /></el-icon>
+            <SettingsDropdown
+              :is-active="showSettingsDropdown"
+              @close="closeSettingsDropdown"
+            />
+          </div>
+          <div class="user-avatar" @click="toggleSettingsDropdown">
+            <img :src="userStore.userInfo?.avatar || '/src/assets/avatar.svg'" :alt="userStore.userInfo?.name || '用户头像'" />
           </div>
         </div>
       </header>
@@ -224,6 +256,17 @@ body {
 
 body {
   position: relative;
+}
+
+/* 深色模式 */
+html.dark-mode {
+  filter: invert(0.9) hue-rotate(180deg);
+}
+
+html.dark-mode img, 
+html.dark-mode video,
+html.dark-mode .sidebar {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 .app-container {
@@ -412,12 +455,12 @@ body {
   box-shadow: 0 0 0 2px rgba(115, 83, 229, 0.2);
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.user-avatar:hover {
+  transform: scale(1.05);
 }
 
 /* 页面容器 */
@@ -540,8 +583,9 @@ body {
   --el-button-active-border-color: #6b42e8;
 }
 
-/* 通知图标包装器 */
-.notification-icon-wrapper {
+/* 工具图标样式 */
+.notification-icon-wrapper,
+.settings-icon-wrapper {
   position: relative;
 }
 </style>

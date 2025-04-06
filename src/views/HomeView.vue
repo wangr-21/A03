@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getResources } from '@/api';
+import { getResources, getSidebarData } from '@/api';
 import { ElMessage } from 'element-plus';
 import type { Resource } from '@/api';
 import {
@@ -11,6 +11,7 @@ import {
   HotspotCard,
   ResourceLibrary,
   KnowledgeGraph,
+  HomeHotTopics,
 } from '@/components/home';
 
 // 资源库相关数据
@@ -19,6 +20,9 @@ const resourcesLoading = ref<boolean>(false);
 const activeLibraryTab = ref<string>('all');
 const selectedSubject = ref<string>('');
 const selectedGrade = ref<string>('');
+
+// 热门话题
+const hotTags = ref<string[]>([]);
 
 // 获取资源数据
 const fetchResources = async (filters?: {
@@ -49,6 +53,16 @@ const fetchResources = async (filters?: {
   }
 };
 
+// 获取热门话题数据
+const fetchHotTags = async () => {
+  try {
+    const data = await getSidebarData();
+    hotTags.value = data.hotTags;
+  } catch (error) {
+    console.error('Error fetching hot tags:', error);
+  }
+};
+
 // 过滤资源变化处理
 const handleFiltersChange = (filters: { tab: string; subject: string; grade: string }) => {
   activeLibraryTab.value = filters.tab;
@@ -64,6 +78,7 @@ const handleFiltersChange = (filters: { tab: string; subject: string; grade: str
 
 onMounted(() => {
   fetchResources();
+  fetchHotTags();
 });
 </script>
 
@@ -72,6 +87,9 @@ onMounted(() => {
     <div class="page-header">
       <h1 class="page-title">启智学堂</h1>
     </div>
+
+    <!-- 热门话题区域 -->
+    <HomeHotTopics :tags="hotTags" class="hot-topics-section" />
 
     <!-- 概览图表区域 -->
     <OverviewChart />
@@ -121,6 +139,10 @@ onMounted(() => {
   font-size: 24px;
   font-weight: bold;
   color: #333;
+}
+
+.hot-topics-section {
+  margin-bottom: 20px;
 }
 
 .showcase-area {
