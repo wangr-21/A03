@@ -38,7 +38,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue'),
-      meta: { title: '登录 - 师韵星盟' },
+      meta: { title: '登录 - 师韵星盟', hideLayout: true },
     },
     {
       path: '/:pathMatch(.*)*',
