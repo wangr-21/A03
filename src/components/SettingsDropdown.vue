@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -48,7 +48,7 @@ const handleLogout = async () => {
       cancelButtonText: '取消',
       type: 'warning',
     });
-    
+
     await userStore.userLogout();
     emit('close');
     router.push('/login');
@@ -68,10 +68,8 @@ const handleClickOutside = (event: MouseEvent) => {
 // 添加全局点击事件监听器
 document.addEventListener('click', handleClickOutside);
 // 组件卸载时移除事件监听器
-defineExpose({
-  unmounted: () => {
-    document.removeEventListener('click', handleClickOutside);
-  }
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
 });
 </script>
 
@@ -86,7 +84,7 @@ defineExpose({
         </div>
       </div>
     </div>
-    
+
     <div class="dropdown-content">
       <el-divider>设置选项</el-divider>
       <ul class="settings-list">
@@ -105,7 +103,7 @@ defineExpose({
         </li>
       </ul>
     </div>
-    
+
     <div class="dropdown-footer">
       <el-button type="danger" text @click="handleLogout">
         <el-icon><SwitchButton /></el-icon>
@@ -203,4 +201,4 @@ defineExpose({
   border-top: 1px solid #eee;
   text-align: center;
 }
-</style> 
+</style>
