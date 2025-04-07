@@ -7,20 +7,22 @@ const AppHeader = defineAsyncComponent(() => import('@/components/layout/AppHead
 
 const { sidebarCollapsed, isMobile, toggleSidebar } = useResponsive();
 
-
+const emit = defineEmits<{
+  'router-goto': [route: string];
+}>();
 </script>
 
 <template>
   <div class="app-container" :class="{ 'sidebar-collapsed': sidebarCollapsed, mobile: isMobile }">
     <AppSidebar
-      :collapsed="sidebarCollapsed"
+      v-model:collapsed="sidebarCollapsed"
       :is-mobile="isMobile"
       @toggle-sidebar="toggleSidebar"
+      @goto-workshop="emit('router-goto', '/workshop')"
     />
 
     <main class="main-content">
       <AppHeader :is-mobile="isMobile" @toggle-sidebar="toggleSidebar" />
-
       <div class="page-container">
         <slot></slot>
       </div>

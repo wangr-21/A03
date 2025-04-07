@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { RouterView, useRoute } from 'vue-router';
+import { RouterView, useRoute, useRouter } from 'vue-router';
 import { computed } from 'vue';
 import MainLayout from './layouts/MainLayout.vue';
 
+const router = useRouter();
 const route = useRoute();
 const hideLayout = computed(() => route.meta.hideLayout);
 </script>
 
 <template>
-  <MainLayout v-if="!hideLayout">
+  <MainLayout v-if="!hideLayout" @router-goto="router.push">
     <RouterView v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" />

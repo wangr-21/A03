@@ -1,18 +1,22 @@
 <script setup lang="ts">
 defineProps({
-  collapsed: {
-    type: Boolean,
-    default: false,
-  },
   isMobile: {
     type: Boolean,
     default: false,
   },
 });
 
+const collapsed = defineModel<boolean>('collapsed');
+
 const emit = defineEmits<{
-  toggleSidebar: [];
+  'toggle-sidebar': [];
+  'goto-workshop': [];
 }>();
+
+const handleStartButtonClick = () => {
+  collapsed.value = true;
+  emit('goto-workshop');
+};
 </script>
 
 <template>
@@ -58,11 +62,13 @@ const emit = defineEmits<{
     <div class="welcome-text" v-if="!collapsed">
       <p>欢迎来到智教通平台！</p>
       <p class="sub-text">AI赋能教学，引领未来教育</p>
-      <el-button type="primary" class="open-btn">现在开始！</el-button>
+      <el-button type="primary" class="open-btn" @click="handleStartButtonClick"
+        >现在开始！</el-button
+      >
     </div>
 
     <!-- 折叠按钮 -->
-    <div class="sidebar-collapse-btn" @click="emit('toggleSidebar')">
+    <div class="sidebar-collapse-btn" @click="emit('toggle-sidebar')">
       <el-icon v-if="collapsed"><ArrowRight /></el-icon>
       <el-icon v-else><ArrowLeft /></el-icon>
     </div>
