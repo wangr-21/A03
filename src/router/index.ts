@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
-  history: createWebHistory(''),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -34,12 +34,12 @@ const router = createRouter({
       meta: { title: '师韵星盟' },
     },
   ],
-})
+});
 
 // 设置页面标题
 router.beforeEach((to, _, next) => {
-  document.title = (to.meta.title as string | undefined) || '启智学堂'
-  next()
-})
+  document.title = (to.meta.title as string | undefined) || '启智学堂';
+  next();
+});
 
-export default router
+export default router;

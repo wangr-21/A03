@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import {
   ToolCards,
   LessonPlanGenerator,
@@ -10,9 +10,12 @@ import {
   RecentPlans,
   RecommendedResources,
 } from '@/components/workshop';
+import { ElBackTop } from 'element-plus';
+import { ArrowUp } from '@element-plus/icons-vue'; // 确保导入ArrowUp图标
 
 // 组件引用
 const thinkingTheaterRef = ref<typeof ThinkingTheater>();
+const interactionRecommenderRef = ref<typeof InteractionRecommender>();
 
 // 工具卡片数据
 const tools = ref([
@@ -61,8 +64,8 @@ const handleToolClick = (toolTitle: string) => {
       document.querySelector('.generator-card')?.scrollIntoView({ behavior: 'smooth' });
       break;
     case '思辨剧场':
-      // 打开思辨剧场
-      thinkingTheaterRef.value?.openSimulation('classroom');
+      // 滚动到思辨剧场互动推荐区域
+      document.querySelector('.interactions-card')?.scrollIntoView({ behavior: 'smooth' });
       break;
     case '题海星图':
       // 滚动到题海星图区域
@@ -74,6 +77,56 @@ const handleToolClick = (toolTitle: string) => {
       break;
   }
 };
+
+// 简化回到顶部逻辑
+const showBackToTop = ref(false);
+
+onMounted(() => {
+  // 直接显示按钮，不依赖滚动事件
+  showBackToTop.value = true;
+
+  // 仍然添加滚动监听，但不影响按钮显示
+  window.addEventListener('scroll', () => {
+    console.log('Scrolling, position:', window.scrollY);
+  });
+});
+
+// 修改回到顶部函数，确保能正确滚动
+const scrollToTop = () => {
+  // 尝试多种滚动方式，确保至少一种能生效
+
+  // 方式1: 使用window.scrollTo
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+  // 方式2: 使用document.documentElement
+  document.documentElement.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+  // 方式3: 使用document.body
+  document.body.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+  // 方式4: 使用scrollIntoView
+  document.querySelector('.page-header')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+
+  console.log('scrollToTop triggered');
+};
+
+// 添加调试日志
+onMounted(() => {
+  showBackToTop.value = true;
+  console.log('Back to top button mounted and visible');
+});
 </script>
 
 <template>
@@ -106,12 +159,19 @@ const handleToolClick = (toolTitle: string) => {
 
     <!-- 推荐资源 -->
     <RecommendedResources />
+
+    <!-- 简化自定义回到顶部按钮 -->
+    <button v-show="showBackToTop" class="custom-backtop" @click="scrollToTop">
+      <el-icon><ArrowUp /></el-icon>
+    </button>
   </div>
 </template>
 
 <style scoped>
 .workshop-container {
   padding: 20px;
+  position: relative;
+  min-height: 100vh;
 }
 
 .page-header {
@@ -125,5 +185,51 @@ const handleToolClick = (toolTitle: string) => {
   font-size: 24px;
   font-weight: bold;
   color: #333;
+}
+
+/* 修改自定义回到顶部按钮样式，确保可见性 */
+.custom-backtop {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 50px; /* 增大尺寸 */
+  height: 50px; /* 增大尺寸 */
+  border-radius: 50%;
+  background-color: #cacaca; /* 使用更醒目的颜色 */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 增强阴影 */
+  z-index: 10000; /* 确保最高层级 */
+  transition: all 0.3s;
+}
+
+.custom-backtop:hover {
+  background-color: #ff9980;
+  transform: translateY(-5px);
+}
+
+/* 固定显示的回到顶部按钮 */
+.fixed-backtop {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ff7a5a;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
 }
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { RouterView } from 'vue-router';
+import { RouterView, useRouter, useRoute } from 'vue-router'; // 添加useRoute导入
 import NotificationDropdown from './components/NotificationDropdown.vue';
 import { getNotifications, markAllNotificationsAsRead } from '@/api';
 import type { Notification } from '@/api';
@@ -9,6 +9,16 @@ import { ElMessage } from 'element-plus';
 // 响应式侧边栏控制
 const sidebarCollapsed = ref(false);
 const isMobile = ref(false);
+const router = useRouter();
+const route = useRoute(); // 获取当前路由
+
+// 处理"现在开始"按钮点击事件
+const handleStartButtonClick = () => {
+  // 收起侧边栏
+  sidebarCollapsed.value = true;
+  // 跳转到智课工坊页面
+  router.push('/workshop');
+};
 
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value;
@@ -29,6 +39,7 @@ const handleResize = () => {
 onMounted(() => {
   handleResize(); // 初始检查
   window.addEventListener('resize', handleResize);
+  fetchNotifications(); // 初始加载通知
 });
 
 onBeforeUnmount(() => {
@@ -88,7 +99,6 @@ const viewAllNotifications = () => {
 };
 
 onMounted(() => {
-  // 现有的 onMounted 代码...
   handleResize(); // 初始检查
   window.addEventListener('resize', handleResize);
   fetchNotifications(); // 初始加载通知
@@ -109,33 +119,36 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 菜单导航 -->
-      <el-menu
-        class="sidebar-menu"
-        background-color="#7353E5"
-        text-color="#ffffff"
-        active-text-color="#ffffff"
-        :default-active="$route.path"
-        :collapse="sidebarCollapsed"
-        router
-      >
+      <el-menu class="sidebar-menu" background-color="#7353E5" text-color="#ffffff" active-text-color="#ffffff"
+        :default-active="route.path" :collapse="sidebarCollapsed" router>
         <el-menu-item index="/" route="/">
-          <el-icon><Grid /></el-icon>
+          <el-icon>
+            <Grid />
+          </el-icon>
           <template #title>启智学堂</template>
         </el-menu-item>
         <el-menu-item index="/workshop" route="/workshop">
-          <el-icon><ChatDotRound /></el-icon>
+          <el-icon>
+            <ChatDotRound />
+          </el-icon>
           <template #title>智课工坊</template>
         </el-menu-item>
         <el-menu-item index="/lab" route="/lab">
-          <el-icon><PictureFilled /></el-icon>
+          <el-icon>
+            <PictureFilled />
+          </el-icon>
           <template #title>幻画实验室</template>
         </el-menu-item>
         <el-menu-item index="/lighthouse" route="/lighthouse">
-          <el-icon><User /></el-icon>
+          <el-icon>
+            <User />
+          </el-icon>
           <template #title>学海灯塔</template>
         </el-menu-item>
         <el-menu-item index="/community" route="/community">
-          <el-icon><PriceTag /></el-icon>
+          <el-icon>
+            <PriceTag />
+          </el-icon>
           <template #title>师韵星盟</template>
         </el-menu-item>
       </el-menu>
@@ -144,13 +157,17 @@ onBeforeUnmount(() => {
       <div class="welcome-text" v-if="!sidebarCollapsed">
         <p>欢迎来到智教通平台！</p>
         <p class="sub-text">AI赋能教学，引领未来教育</p>
-        <el-button type="primary" class="open-btn">现在开始！</el-button>
+        <el-button type="primary" class="open-btn" @click="handleStartButtonClick">现在开始！</el-button>
       </div>
 
       <!-- 折叠按钮 -->
       <div class="sidebar-collapse-btn" @click="toggleSidebar">
-        <el-icon v-if="sidebarCollapsed"><ArrowRight /></el-icon>
-        <el-icon v-else><ArrowLeft /></el-icon>
+        <el-icon v-if="sidebarCollapsed">
+          <ArrowRight />
+        </el-icon>
+        <el-icon v-else>
+          <ArrowLeft />
+        </el-icon>
       </div>
     </div>
 
@@ -159,30 +176,32 @@ onBeforeUnmount(() => {
       <header class="header">
         <!-- 移动端菜单按钮 -->
         <div class="mobile-menu-toggle" v-if="isMobile" @click="toggleSidebar">
-          <el-icon><Menu /></el-icon>
+          <el-icon>
+            <Menu />
+          </el-icon>
         </div>
 
         <!-- 面包屑 -->
         <div class="breadcrumb" v-if="!isMobile">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ $route.meta.title || '当前页面' }}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ route.meta.title || '当前页面' }}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
 
         <div class="right-tools">
           <div class="notification-icon-wrapper">
             <el-badge is-dot :hidden="!hasNotifications">
-              <el-icon class="tool-icon" @click="toggleNotificationDropdown"><Bell /></el-icon>
+              <el-icon class="tool-icon" @click="toggleNotificationDropdown">
+                <Bell />
+              </el-icon>
             </el-badge>
-            <NotificationDropdown
-              :is-active="showNotificationDropdown"
-              @close="closeNotificationDropdown"
-              @read-all="markAllAsRead"
-              @view-all="viewAllNotifications"
-            />
+            <NotificationDropdown :is-active="showNotificationDropdown" @close="closeNotificationDropdown"
+              @read-all="markAllAsRead" @view-all="viewAllNotifications" />
           </div>
-          <el-icon class="tool-icon"><Setting /></el-icon>
+          <el-icon class="tool-icon">
+            <Setting />
+          </el-icon>
           <div class="user-avatar">
             <img src="@/assets/avatar.svg" alt="用户头像" />
           </div>
@@ -276,14 +295,16 @@ body {
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 230px; /* 在较小屏幕上调整侧边栏宽度 */
+    width: 230px;
+    /* 在较小屏幕上调整侧边栏宽度 */
   }
 }
 
 .logo-container {
   display: flex;
   align-items: center;
-  padding: 1.25rem; /* 使用rem代替px */
+  padding: 1.25rem;
+  /* 使用rem代替px */
   height: 64px;
 }
 
@@ -293,27 +314,33 @@ body {
 }
 
 .app-name {
-  font-size: 1.375rem; /* 使用rem代替px */
+  font-size: 1.375rem;
+  /* 使用rem代替px */
   font-weight: bold;
-  margin-left: 0.625rem; /* 使用rem代替px */
+  margin-left: 0.625rem;
+  /* 使用rem代替px */
   white-space: nowrap;
 }
 
 .welcome-text {
   margin-top: auto;
-  padding: 1.25rem; /* 使用rem代替px */
+  padding: 1.25rem;
+  /* 使用rem代替px */
   text-align: center;
 }
 
 .sub-text {
-  font-size: 0.75rem; /* 使用rem代替px */
-  margin-top: 0.3125rem; /* 使用rem代替px */
+  font-size: 0.75rem;
+  /* 使用rem代替px */
+  margin-top: 0.3125rem;
+  /* 使用rem代替px */
   opacity: 0.7;
 }
 
 .open-btn {
   width: 100%;
-  margin-top: 0.9375rem; /* 使用rem代替px */
+  margin-top: 0.9375rem;
+  /* 使用rem代替px */
   background-color: #54d6ff;
   border: none;
 }
@@ -349,17 +376,20 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: calc(100% - 260px); /* 桌面默认宽度 */
+  width: calc(100% - 260px);
+  /* 桌面默认宽度 */
   height: 100%;
 }
 
 .app-container.sidebar-collapsed .main-content {
-  width: calc(100% - 64px); /* 侧栏折叠时的宽度 */
+  width: calc(100% - 64px);
+  /* 侧栏折叠时的宽度 */
 }
 
 .app-container.mobile .main-content {
   margin-left: 0;
-  width: 100%; /* 移动端宽度占满 */
+  width: 100%;
+  /* 移动端宽度占满 */
 }
 
 .header {
@@ -369,7 +399,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem; /* 使用rem代替px */
+  padding: 0 1.5rem;
+  /* 使用rem代替px */
   position: sticky;
   top: 0;
   z-index: 10;
@@ -424,10 +455,14 @@ body {
 .page-container {
   padding: 1.5rem;
   flex: 1;
-  overflow-x: hidden; /* 防止横向溢出 */
-  width: 100%; /* 确保内容占满容器 */
-  max-width: 1600px; /* 内容最大宽度 */
-  margin: 0 auto; /* 居中显示 */
+  overflow-x: hidden;
+  /* 防止横向溢出 */
+  width: 100%;
+  /* 确保内容占满容器 */
+  max-width: 1600px;
+  /* 内容最大宽度 */
+  margin: 0 auto;
+  /* 居中显示 */
 }
 
 /* 页面过渡动画 */
