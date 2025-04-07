@@ -2,8 +2,9 @@ import pathlib
 
 DATA_DIR = pathlib.Path.cwd() / "data"
 UPLOAD_DIR = DATA_DIR / "uploads"
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 CACHE_DIR = DATA_DIR / "cache"
-CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 ASSETS_DIR = pathlib.Path(__file__).parent / "assets"
+
+[d.mkdir(parents=True, exist_ok=True) for d in {DATA_DIR, UPLOAD_DIR, CACHE_DIR}]
+(DATA_DIR / ".gitignore").write_text("*")

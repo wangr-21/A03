@@ -11,6 +11,7 @@ wheels/
 
 node_modules/
 .env*
+data/
 
 # Logs
 logs
@@ -32,8 +33,6 @@ coverage
 /cypress/screenshots/
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 .idea
 *.suo
 *.ntvs*
