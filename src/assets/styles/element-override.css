@@ -66,6 +66,7 @@
 }
 
 /* 通知图标包装器 */
-.notification-icon-wrapper {
+.notification-icon-wrapper
+.settings-icon-wrapper {
   position: relative;
 }

@@ -6,6 +6,8 @@ const AppSidebar = defineAsyncComponent(() => import('@/components/layout/AppSid
 const AppHeader = defineAsyncComponent(() => import('@/components/layout/AppHeader.vue'));
 
 const { sidebarCollapsed, isMobile, toggleSidebar } = useResponsive();
+
+
 </script>
 
 <template>

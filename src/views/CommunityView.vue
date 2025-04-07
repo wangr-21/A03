@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { getPosts, getSidebarData, submitPost } from '@/api';
 import type { Post, PostForm, RecommendedUser } from '@/api';
@@ -11,6 +12,9 @@ import {
   RecommendedUsers,
   HotTopics,
 } from '@/components/community';
+
+const route = useRoute();
+const router = useRouter();
 
 // --- Post Creation State ---
 const showPostDialog = ref<boolean>(false);
@@ -36,6 +40,32 @@ const currentPage = ref<number>(1);
 // --- Sidebar State ---
 const recommendedUsers = ref<RecommendedUser[]>([]);
 const hotTags = ref<string[]>([]);
+const activeTag = ref<string>(''); // 当前选中的热门话题
+
+// 检查URL参数中是否有标签
+const checkUrlParams = () => {
+  if (route.query.tag) {
+    activeTag.value = route.query.tag as string;
+    // 重置页码并获取帖子
+    currentPage.value = 1;
+    noMorePosts.value = false;
+    posts.value = [];
+    fetchPosts();
+    ElMessage.success(`正在查看"${activeTag.value}"相关的帖子`);
+  }
+};
+
+// 监听路由变化，以便支持从其他页面跳转过来时带上标签参数
+watch(
+  () => route.query,
+  (newQuery) => {
+    // 如果URL中的标签与当前选中的标签不同，则更新
+    const queryTag = newQuery.tag as string;
+    if (queryTag !== activeTag.value) {
+      checkUrlParams();
+    }
+  }
+);
 
 // --- Functions ---
 const openPostDialog = (): void => {
@@ -72,7 +102,7 @@ const fetchPosts = async (loadMore: boolean = false): Promise<void> => {
   if (loadingMore.value) return;
   loadingMore.value = true;
   console.log(
-    `Fetching posts: page=${currentPage.value}, tab=${activeTab.value}, search=${searchQuery.value}`,
+    `Fetching posts: page=${currentPage.value}, tab=${activeTab.value}, search=${searchQuery.value}, tag=${activeTag.value}`,
   );
 
   try {
@@ -80,6 +110,7 @@ const fetchPosts = async (loadMore: boolean = false): Promise<void> => {
       page: currentPage.value,
       tab: activeTab.value,
       search: searchQuery.value,
+      tag: activeTag.value, // 添加标签筛选参数
     });
 
     if (loadMore) {
@@ -119,6 +150,34 @@ const handleSearch = (query: string): void => {
   fetchPosts();
 };
 
+// 处理热门话题标签点击
+const handleTagSelected = (tag: string): void => {
+  if (activeTag.value === tag) {
+    // 如果点击的是已选中的标签，则取消选择
+    activeTag.value = '';
+    // 更新URL，移除标签参数
+    router.replace({
+      query: { ...route.query, tag: undefined }
+    });
+  } else {
+    activeTag.value = tag;
+    // 更新URL，添加标签参数
+    router.replace({
+      query: { ...route.query, tag }
+    });
+  }
+  
+  // 重置页码并重新获取帖子
+  currentPage.value = 1;
+  noMorePosts.value = false;
+  posts.value = [];
+  fetchPosts();
+  
+  if (tag) {
+    ElMessage.success(`正在查看"${tag}"相关的帖子`);
+  }
+};
+
 const fetchSidebarData = async (): Promise<void> => {
   try {
     const data = await getSidebarData();
@@ -134,6 +193,7 @@ const fetchSidebarData = async (): Promise<void> => {
 onMounted(() => {
   fetchPosts(); // Fetch initial posts
   fetchSidebarData(); // Fetch sidebar data
+  checkUrlParams(); // 检查URL参数
 });
 </script>
 
@@ -153,6 +213,25 @@ onMounted(() => {
             @tab-change="handleTabChange"
             @search="handleSearch"
           />
+          
+          <!-- 当前选中的标签提示 -->
+          <div v-if="activeTag" class="active-tag-tip">
+            <el-alert
+              type="info"
+              :closable="false"
+              show-icon
+            >
+              当前筛选: #{{ activeTag }}
+              <el-button
+                type="text"
+                size="small"
+                class="clear-tag-btn"
+                @click="handleTagSelected('')"
+              >
+                清除筛选
+              </el-button>
+            </el-alert>
+          </div>
 
           <!-- 帖子列表 Feed -->
           <PostList
@@ -171,7 +250,11 @@ onMounted(() => {
           <RecommendedUsers :users="recommendedUsers" />
 
           <!-- 热门话题卡片 -->
-          <HotTopics :tags="hotTags" />
+          <HotTopics 
+            :tags="hotTags" 
+            :active-tag="activeTag"
+            @tag-selected="handleTagSelected"
+          />
         </div>
       </el-col>
     </el-row>
@@ -189,9 +272,32 @@ onMounted(() => {
 <style scoped>
 .community-container {
   padding: 20px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.active-tag-tip {
+  margin-bottom: 15px;
+}
+
+.clear-tag-btn {
+  margin-left: 10px;
+  color: var(--el-color-primary);
 }
 
 /* 响应式设计调整 */
+@media (max-width: 1200px) {
+  .community-container {
+    padding: 15px;
+  }
+
+  .responsive-row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 @media (max-width: 768px) {
   .community-container {
     padding: 10px;
@@ -212,6 +318,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
 /* 右侧边栏 */
@@ -222,5 +329,24 @@ onMounted(() => {
   position: sticky;
   top: 20px;
   z-index: 1;
+  width: 100%;
+}
+
+/* 确保行间距在各种屏幕尺寸下保持适当 */
+.responsive-row {
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* 改善小屏幕下的元素间距 */
+@media (max-width: 480px) {
+  .main-content {
+    gap: 15px;
+  }
+
+  .right-sidebar {
+    gap: 15px;
+  }
 }
 </style>

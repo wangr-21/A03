@@ -43,3 +43,15 @@ body {
 .el-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+/* 深色模式 */
+html.dark-mode {
+  filter: invert(0.9) hue-rotate(180deg);
+}
+
+html.dark-mode img,
+html.dark-mode video,
+html.dark-mode .sidebar {
+  filter: invert(1) hue-rotate(180deg);
+}
+

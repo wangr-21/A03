@@ -135,6 +135,7 @@ const openPostDialogWithTopic = (topic: string) => {
   padding: 12px 8px;
   gap: 8px;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .action-btn {
@@ -146,6 +147,7 @@ const openPostDialogWithTopic = (topic: string) => {
   height: 36px;
   border-radius: 6px;
   transition: all 0.3s ease;
+  min-width: 120px;
 }
 
 .action-btn:hover {
@@ -189,5 +191,37 @@ const openPostDialogWithTopic = (topic: string) => {
   background-color: var(--el-color-primary-light-9);
   color: var(--el-color-primary);
   transform: scale(1.05);
+}
+
+@media (max-width: 1200px) {
+  .creator-actions {
+    justify-content: center;
+  }
+
+  .action-btn {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .creator-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    flex: 0 0 calc(50% - 8px);
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-btn {
+    flex: 0 0 100%;
+  }
+
+  .action-btn span {
+    font-size: 13px;
+  }
 }
 </style>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useUserStore } from '@/stores/userStore';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useSettings } from '@/hooks/useSettings';
 import NotificationDropdown from '@/components/NotificationDropdown.vue';
+import SettingsDropdown from '@/components/SettingsDropdown.vue';
 import BreadCrumb from './BreadCrumb.vue';
 import { onMounted } from 'vue';
 
@@ -25,7 +28,16 @@ const {
   initialize,
 } = useNotifications();
 
+const { showSettingsDropdown, toggleSettingsDropdown, closeSettingsDropdown } =
+  useSettings(showNotificationDropdown);
+
 onMounted(() => initialize());
+
+// 获取用户状态
+const userStore = useUserStore();
+
+// 检查用户登录状态
+onMounted(() =>  userStore.initUserState());
 </script>
 
 <template>
@@ -50,9 +62,15 @@ onMounted(() => initialize());
           @view-all="viewAllNotifications"
         />
       </div>
-      <el-icon class="tool-icon"><Setting /></el-icon>
-      <div class="user-avatar">
-        <img src="@/assets/avatar.svg" alt="用户头像" />
+      <div class="settings-icon-wrapper">
+        <el-icon class="tool-icon" @click="toggleSettingsDropdown"><Setting /></el-icon>
+        <SettingsDropdown :is-active="showSettingsDropdown" @close="closeSettingsDropdown" />
+      </div>
+      <div class="user-avatar" @click="toggleSettingsDropdown">
+        <img
+          :src="userStore.userInfo?.avatar || '/src/assets/avatar.svg'"
+          :alt="userStore.userInfo?.name || '用户头像'"
+        />
       </div>
     </div>
   </header>
@@ -105,11 +123,11 @@ onMounted(() => initialize());
   box-shadow: 0 0 0 2px rgba(115, 83, 229, 0.2);
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.user-avatar:hover {
+  transform: scale(1.05);
 }
 </style>

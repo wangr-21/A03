@@ -18,6 +18,22 @@ export interface NotificationsResponse {
   };
 }
 
+export interface LoginForm {
+  username: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+export interface UserInfo {
+  id: number;
+  username: string;
+  name: string;
+  avatar: string;
+  role: string;
+  title: string;
+  department: string;
+}
+
 // 获取通知列表
 export async function getNotifications(): Promise<NotificationsResponse> {
   // 真实环境下应该是:
@@ -89,6 +105,92 @@ export async function markAllNotificationsAsRead(): Promise<{ success: boolean }
 
   // 模拟API调用
   await new Promise((resolve) => setTimeout(resolve, 300));
+
+  return {
+    success: true,
+  };
+}
+
+// 用户登录
+export async function login(data: LoginForm): Promise<{
+  success: boolean;
+  data: {
+    token: string;
+    userInfo: UserInfo;
+  };
+}> {
+  // 真实环境下应该是:
+  // return request.post('/user/login', data);
+
+  // 模拟API调用
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
+  // 模拟登录验证
+  if (data.username === 'teacher' && data.password === '123456') {
+    return {
+      success: true,
+      data: {
+        token: 'mock_token_' + Date.now(),
+        userInfo: {
+          id: 1,
+          username: 'teacher',
+          name: '王老师',
+          avatar: '/src/assets/my_avatar.svg',
+          role: 'teacher',
+          title: '特级教师',
+          department: '语文教研组',
+        },
+      },
+    };
+  } else {
+    // 登录失败
+    throw new Error('用户名或密码错误');
+  }
+}
+
+// 获取当前用户信息
+export async function getCurrentUser(): Promise<{
+  success: boolean;
+  data: UserInfo;
+}> {
+  // 真实环境下应该是:
+  // return request.get('/user/current');
+
+  // 模拟API调用
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // 检查是否有有效token
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('未登录或登录已过期');
+  }
+
+  return {
+    success: true,
+    data: {
+      id: 1,
+      username: 'teacher',
+      name: '王老师',
+      avatar: '/src/assets/my_avatar.svg',
+      role: 'teacher',
+      title: '特级教师',
+      department: '语文教研组',
+    },
+  };
+}
+
+// 退出登录
+export async function logout(): Promise<{
+  success: boolean;
+}> {
+  // 真实环境下应该是:
+  // return request.post('/user/logout');
+
+  // 模拟API调用
+  await new Promise((resolve) => setTimeout(resolve, 300));
+
+  // 清除本地存储的token
+  localStorage.removeItem('token');
 
   return {
     success: true,
