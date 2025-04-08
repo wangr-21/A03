@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { ElMessage } from 'element-plus';
 import { getStudents, getStatistics } from '@/api';
 import type { Student, StatItem } from '@/api';
@@ -10,6 +10,7 @@ import {
   StudentTable,
   StudentDetailsDialog,
   StudentEvaluateDialog,
+  AttendanceDialog,
 } from '@/components/lighthouse';
 
 // 数据
@@ -23,8 +24,23 @@ const pageSize = ref<number>(10);
 // 对话框状态变量
 const detailsDialogVisible = ref<boolean>(false);
 const evaluateDialogVisible = ref<boolean>(false);
+const attendanceDialogVisible = ref<boolean>(false); // 点名对话框状态
 const currentStudent = ref<Student | null>(null);
 const submittingEvaluation = ref<boolean>(false);
+
+// 班级选项
+const classOptions = computed(() => {
+  // 从学生数据中提取唯一的班级选项
+  const classSet = new Set<string>();
+  students.value.forEach(student => {
+    if (student.class) classSet.add(student.class);
+  });
+  
+  return Array.from(classSet).map(className => ({
+    label: className,
+    value: className
+  }));
+});
 
 // 方法
 const fetchStudents = async () => {
@@ -77,6 +93,58 @@ const viewDetails = (student: Student): void => {
 const evaluateStudent = (student: Student): void => {
   currentStudent.value = student;
   evaluateDialogVisible.value = true;
+};
+
+// 打开点名对话框
+const openAttendanceDialog = (): void => {
+  attendanceDialogVisible.value = true;
+};
+
+// 处理考勤提交
+const handleAttendanceSubmit = async (data: { date: string; records: Record<string, string>; class: string }) => {
+  try {
+    // 这里应该有实际的API调用来提交考勤记录
+    // await submitAttendanceRecords(data);
+    
+    // 模拟API调用延迟
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // 更新出勤率统计（实际项目中应该从API重新获取）
+    // 这里只是一个简单示例，实际逻辑可能更复杂
+    const presentCount: Record<string, number> = {};
+    const totalCount: Record<string, number> = {};
+    
+    // 统计出勤人数
+    Object.entries(data.records).forEach(([studentId, status]) => {
+      const student = students.value.find(s => s.id === studentId);
+      if (student) {
+        const studentClass = student.class;
+        totalCount[studentClass] = (totalCount[studentClass] || 0) + 1;
+        if (status === 'present') {
+          presentCount[studentClass] = (presentCount[studentClass] || 0) + 1;
+        }
+      }
+    });
+    
+    // 更新学生出勤率（简化示例）
+    students.value.forEach(student => {
+      if (data.records[student.id] === 'present') {
+        // 假设更新出勤率的逻辑
+        const currentAttendance = student.attendance || 0;
+        // 这里简化处理，实际应该基于历史记录计算
+        student.attendance = Math.min(100, currentAttendance + 1);
+      }
+    });
+    
+    ElMessage.success('考勤记录已成功提交');
+    
+    // 刷新统计数据
+    fetchStatistics();
+    
+  } catch (error) {
+    console.error('提交考勤记录失败:', error);
+    ElMessage.error('提交考勤记录失败，请稍后重试');
+  }
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -133,6 +201,7 @@ onMounted(() => {
         @view-details="viewDetails"
         @evaluate-student="evaluateStudent"
         @export-data="exportData"
+        @take-attendance="openAttendanceDialog"
       />
     </div>
 
@@ -145,6 +214,14 @@ onMounted(() => {
       :student="currentStudent"
       :submitting="submittingEvaluation"
       @submit="submitEvaluation"
+    />
+    
+    <!-- 考勤点名对话框 -->
+    <AttendanceDialog
+      v-model:visible="attendanceDialogVisible"
+      :students="students"
+      :classOptions="classOptions"
+      @submit-attendance="handleAttendanceSubmit"
     />
   </div>
 </template>
