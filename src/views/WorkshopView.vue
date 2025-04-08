@@ -59,7 +59,7 @@ const handleToolClick = (toolTitle: string) => {
       break;
     case '思辨剧场':
       // 滚动到思辨剧场互动推荐区域
-      document.querySelector('.interactions-card')?.scrollIntoView({ behavior: 'smooth' });
+      document.querySelector('.thinking-theater-card')?.scrollIntoView({ behavior: 'smooth' });
       break;
     case '题海星图':
       // 滚动到题海星图区域

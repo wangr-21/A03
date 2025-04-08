@@ -18,7 +18,6 @@ const props = defineProps<{
 const visible = defineModel('visible', { type: Boolean });
 
 const emit = defineEmits<{
-  // 'update:visible': [val: boolean];
   'submit-post': [postData: PostForm];
 }>();
 
@@ -261,7 +260,6 @@ const closeDialog = () => {
   if (editorState.isDraft) {
     ElMessage.info('已自动保存为草稿');
   }
-  // emit('update:visible', false);
   visible.value = false;
 };
 </script>
