@@ -131,6 +131,12 @@ class ScenarioResponse(BaseModel):
         return cls.model_validate(metadata | json.loads(obj.content))
 
 
+class RecommendedInteraction(BaseModel):
+    type: str = Field(description="互动类型")
+    title: str = Field(description="互动标题")
+    content: list[str] = Field(description="互动内容")
+
+
 # API端点
 @router.post("/activities", response_model=ActivityResponse)
 async def generate_activity(request: GenerateActivityRequest, db: DBSession):
@@ -251,3 +257,12 @@ async def get_scenario(scenario_id: str, db: DBSession):
         raise HTTPException(status_code=404, detail="场景不存在")
 
     return ScenarioResponse.from_orm(scenario)
+
+
+@router.get("/recommendations", response_model=list[RecommendedInteraction])
+async def get_recommendations(topic: str):
+    """获取主题相关的互动建议"""
+    try:
+        return await InteractiveGenerator().generate_recommendations(topic)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"推荐生成失败: {e!s}") from e

@@ -7,25 +7,38 @@ import type { InteractionItem } from '@/api';
 
 const md = new MarkdownIt();
 
-// Ref for recommended interactions
+// Refs
 const recommendedInteractions = ref<InteractionItem[]>([]);
 const isLoadingInteractions = ref<boolean>(false);
+const showTopicDialog = ref<boolean>(false);
+const topicInput = ref<string>('');
 
-// Function to fetch recommended interactions
-const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<void> => {
+// 打开主题输入对话框
+const openTopicDialog = () => {
+  showTopicDialog.value = true;
+  topicInput.value = ''; // 清空输入
+};
+
+// 处理对话框确认
+const handleTopicConfirm = async () => {
+  if (!topicInput.value.trim()) {
+    ElMessage.warning('请输入主题');
+    return;
+  }
+
+  showTopicDialog.value = false;
+  await fetchRecommendedInteractions(topicInput.value);
+};
+
+// 获取推荐互动
+const fetchRecommendedInteractions = async (topic: string): Promise<void> => {
   isLoadingInteractions.value = true;
-  recommendedInteractions.value = []; // Clear previous recommendations
-  console.log('Fetching recommended interactions based on:', topic);
+  recommendedInteractions.value = [];
 
   try {
     const response = await getRecommendedInteractions(topic);
-
-    if (response.success) {
-      recommendedInteractions.value = response.data;
-      ElMessage.success('互动推荐获取成功！');
-    } else {
-      throw new Error('Interaction recommendation failed');
-    }
+    recommendedInteractions.value = response;
+    ElMessage.success('互动推荐获取成功！');
   } catch (error) {
     console.error('Error fetching interactions:', error);
     ElMessage.error('获取互动推荐失败，请稍后重试。');
@@ -37,6 +50,7 @@ const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<
 
 <template>
   <el-card class="interactions-card">
+    <!-- 卡片头部 -->
     <template #header>
       <div class="card-header">
         <h3>
@@ -45,7 +59,7 @@ const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<
         <el-button
           type="primary"
           plain
-          @click="fetchRecommendedInteractions()"
+          @click="openTopicDialog"
           :loading="isLoadingInteractions"
           icon="Pointer"
           size="small"
@@ -55,12 +69,27 @@ const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<
       </div>
     </template>
 
+    <!-- 主题输入对话框 -->
+    <el-dialog v-model="showTopicDialog" title="输入主题" width="30%" :close-on-click-modal="false">
+      <el-input
+        v-model="topicInput"
+        placeholder="请输入主题，如：光合作用"
+        @keyup.enter="handleTopicConfirm"
+      />
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="showTopicDialog = false">取消</el-button>
+          <el-button type="primary" @click="handleTopicConfirm"> 确认 </el-button>
+        </span>
+      </template>
+    </el-dialog>
+
     <!-- Loading State -->
     <div v-if="isLoadingInteractions" class="loading-placeholder">
       <el-skeleton :rows="3" animated />
     </div>
 
-    <!-- Recommendation List (using el-collapse) -->
+    <!-- Recommendation List -->
     <el-collapse v-else-if="recommendedInteractions.length > 0" accordion>
       <el-collapse-item v-for="(item, index) in recommendedInteractions" :key="index" :name="index">
         <template #title>
@@ -79,12 +108,12 @@ const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<
           </el-tag>
           <span class="interaction-title">{{ item.title }}</span>
         </template>
-        <div class="interaction-content" v-html="md.render(item.content)"></div>
+        <div class="interaction-content" v-html="md.render(item.content.join('\n'))"></div>
       </el-collapse-item>
     </el-collapse>
 
     <!-- Empty State -->
-    <el-empty v-else description="暂无推荐，请先点击按钮获取推荐"></el-empty>
+    <el-empty v-else description="暂无推荐，请先输入主题获取推荐"></el-empty>
   </el-card>
 </template>
 
@@ -114,14 +143,20 @@ const fetchRecommendedInteractions = async (topic: string = '{topic}'): Promise<
 }
 
 .interaction-content {
-  padding: 10px 15px;
+  padding: 10px 40px;
   line-height: 1.7;
   background-color: #fafafa;
   border-radius: 4px;
-  white-space: pre-wrap; /* Preserve line breaks */
 }
 
 .loading-placeholder {
   padding: 20px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 </style>

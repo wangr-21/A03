@@ -8,6 +8,7 @@ from .utils import CompletionMessage, get_openai_client, run_sync
 ASSETS_ROOT = ASSETS_DIR / "interactive"
 PROMPT_ACTIVITY = ASSETS_ROOT / "activity.md"
 PROMPT_SCENARIO = ASSETS_ROOT / "scenario.md"
+PROMPT_RECOMMENDATION = ASSETS_ROOT / "recommendation.md"
 
 
 class InteractiveGenerator:
@@ -137,3 +138,38 @@ class InteractiveGenerator:
         }
 
         return metadata, result
+
+    async def generate_recommendations(self, topic: str) -> list:
+        """生成主题相关的互动建议
+
+        Args:
+            topic: 主题
+
+        Returns:
+            dict: 包含多个互动建议的字典
+        """
+        # 读取并填充提示词模板
+        prompt = PROMPT_RECOMMENDATION.read_text(encoding="utf-8").replace(
+            "{{topic}}", topic
+        )
+
+        # 调用 OpenAI API
+        response = await run_sync(self.client.chat.completions.create)(
+            model=self.model_name,
+            messages=[CompletionMessage().text(prompt).build()],
+            temperature=0.7,
+        )
+
+        content = response.choices[0].message.content
+
+        if not content:
+            raise ValueError("生成内容为空")
+
+        # 解析JSON内容
+        try:
+            content = content[content.index("[") : content.rindex("]") + 1]
+            result: list = json.loads(content)
+        except Exception as err:
+            raise ValueError("解析生成内容失败") from err
+
+        return result
