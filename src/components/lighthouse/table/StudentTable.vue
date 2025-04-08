@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import type { Student } from '@/api';
 import SearchBar from './SearchBar.vue';
 import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElProgress, ElPagination } from 'element-plus';
+import { Calendar } from '@element-plus/icons-vue';
 
 defineProps<{
   students: Student[];
@@ -16,6 +17,7 @@ const emit = defineEmits<{
   'view-details': [student: Student];
   'evaluate-student': [student: Student];
   'export-data': [];
+  'take-attendance': [];
 }>();
 
 const searchText = ref('');
@@ -52,7 +54,17 @@ const getProgressColor = (value: number): string => {
   <el-card class="student-list-card">
     <template #header>
       <div class="card-header">
+        <div class="title-area">
         <div class="title">学生成长追踪</div>
+          <el-button 
+            type="primary" 
+            @click="emit('take-attendance')" 
+            class="attendance-btn"
+            :icon="Calendar"
+          >
+            考勤点名
+          </el-button>
+        </div>
         <SearchBar
           :value="searchText"
           @update:value="handleSearchChange"
@@ -125,10 +137,22 @@ const getProgressColor = (value: number): string => {
   gap: 15px;
 }
 
+.title-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .card-header .title {
   font-size: 18px;
   font-weight: bold;
   color: #303133;
+}
+
+.attendance-btn {
+  font-size: 14px;
+  height: 32px;
+  padding: 0 12px;
 }
 
 .student-info-cell {
