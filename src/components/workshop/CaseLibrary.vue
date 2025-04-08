@@ -1,33 +1,97 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { getCases } from '@/api';
-import type { CaseItem, CaseFilters } from '@/api';
+import {
+  getCases,
+  getDynasties,
+  getThemes,
+  getDisciplines,
+  generateCase,
+  generateStory,
+  getStories,
+  getStoryDetail,
+} from '@/api';
+import type {
+  CaseItem,
+  CaseFilters,
+  DynastyInfo,
+  ThemeCategory,
+  DisciplineCategory,
+  GenerateStoryRequest,
+  GenerateCaseRequest,
+  StoryItem,
+  StoryFilters,
+} from '@/api';
+import {
+  StoryFilters as StoryFilterComp,
+  CaseFilters as CaseFilterComp,
+  GenerateDialog,
+  ContentList,
+  StoryCard,
+  CaseCard,
+  StoryDetail,
+  CaseDetail,
+} from './case';
 
-// --- State for 时空走廊 ---
-const caseFilters = reactive<CaseFilters>({
-  category: '', // e.g., '传统故事', '跨学科案例'
-  era: '', // e.g., '唐代', '宋代'
-  theme: '',
-});
-const caseCategories = ref<string[]>(['传统故事', '跨学科案例']);
-const eras = ref<string[]>(['先秦', '秦汉', '魏晋', '隋唐', '宋元', '明清']); // Placeholder
-const themes = ref<string[]>(['爱国主义', '科学探索', '文化艺术', '哲学思辨']); // Placeholder
-const cases = ref<CaseItem[]>([]); // Will hold fetched cases
+// 分类数据
+const dynasties = ref<DynastyInfo[]>([]);
+const themes = ref<ThemeCategory[]>([]);
+const disciplines = ref<DisciplineCategory[]>([]);
+
+// 故事相关状态
+const stories = ref<StoryItem[]>([]);
+const isStoriesLoading = ref<boolean>(false);
+
+// 案例相关状态
+const cases = ref<CaseItem[]>([]);
 const isCasesLoading = ref<boolean>(false);
 
-const filterCases = async (): Promise<void> => {
-  console.log('Filtering cases:', caseFilters);
-  isCasesLoading.value = true;
+// 生成对话框状态
+const showGenerateDialog = ref(false);
+const dialogType = ref<'story' | 'case'>('story');
 
+// 添加详情对话框状态
+const showStoryDetail = ref(false);
+const showCaseDetail = ref(false);
+const currentStory = ref<StoryItem | null>(null);
+const currentCase = ref<CaseItem | null>(null);
+
+// 加载分类数据
+const loadCategories = async () => {
   try {
-    const response = await getCases(caseFilters);
+    const [dynastyData, themeData, disciplineData] = await Promise.all([
+      getDynasties(),
+      getThemes(),
+      getDisciplines(),
+    ]);
+    dynasties.value = dynastyData;
+    themes.value = themeData;
+    disciplines.value = disciplineData;
+  } catch (error) {
+    console.error('Error loading categories:', error);
+    ElMessage.error('加载分类数据失败');
+  }
+};
 
-    if (response.success) {
-      cases.value = response.data.cases;
-    } else {
-      throw new Error('Failed to fetch cases');
-    }
+// 故事列表处理
+const handleStoryFilter = async (filters: StoryFilters) => {
+  isStoriesLoading.value = true;
+  try {
+    stories.value = await getStories(filters);
+  } catch (error) {
+    console.error('Error filtering stories:', error);
+    ElMessage.error('获取故事失败，请稍后重试');
+    stories.value = [];
+  } finally {
+    isStoriesLoading.value = false;
+  }
+};
+
+// 案例列表处理
+const handleCaseFilter = async (filters: CaseFilters) => {
+  isCasesLoading.value = true;
+  try {
+    cases.value = await getCases(filters);
   } catch (error) {
     console.error('Error filtering cases:', error);
     ElMessage.error('获取案例失败，请稍后重试');
@@ -37,15 +101,62 @@ const filterCases = async (): Promise<void> => {
   }
 };
 
-const viewCaseDetails = (caseId: number): void => {
-  console.log('Viewing case details:', caseId);
-  // TODO: Navigate to case detail page or open modal
-  ElMessage.info('Not implemented yet: ' + caseId);
+// 生成内容处理
+const openGenerateDialog = (type: 'story' | 'case') => {
+  dialogType.value = type;
+  showGenerateDialog.value = true;
 };
 
-// Initial data fetch on mount
+const handleGenerate = async (
+  type: 'story' | 'case',
+  data: GenerateStoryRequest | GenerateCaseRequest,
+) => {
+  try {
+    if (type === 'story') {
+      await generateStory(data as GenerateStoryRequest);
+      await handleStoryFilter({});
+      ElMessage.success('故事生成成功');
+    } else {
+      await generateCase(data as GenerateCaseRequest);
+      await handleCaseFilter({});
+      ElMessage.success('案例生成成功');
+    }
+    showGenerateDialog.value = false;
+  } catch (error) {
+    console.error('Generation error:', error);
+    ElMessage.error('生成失败，请重试');
+  }
+};
+
+// 添加详情对话框处理函数
+const handleStoryDetail = (story: StoryItem) => {
+  currentStory.value = story;
+  showStoryDetail.value = true;
+};
+
+const handleCaseDetail = (case_: CaseItem) => {
+  currentCase.value = case_;
+  showCaseDetail.value = true;
+};
+
+// 查看关联故事
+const handleViewStory = async (storyId: string) => {
+  try {
+    const story = await getStoryDetail(storyId);
+    currentStory.value = story;
+    showCaseDetail.value = false;
+    showStoryDetail.value = true;
+  } catch (error) {
+    console.error('Error loading story:', error);
+    ElMessage.error('加载故事失败');
+  }
+};
+
+// 初始化
 onMounted(() => {
-  filterCases();
+  loadCategories();
+  handleStoryFilter({});
+  handleCaseFilter({});
 });
 </script>
 
@@ -53,107 +164,89 @@ onMounted(() => {
   <el-card class="case-library-card">
     <template #header>
       <div class="card-header">
-        <h3>
-          <el-icon><Clock /></el-icon> 时空走廊 - 故事与案例
-        </h3>
+        <h3>时空走廊 - 故事与案例</h3>
+        <div class="header-actions">
+          <el-button type="primary" @click="openGenerateDialog('story')">生成故事</el-button>
+          <el-button type="success" @click="openGenerateDialog('case')">生成案例</el-button>
+        </div>
       </div>
     </template>
 
-    <!-- Filters -->
-    <div class="filters">
-      <el-form :inline="true" :model="caseFilters">
-        <el-form-item label="分类">
-          <el-select v-model="caseFilters.category" placeholder="选择分类" clearable size="small">
-            <el-option v-for="c in caseCategories" :key="c" :label="c" :value="c"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="朝代/时期">
-          <el-select v-model="caseFilters.era" placeholder="选择朝代/时期" clearable size="small">
-            <el-option v-for="e in eras" :key="e" :label="e" :value="e"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="主题">
-          <el-select v-model="caseFilters.theme" placeholder="选择主题" clearable size="small">
-            <el-option v-for="t in themes" :key="t" :label="t" :value="t"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="filterCases" icon="Search" size="small"
-            >筛选案例</el-button
-          >
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-tabs>
+      <el-tab-pane label="传统故事">
+        <story-filter-comp :dynasties="dynasties" :themes="themes" @filter="handleStoryFilter" />
+        <content-list :loading="isStoriesLoading" :isEmpty="stories.length === 0">
+          <story-card
+            v-for="story in stories"
+            :key="story.id"
+            :story="story"
+            @detail="handleStoryDetail"
+          />
+        </content-list>
+      </el-tab-pane>
 
-    <!-- Case List (Cards) -->
-    <div class="case-list" v-loading="isCasesLoading">
-      <el-card shadow="hover" v-for="item in cases" :key="item.id" class="case-card">
-        <template #header>
-          <div class="card-header">
-            <span>{{ item.title }}</span>
-            <el-tag size="small">{{ item.category }}</el-tag>
-          </div>
-        </template>
-        <p class="case-summary">{{ item.summary || '暂无简介...' }}</p>
-        <div class="case-footer">
-          <el-tag type="info" size="small" v-if="item.era">{{ item.era }}</el-tag>
-          <el-tag type="warning" size="small" v-if="item.theme">{{ item.theme }}</el-tag>
-          <el-button text type="primary" @click="viewCaseDetails(item.id)">查看详情</el-button>
-        </div>
-      </el-card>
-      <el-empty
-        v-if="!isCasesLoading && cases.length === 0"
-        description="暂无案例，请调整筛选条件"
-      ></el-empty>
-    </div>
+      <el-tab-pane label="教学案例">
+        <case-filter-comp :disciplines="disciplines" @filter="handleCaseFilter" />
+        <content-list :loading="isCasesLoading" :isEmpty="cases.length === 0">
+          <case-card
+            v-for="case_ in cases"
+            :key="case_.id"
+            :case_="case_"
+            @detail="handleCaseDetail"
+          />
+        </content-list>
+      </el-tab-pane>
+    </el-tabs>
+
+    <generate-dialog
+      v-model:visible="showGenerateDialog"
+      :type="dialogType"
+      :dynasties="dynasties"
+      :themes="themes"
+      :disciplines="disciplines"
+      @generate="handleGenerate"
+    />
+
+    <!-- 故事详情对话框 -->
+    <story-detail v-model:visible="showStoryDetail" :story="currentStory" />
+
+    <!-- 案例详情对话框 -->
+    <case-detail
+      v-model:visible="showCaseDetail"
+      :case_="currentCase"
+      @view-story="handleViewStory"
+    />
   </el-card>
 </template>
 
 <style scoped>
 .case-library-card {
-  margin-bottom: 30px;
+  :deep(.el-card__body) {
+    padding: 20px;
+  }
 }
 
-.filters {
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
-}
-
-.filters .el-form-item {
-  margin-bottom: 10px; /* Adjust spacing for inline form */
-}
-
-.case-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  min-height: 100px; /* Ensure loading is visible */
-}
-
-.case-card .card-header {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  h3 {
+    margin: 0;
+  }
 }
 
-.case-summary {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 15px;
-  min-height: 40px; /* Ensure consistent height */
+/* 调整标签页样式 */
+:deep(.el-tabs__content) {
+  padding-top: 20px;
 }
 
-.case-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 10px;
-  margin-top: 10px;
+/* 确保对话框显示在最上层 */
+:deep(.el-dialog) {
+  margin-top: 5vh !important;
 }
 
-.case-footer .el-tag {
-  margin-right: 5px;
+:deep(.el-dialog__wrapper) {
+  z-index: 2000;
 }
 </style>

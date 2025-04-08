@@ -1,81 +1,126 @@
 import { request } from './index';
 
-export interface CaseFilters {
-  category: string;
-  era: string;
-  theme: string;
-  page?: number;
-  pageSize?: number;
+// 资源类型定义
+export interface CaseResource {
+  type: string;
+  title: string;
+  url?: string;
+  description?: string;
 }
 
+// 案例类型定义
 export interface CaseItem {
-  id: number;
+  id: string;
   title: string;
-  category: string;
-  era: string;
+  story_id?: string;
+  main_discipline: string;
+  related_disciplines: string;
+  suitable_grades: string;
+  content: string;
+  teaching_objectives: string;
+  implementation_suggestions?: string;
+  resources?: CaseResource[];
+  created_at: string;
+}
+
+// 故事类型定义
+export interface StoryItem {
+  id: string;
+  title: string;
+  dynasty?: string;
+  period?: string;
   theme: string;
-  summary: string;
+  content: string;
+  moral?: string;
+  reference?: string;
+  created_at: string;
 }
 
-export interface CasesResponse {
-  success: boolean;
-  data: {
-    cases: CaseItem[];
-    total: number;
-  };
+// 分类数据类型
+export interface DynastyInfo {
+  name: string;
+  period: string;
+  subdynasties: DynastyInfo[];
 }
 
-export interface SimulationScenario {
-  title: string;
-  description: string;
+export interface ThemeCategory {
+  name: string;
+  subcategories: string[];
 }
 
-// 获取案例列表
-export async function getCases(filters: CaseFilters): Promise<CasesResponse> {
-  // 真实环境下应该是:
-  // return request.get('/cultural-corridor/cases', { params: filters });
-
-  // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const cases: CaseItem[] = [
-    {
-      id: 1,
-      title: '刻舟求剑',
-      category: '传统故事',
-      era: '先秦',
-      theme: '哲学思辨',
-      summary: '...',
-    },
-    {
-      id: 2,
-      title: '《九章算术》中的勾股定理',
-      category: '跨学科案例',
-      era: '秦汉',
-      theme: '科学探索',
-      summary: '...',
-    },
-  ];
-
-  return {
-    success: true,
-    data: {
-      cases,
-      total: 2,
-    },
-  };
+export interface DisciplineCategory {
+  name: string;
+  subcategories: string[];
 }
 
-// 获取情景模拟
-export async function getSimulationScenario(type: string): Promise<SimulationScenario> {
-  // 真实环境下应该是:
-  // return request.get(`/cultural-corridor/scenario/${type}`);
+// 请求参数类型
+export interface CaseFilters {
+  story_id?: string;
+  main_discipline?: string;
+  related_discipline?: string;
+  suitable_grade?: string;
+}
 
-  // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 500));
+export interface StoryFilters {
+  dynasty?: string;
+  theme?: string;
+  keyword?: string;
+}
 
-  return {
-    title: '古诗创作场景模拟',
-    description: '你身处盛唐长安，请根据以下情景创作一首七言绝句...',
-  };
+export interface GenerateStoryRequest {
+  dynasty?: string;
+  theme: string;
+  keywords: string[];
+}
+
+export interface GenerateCaseRequest {
+  story_id?: string;
+  main_discipline: string;
+  related_disciplines: string[];
+  suitable_grades: string;
+}
+
+// API 函数
+
+// 分类数据获取
+export async function getDynasties(): Promise<DynastyInfo[]> {
+  return await request.get('/cultural-corridor/dynasties');
+}
+
+export async function getThemes(): Promise<ThemeCategory[]> {
+  return await request.get('/cultural-corridor/themes');
+}
+
+export async function getDisciplines(): Promise<DisciplineCategory[]> {
+  return await request.get('/cultural-corridor/disciplines');
+}
+
+// 故事相关接口
+export async function getStories(filters: StoryFilters): Promise<StoryItem[]> {
+  return await request.get('/cultural-corridor/stories', { params: filters });
+}
+
+export async function getStoryDetail(storyId: string): Promise<StoryItem> {
+  return await request.get(`/cultural-corridor/stories/${storyId}`);
+}
+
+export async function generateStory(data: GenerateStoryRequest): Promise<StoryItem> {
+  return await request.post('/cultural-corridor/stories', data);
+}
+
+// 案例相关接口
+export async function getCases(filters: CaseFilters): Promise<CaseItem[]> {
+  return await request.get('/cultural-corridor/cases', { params: filters });
+}
+
+export async function getCaseDetail(caseId: string): Promise<CaseItem> {
+  return await request.get(`/cultural-corridor/cases/${caseId}`);
+}
+
+export async function generateCase(data: GenerateCaseRequest): Promise<CaseItem> {
+  return await request.post('/cultural-corridor/cases', data);
+}
+
+export async function getStoryCases(storyId: string): Promise<CaseItem[]> {
+  return await request.get(`/cultural-corridor/stories/${storyId}/cases`);
 }

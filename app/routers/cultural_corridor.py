@@ -8,7 +8,7 @@ from sqlalchemy import and_, select
 from ..db import CrossDisciplineCase, DBSession, TraditionalStory
 from ..services.cultural_corridor import CulturalCorridorService
 
-router = APIRouter(prefix="/cultural_corridor", tags=["cultural_corridor"])
+router = APIRouter(prefix="/cultural-corridor", tags=["cultural-corridor"])
 
 
 class StoryResponse(BaseModel):
