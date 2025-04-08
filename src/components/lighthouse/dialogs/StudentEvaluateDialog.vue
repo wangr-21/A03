@@ -33,7 +33,7 @@ const submitEvaluation = async () => {
 <template>
   <el-dialog
     v-model="visible"
-    @update:model-value="(val: boolean) => visible = val"
+    @update:model-value="(val: boolean) => (visible = val)"
     :title="`评价学生 - ${student?.name}`"
     width="500px"
   >

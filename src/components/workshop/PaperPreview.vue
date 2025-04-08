@@ -20,10 +20,10 @@ const paperInfo = reactive<PaperInfo>({
 });
 
 const defaultScores = {
-  '选择题': 5,
-  '填空题': 5,
-  '判断题': 3,
-  '简答题': 10,
+  选择题: 5,
+  填空题: 5,
+  判断题: 3,
+  简答题: 10,
 };
 
 // 计算试卷总分
@@ -41,11 +41,15 @@ const removeQuestion = (index: number) => {
 // 调整试题顺序
 const moveQuestion = (index: number, direction: 'up' | 'down') => {
   if (direction === 'up' && index > 0) {
-    [selectedQuestions.value[index], selectedQuestions.value[index - 1]] =
-    [selectedQuestions.value[index - 1], selectedQuestions.value[index]];
+    [selectedQuestions.value[index], selectedQuestions.value[index - 1]] = [
+      selectedQuestions.value[index - 1],
+      selectedQuestions.value[index],
+    ];
   } else if (direction === 'down' && index < selectedQuestions.value.length - 1) {
-    [selectedQuestions.value[index], selectedQuestions.value[index + 1]] =
-    [selectedQuestions.value[index + 1], selectedQuestions.value[index]];
+    [selectedQuestions.value[index], selectedQuestions.value[index + 1]] = [
+      selectedQuestions.value[index + 1],
+      selectedQuestions.value[index],
+    ];
   }
 };
 
@@ -99,7 +103,12 @@ defineExpose({
         </el-col>
         <el-col :span="12">
           <el-form-item label="考试时长">
-            <el-input-number v-model="paperInfo.duration" :min="30" :step="30" placeholder="分钟"></el-input-number>
+            <el-input-number
+              v-model="paperInfo.duration"
+              :min="30"
+              :step="30"
+              placeholder="分钟"
+            ></el-input-number>
           </el-form-item>
         </el-col>
       </el-row>
@@ -121,12 +130,7 @@ defineExpose({
       </div>
 
       <el-empty v-if="selectedQuestions.length === 0" description="暂无已选题目"></el-empty>
-      <el-table
-        v-else
-        :data="selectedQuestions"
-        style="width: 100%"
-        max-height="400"
-      >
+      <el-table v-else :data="selectedQuestions" style="width: 100%" max-height="400">
         <el-table-column type="index" width="50" label="序号"></el-table-column>
         <el-table-column prop="type" label="题型" width="100"></el-table-column>
         <el-table-column prop="stem" label="题干" show-overflow-tooltip></el-table-column>
@@ -206,7 +210,7 @@ defineExpose({
 
 .total-score {
   font-size: 16px;
-  color: #409EFF;
+  color: #409eff;
   font-weight: bold;
 }
 

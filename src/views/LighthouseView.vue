@@ -32,13 +32,13 @@ const submittingEvaluation = ref<boolean>(false);
 const classOptions = computed(() => {
   // 从学生数据中提取唯一的班级选项
   const classSet = new Set<string>();
-  students.value.forEach(student => {
+  students.value.forEach((student) => {
     if (student.class) classSet.add(student.class);
   });
-  
-  return Array.from(classSet).map(className => ({
+
+  return Array.from(classSet).map((className) => ({
     label: className,
-    value: className
+    value: className,
   }));
 });
 
@@ -101,22 +101,26 @@ const openAttendanceDialog = (): void => {
 };
 
 // 处理考勤提交
-const handleAttendanceSubmit = async (data: { date: string; records: Record<string, string>; class: string }) => {
+const handleAttendanceSubmit = async (data: {
+  date: string;
+  records: Record<string, string>;
+  class: string;
+}) => {
   try {
     // 这里应该有实际的API调用来提交考勤记录
     // await submitAttendanceRecords(data);
-    
+
     // 模拟API调用延迟
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     // 更新出勤率统计（实际项目中应该从API重新获取）
     // 这里只是一个简单示例，实际逻辑可能更复杂
     const presentCount: Record<string, number> = {};
     const totalCount: Record<string, number> = {};
-    
+
     // 统计出勤人数
     Object.entries(data.records).forEach(([studentId, status]) => {
-      const student = students.value.find(s => s.id === studentId);
+      const student = students.value.find((s) => s.id === studentId);
       if (student) {
         const studentClass = student.class;
         totalCount[studentClass] = (totalCount[studentClass] || 0) + 1;
@@ -125,9 +129,9 @@ const handleAttendanceSubmit = async (data: { date: string; records: Record<stri
         }
       }
     });
-    
+
     // 更新学生出勤率（简化示例）
-    students.value.forEach(student => {
+    students.value.forEach((student) => {
       if (data.records[student.id] === 'present') {
         // 假设更新出勤率的逻辑
         const currentAttendance = student.attendance || 0;
@@ -135,12 +139,11 @@ const handleAttendanceSubmit = async (data: { date: string; records: Record<stri
         student.attendance = Math.min(100, currentAttendance + 1);
       }
     });
-    
+
     ElMessage.success('考勤记录已成功提交');
-    
+
     // 刷新统计数据
     fetchStatistics();
-    
   } catch (error) {
     console.error('提交考勤记录失败:', error);
     ElMessage.error('提交考勤记录失败，请稍后重试');
@@ -215,7 +218,7 @@ onMounted(() => {
       :submitting="submittingEvaluation"
       @submit="submitEvaluation"
     />
-    
+
     <!-- 考勤点名对话框 -->
     <AttendanceDialog
       v-model:visible="attendanceDialogVisible"

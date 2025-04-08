@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const props = defineProps<{
+defineProps<{
   tags: string[];
 }>();
 
@@ -12,7 +11,7 @@ const router = useRouter();
 const handleTagClick = (tag: string) => {
   router.push({
     path: '/community',
-    query: { tag }
+    query: { tag },
   });
 };
 
@@ -34,7 +33,8 @@ const viewAllTags = () => {
         class="topic-tag"
         effect="plain"
         @click="handleTagClick(tag)"
-      ># {{ tag }}</el-tag>
+        ># {{ tag }}</el-tag
+      >
       <div v-if="!tags.length" class="empty-topics">暂无热门话题</div>
     </div>
   </div>
@@ -96,4 +96,4 @@ const viewAllTags = () => {
     justify-content: center;
   }
 }
-</style> 
+</style>

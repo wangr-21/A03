@@ -38,7 +38,7 @@ onMounted(() => {
   if (route.query.redirect && typeof route.query.redirect === 'string') {
     redirectPath.value = route.query.redirect;
   }
-  
+
   // 固定页面，防止滚动和移动
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
@@ -120,7 +120,7 @@ const handleForgotPassword = () => {
       <div class="bg-circle circle-2"></div>
       <div class="bg-circle circle-3"></div>
     </div>
-    
+
     <div class="login-container">
       <div class="login-content">
         <div class="login-header">
@@ -166,15 +166,11 @@ const handleForgotPassword = () => {
             </el-form-item>
 
             <div class="auth-options">
-              <el-checkbox 
-                v-model="loginForm.rememberMe" 
-                :disabled="loading"
-                class="remember-me"
-              >
+              <el-checkbox v-model="loginForm.rememberMe" :disabled="loading" class="remember-me">
                 记住我
               </el-checkbox>
-              <el-button 
-                type="text" 
+              <el-button
+                type="text"
                 :disabled="loading"
                 class="forgot-password"
                 @click="handleForgotPassword"
@@ -272,7 +268,8 @@ const handleForgotPassword = () => {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) scale(1);
   }
   50% {
@@ -500,25 +497,25 @@ const handleForgotPassword = () => {
     max-width: 100%;
     padding: 0 10px;
   }
-  
+
   .app-title {
     font-size: 28px;
   }
-  
+
   .app-slogan {
     font-size: 14px;
   }
-  
+
   .login-form {
     padding: 15px;
   }
-  
+
   .auth-options {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .forgot-password {
     padding-left: 0;
   }

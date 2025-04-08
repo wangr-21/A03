@@ -21,7 +21,7 @@ const fetchHistoryPapers = async () => {
   isLoading.value = true;
   try {
     // TODO: 替换为实际的API调用
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     historyPapers.value = [
       {
         id: '1',
@@ -29,7 +29,7 @@ const fetchHistoryPapers = async () => {
         createTime: '2024-03-20 14:30',
         totalScore: 100,
         questionCount: 20,
-        questions: []
+        questions: [],
       },
       {
         id: '2',
@@ -37,8 +37,8 @@ const fetchHistoryPapers = async () => {
         createTime: '2024-01-15 09:45',
         totalScore: 120,
         questionCount: 25,
-        questions: []
-      }
+        questions: [],
+      },
     ];
   } catch (error) {
     console.error('获取历史试卷失败:', error);
@@ -95,12 +95,8 @@ onMounted(() => {
           </div>
         </div>
         <div class="paper-actions">
-          <el-button type="primary" link @click="viewPaperDetail(paper)">
-            查看详情
-          </el-button>
-          <el-button type="success" link @click="reusePaper(paper)">
-            复用试卷
-          </el-button>
+          <el-button type="primary" link @click="viewPaperDetail(paper)"> 查看详情 </el-button>
+          <el-button type="success" link @click="reusePaper(paper)"> 复用试卷 </el-button>
         </div>
       </el-card>
     </div>

@@ -7,7 +7,6 @@ import type { PlanForm } from '@/api';
 
 const md = new MarkdownIt();
 
-
 // Reactive form data
 const planForm = reactive<PlanForm>({
   grade: '',

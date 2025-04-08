@@ -15,7 +15,7 @@ const videoScript = ref<string>(''); // Generated script
 const showVideoPlayerDialog = ref<boolean>(false);
 
 // Upload handler
-const handleVideoUploadSuccess = (url: string, file: UploadUserFile ) => {
+const handleVideoUploadSuccess = (url: string, file: UploadUserFile) => {
   imageToVideoImageUrl.value = url;
   imageToVideoFile.value = file;
   generatedVideoUrl.value = ''; // Clear previous result
@@ -61,10 +61,7 @@ const downloadVideo = () => {
     <el-row :gutter="30">
       <!-- Left: Upload & Settings -->
       <el-col :span="8">
-        <ImageUploader
-          title="1. 上传静态图片"
-          @upload-success="handleVideoUploadSuccess"
-        />
+        <ImageUploader title="1. 上传静态图片" @upload-success="handleVideoUploadSuccess" />
         <div class="image-preview" v-if="imageToVideoImageUrl">
           <h5>图片预览</h5>
           <el-image :src="imageToVideoImageUrl" fit="contain"></el-image>

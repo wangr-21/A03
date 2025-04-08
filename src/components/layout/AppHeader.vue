@@ -37,7 +37,7 @@ onMounted(() => initialize());
 const userStore = useUserStore();
 
 // 检查用户登录状态
-onMounted(() =>  userStore.initUserState());
+onMounted(() => userStore.initUserState());
 </script>
 
 <template>

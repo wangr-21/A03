@@ -7,14 +7,17 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:value': [value: string];
-  'export': [];
+  export: [];
 }>();
 
 const localValue = ref(props.value);
 
-watch(() => props.value, (newVal) => {
-  localValue.value = newVal;
-});
+watch(
+  () => props.value,
+  (newVal) => {
+    localValue.value = newVal;
+  },
+);
 
 watch(localValue, (newVal) => {
   emit('update:value', newVal);
@@ -27,12 +30,7 @@ const exportData = () => {
 
 <template>
   <div class="controls">
-    <el-input
-      v-model="localValue"
-      placeholder="搜索学生"
-      class="search-input"
-      clearable
-    >
+    <el-input v-model="localValue" placeholder="搜索学生" class="search-input" clearable>
       <template #prefix>
         <el-icon><Search /></el-icon>
       </template>

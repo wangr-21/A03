@@ -2,7 +2,15 @@
 import { ref } from 'vue';
 import type { Student } from '@/api';
 import SearchBar from './SearchBar.vue';
-import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElProgress, ElPagination } from 'element-plus';
+import {
+  ElCard,
+  ElTable,
+  ElTableColumn,
+  ElAvatar,
+  ElButton,
+  ElProgress,
+  ElPagination,
+} from 'element-plus';
 import { Calendar } from '@element-plus/icons-vue';
 
 defineProps<{
@@ -55,10 +63,10 @@ const getProgressColor = (value: number): string => {
     <template #header>
       <div class="card-header">
         <div class="title-area">
-        <div class="title">学生成长追踪</div>
-          <el-button 
-            type="primary" 
-            @click="emit('take-attendance')" 
+          <div class="title">学生成长追踪</div>
+          <el-button
+            type="primary"
+            @click="emit('take-attendance')"
             class="attendance-btn"
             :icon="Calendar"
           >

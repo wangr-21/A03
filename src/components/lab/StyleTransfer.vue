@@ -101,11 +101,7 @@ const downloadResult = () => {
       <!-- Right: Result & Action -->
       <el-col :span="10">
         <h4>3. 生成风格化图片</h4>
-        <div
-          class="result-area"
-          v-loading="isApplyingStyle"
-          element-loading-text="正在应用风格..."
-        >
+        <div class="result-area" v-loading="isApplyingStyle" element-loading-text="正在应用风格...">
           <div class="image-preview result-preview" v-if="styleTransferResultUrl">
             <h5>效果预览</h5>
             <el-image :src="styleTransferResultUrl" fit="contain"></el-image>

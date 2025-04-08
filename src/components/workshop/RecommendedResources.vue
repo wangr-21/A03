@@ -2,14 +2,14 @@
 import { ref } from 'vue';
 
 interface RecommendedResource {
-    title: string;
-    author: string;
-    content: string;
-    date: string;
-    views: number;
-    stars: number;
-    avatar: string;
-};
+  title: string;
+  author: string;
+  content: string;
+  date: string;
+  views: number;
+  stars: number;
+  avatar: string;
+}
 
 // 推荐资源数据
 const resources = ref<RecommendedResource[]>([

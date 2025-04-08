@@ -30,7 +30,7 @@ const getAttendanceColor = (attendance: number): string => {
 <template>
   <el-dialog
     v-model="visible"
-    @update:model-value="(val: boolean) => visible = val"
+    @update:model-value="(val: boolean) => (visible = val)"
     :title="`学生详情 - ${student?.name}`"
     width="500px"
   >

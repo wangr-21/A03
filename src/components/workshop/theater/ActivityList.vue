@@ -8,8 +8,8 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  'select': [activity: Activity];
-  'filter': [filters: ActivityFilters];
+  select: [activity: Activity];
+  filter: [filters: ActivityFilters];
 }>();
 
 // 筛选条件
@@ -53,12 +53,7 @@ const handleActivityClick = (activity: Activity) => {
           互动活动推荐
         </h3>
         <div class="filter-actions">
-          <el-select
-            v-model="filters.activity_type"
-            placeholder="活动类型"
-            clearable
-            size="small"
-          >
+          <el-select v-model="filters.activity_type" placeholder="活动类型" clearable size="small">
             <el-option
               v-for="type in activityTypes"
               :key="type"
@@ -66,12 +61,7 @@ const handleActivityClick = (activity: Activity) => {
               :value="type"
             />
           </el-select>
-          <el-select
-            v-model="filters.subject"
-            placeholder="学科"
-            clearable
-            size="small"
-          >
+          <el-select v-model="filters.subject" placeholder="学科" clearable size="small">
             <el-option
               v-for="subject in subjects"
               :key="subject"
@@ -79,18 +69,8 @@ const handleActivityClick = (activity: Activity) => {
               :value="subject"
             />
           </el-select>
-          <el-select
-            v-model="filters.grade"
-            placeholder="年级"
-            clearable
-            size="small"
-          >
-            <el-option
-              v-for="grade in grades"
-              :key="grade"
-              :label="grade"
-              :value="grade"
-            />
+          <el-select v-model="filters.grade" placeholder="年级" clearable size="small">
+            <el-option v-for="grade in grades" :key="grade" :label="grade" :value="grade" />
           </el-select>
         </div>
       </div>

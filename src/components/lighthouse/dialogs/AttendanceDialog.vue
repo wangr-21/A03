@@ -19,12 +19,7 @@
           :disabled-date="disableFutureDates"
           class="date-picker"
         />
-        <el-select
-          v-model="selectedClass"
-          placeholder="选择班级"
-          clearable
-          class="class-select"
-        >
+        <el-select v-model="selectedClass" placeholder="选择班级" clearable class="class-select">
           <el-option
             v-for="option in classOptions"
             :key="option.value"
@@ -33,7 +28,7 @@
           />
         </el-select>
       </div>
-      
+
       <div class="quick-actions">
         <span class="action-label">批量操作：</span>
         <div class="action-buttons">
@@ -50,18 +45,13 @@
       </div>
     </div>
 
-    <el-table 
-      :data="filteredStudents" 
-      style="width: 100%"
-      :max-height="400"
-      border
-    >
+    <el-table :data="filteredStudents" style="width: 100%" :max-height="400" border>
       <el-table-column type="index" label="序号" width="60" align="center" />
       <el-table-column label="学生信息" min-width="200">
         <template #default="{ row }">
           <div class="student-info">
-            <el-avatar 
-              :size="32" 
+            <el-avatar
+              :size="32"
               :src="row.avatar || '/src/assets/avatar.svg'"
               class="student-avatar"
             />
@@ -75,11 +65,7 @@
       <el-table-column prop="class" label="班级" width="120" align="center" />
       <el-table-column label="考勤状态" width="200" align="center">
         <template #default="{ row }">
-          <el-select
-            v-model="attendanceRecords[row.id]"
-            placeholder="请选择"
-            style="width: 120px"
-          >
+          <el-select v-model="attendanceRecords[row.id]" placeholder="请选择" style="width: 120px">
             <el-option
               v-for="option in attendanceOptions"
               :key="option.value"
@@ -117,17 +103,15 @@
       </div>
       <div class="summary-item">
         <span class="label">出勤率：</span>
-        <span class="value" :class="getAttendanceRateClass">
-          {{ getAttendanceRate }}%
-        </span>
+        <span class="value" :class="getAttendanceRateClass"> {{ getAttendanceRate }}% </span>
       </div>
     </div>
 
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="closeDialog">取消</el-button>
-        <el-button 
-          type="primary" 
+        <el-button
+          type="primary"
           :loading="submitting"
           :disabled="!canSubmit"
           @click="handleSubmit"
@@ -154,12 +138,14 @@ const props = defineProps<{
 // Emits 定义
 const emit = defineEmits<{
   'update:visible': [value: boolean];
-  'submit-attendance': [data: {
-    date: string;
-    records: Record<string, string>;
-    notes: Record<string, string>;
-    class: string;
-  }];
+  'submit-attendance': [
+    data: {
+      date: string;
+      records: Record<string, string>;
+      notes: Record<string, string>;
+      class: string;
+    },
+  ];
 }>();
 
 // 状态定义
@@ -174,18 +160,18 @@ const attendanceOptions = [
   { label: '出席', value: 'present', type: 'success' },
   { label: '迟到', value: 'late', type: 'warning' },
   { label: '请假', value: 'info', type: 'info' },
-  { label: '缺席', value: 'danger', type: 'danger' }
+  { label: '缺席', value: 'danger', type: 'danger' },
 ];
 
 // 计算属性
 const filteredStudents = computed(() => {
   if (!selectedClass.value) return props.students;
-  return props.students.filter(student => student.class === selectedClass.value);
+  return props.students.filter((student) => student.class === selectedClass.value);
 });
 
 const getPresentCount = computed(() => {
-  return filteredStudents.value.filter(student => 
-    attendanceRecords.value[student.id] === 'present'
+  return filteredStudents.value.filter(
+    (student) => attendanceRecords.value[student.id] === 'present',
   ).length;
 });
 
@@ -203,9 +189,7 @@ const getAttendanceRateClass = computed(() => {
 });
 
 const canSubmit = computed(() => {
-  return filteredStudents.value.every(student => 
-    attendanceRecords.value[student.id]
-  );
+  return filteredStudents.value.every((student) => attendanceRecords.value[student.id]);
 });
 
 // 方法
@@ -215,26 +199,28 @@ const disableFutureDates = (date: Date) => {
 
 const markAllAs = (status: string) => {
   ElMessageBox.confirm(
-    `确定将当前显示的所有学生考勤状态标记为"${attendanceOptions.find(opt => opt.value === status)?.label}"吗？`,
+    `确定将当前显示的所有学生考勤状态标记为"${attendanceOptions.find((opt) => opt.value === status)?.label}"吗？`,
     '批量操作确认',
     {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning',
-    }
-  ).then(() => {
-    filteredStudents.value.forEach(student => {
-      attendanceRecords.value[student.id] = status;
+    },
+  )
+    .then(() => {
+      filteredStudents.value.forEach((student) => {
+        attendanceRecords.value[student.id] = status;
+      });
+      ElMessage.success('批量标记成功');
+    })
+    .catch(() => {
+      // 用户取消操作
     });
-    ElMessage.success('批量标记成功');
-  }).catch(() => {
-    // 用户取消操作
-  });
 };
 
 const initializeRecords = () => {
   // 初始化所有学生的考勤记录为未选择状态
-  props.students.forEach(student => {
+  props.students.forEach((student) => {
     if (!attendanceRecords.value[student.id]) {
       attendanceRecords.value[student.id] = '';
     }
@@ -261,9 +247,9 @@ const handleSubmit = async () => {
       date: selectedDate.value,
       records: attendanceRecords.value,
       notes: attendanceNotes.value,
-      class: selectedClass.value
+      class: selectedClass.value,
     });
-    
+
     closeDialog();
     ElMessage.success('考勤记录提交成功');
   } catch (error) {
@@ -279,12 +265,15 @@ const closeDialog = () => {
 };
 
 // 监听对话框可见性变化
-watch(() => props.visible, (newVal) => {
-  if (newVal) {
-    initializeRecords();
-    selectedDate.value = new Date().toISOString().split('T')[0];
-  }
-});
+watch(
+  () => props.visible,
+  (newVal) => {
+    if (newVal) {
+      initializeRecords();
+      selectedDate.value = new Date().toISOString().split('T')[0];
+    }
+  },
+);
 </script>
 
 <style scoped>
@@ -379,10 +368,18 @@ watch(() => props.visible, (newVal) => {
   color: var(--el-text-color-primary);
 }
 
-.value.excellent { color: var(--el-color-success); }
-.value.good { color: var(--el-color-primary); }
-.value.average { color: var(--el-color-warning); }
-.value.poor { color: var(--el-color-danger); }
+.value.excellent {
+  color: var(--el-color-success);
+}
+.value.good {
+  color: var(--el-color-primary);
+}
+.value.average {
+  color: var(--el-color-warning);
+}
+.value.poor {
+  color: var(--el-color-danger);
+}
 
 .dialog-footer {
   display: flex;
@@ -395,15 +392,15 @@ watch(() => props.visible, (newVal) => {
   .filter-group {
     flex-direction: column;
   }
-  
+
   .date-picker,
   .class-select {
     width: 100%;
   }
-  
+
   .attendance-summary {
     flex-direction: column;
     gap: 10px;
   }
 }
-</style> 
+</style>

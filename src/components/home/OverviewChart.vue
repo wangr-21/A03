@@ -152,7 +152,7 @@ onBeforeUnmount(() => {
         placeholder="Month"
         size="small"
         @change="handleTimeRangeChange"
-        style="width: 10%;"
+        style="width: 10%"
       >
         <el-option label="月" value="month"></el-option>
         <el-option label="周" value="week"></el-option>

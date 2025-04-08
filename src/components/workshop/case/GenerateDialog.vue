@@ -61,65 +61,65 @@ const handleGenerate = () => {
   >
     <!-- 故事生成表单 -->
     <el-form v-if="type === 'story'" :model="storyForm" label-width="100px">
-        <el-form-item label="朝代">
-          <el-select v-model="storyForm.dynasty">
+      <el-form-item label="朝代">
+        <el-select v-model="storyForm.dynasty">
+          <el-option
+            v-for="dynasty in dynasties"
+            :key="dynasty.name"
+            :label="dynasty.name"
+            :value="dynasty.name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="主题">
+        <el-select v-model="storyForm.theme">
+          <el-option
+            v-for="theme in themes"
+            :key="theme.name"
+            :label="theme.name"
+            :value="theme.name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="关键词">
+        <el-select v-model="storyForm.keywords" multiple>
+          <template v-for="theme in themes" :key="theme.name">
             <el-option
-              v-for="dynasty in dynasties"
-              :key="dynasty.name"
-              :label="dynasty.name"
-              :value="dynasty.name"
+              v-for="subcat in theme.subcategories"
+              :key="`${theme.name}-${subcat}`"
+              :label="subcat"
+              :value="subcat"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="主题">
-          <el-select v-model="storyForm.theme">
-            <el-option
-              v-for="theme in themes"
-              :key="theme.name"
-              :label="theme.name"
-              :value="theme.name"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="关键词">
-          <el-select v-model="storyForm.keywords" multiple>
-            <template v-for="theme in themes" :key="theme.name">
-              <el-option
-                v-for="subcat in theme.subcategories"
-                :key="`${theme.name}-${subcat}`"
-                :label="subcat"
-                :value="subcat"
-              />
-            </template>
-          </el-select>
-        </el-form-item>
+          </template>
+        </el-select>
+      </el-form-item>
     </el-form>
 
     <!-- 案例生成表单 -->
     <el-form v-else :model="caseForm" label-width="100px">
-        <el-form-item label="主要学科">
-          <el-select v-model="caseForm.main_discipline">
-            <el-option
-              v-for="discipline in disciplines"
-              :key="discipline.name"
-              :label="discipline.name"
-              :value="discipline.name"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="相关学科">
-          <el-select v-model="caseForm.related_disciplines" multiple>
-            <el-option
-              v-for="discipline in disciplines"
-              :key="discipline.name"
-              :label="discipline.name"
-              :value="discipline.name"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="适用年级">
-          <el-input v-model="caseForm.suitable_grades" />
-        </el-form-item>
+      <el-form-item label="主要学科">
+        <el-select v-model="caseForm.main_discipline">
+          <el-option
+            v-for="discipline in disciplines"
+            :key="discipline.name"
+            :label="discipline.name"
+            :value="discipline.name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="相关学科">
+        <el-select v-model="caseForm.related_disciplines" multiple>
+          <el-option
+            v-for="discipline in disciplines"
+            :key="discipline.name"
+            :label="discipline.name"
+            :value="discipline.name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="适用年级">
+        <el-input v-model="caseForm.suitable_grades" />
+      </el-form-item>
     </el-form>
 
     <template #footer>

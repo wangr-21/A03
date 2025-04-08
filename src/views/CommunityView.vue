@@ -64,7 +64,7 @@ watch(
     if (queryTag !== activeTag.value) {
       checkUrlParams();
     }
-  }
+  },
 );
 
 // --- Functions ---
@@ -157,22 +157,22 @@ const handleTagSelected = (tag: string): void => {
     activeTag.value = '';
     // 更新URL，移除标签参数
     router.replace({
-      query: { ...route.query, tag: undefined }
+      query: { ...route.query, tag: undefined },
     });
   } else {
     activeTag.value = tag;
     // 更新URL，添加标签参数
     router.replace({
-      query: { ...route.query, tag }
+      query: { ...route.query, tag },
     });
   }
-  
+
   // 重置页码并重新获取帖子
   currentPage.value = 1;
   noMorePosts.value = false;
   posts.value = [];
   fetchPosts();
-  
+
   if (tag) {
     ElMessage.success(`正在查看"${tag}"相关的帖子`);
   }
@@ -213,14 +213,10 @@ onMounted(() => {
             @tab-change="handleTabChange"
             @search="handleSearch"
           />
-          
+
           <!-- 当前选中的标签提示 -->
           <div v-if="activeTag" class="active-tag-tip">
-            <el-alert
-              type="info"
-              :closable="false"
-              show-icon
-            >
+            <el-alert type="info" :closable="false" show-icon>
               当前筛选: #{{ activeTag }}
               <el-button
                 type="text"
@@ -250,11 +246,7 @@ onMounted(() => {
           <RecommendedUsers :users="recommendedUsers" />
 
           <!-- 热门话题卡片 -->
-          <HotTopics 
-            :tags="hotTags" 
-            :active-tag="activeTag"
-            @tag-selected="handleTagSelected"
-          />
+          <HotTopics :tags="hotTags" :active-tag="activeTag" @tag-selected="handleTagSelected" />
         </div>
       </el-col>
     </el-row>
