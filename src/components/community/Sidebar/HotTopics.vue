@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-const props = defineProps<{
+defineProps<{
   tags: string[];
   activeTag?: string; // 当前选中的标签
 }>();
