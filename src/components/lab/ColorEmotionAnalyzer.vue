@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import type { UploadUserFile } from 'element-plus';
 import { analyzeColorEmotion, demoGetImageEmotionAnalysis } from '@/api';
@@ -16,7 +16,13 @@ const colorAnalysisResult = ref<ColorAnalysisResponse | null>(null);
 
 const demoData = ref<{ analysis: string; teacher: string }>();
 const dialogVisible = ref(false);
-const md = new MarkdownIt();
+const md = new MarkdownIt({ html: true });
+
+const showDemoDataDialog = async () => {
+  demoData.value = await demoGetImageEmotionAnalysis();
+  console.log('Fetch demo data');
+  dialogVisible.value = true;
+};
 
 const getEmotionDimensions = (data: ColorAnalysisResponse): number[] => {
   return ['warmth', 'brightness', 'contrast', 'saturation', 'harmony'].map(
@@ -57,13 +63,6 @@ const handleAnalyzeColorEmotion = async (): Promise<void> => {
     isAnalyzingColor.value = false;
   }
 };
-
-onMounted(() => {
-  // Fetch demo data on mount
-  demoGetImageEmotionAnalysis().then((data) => {
-    demoData.value = data;
-  });
-});
 </script>
 
 <template>
@@ -138,9 +137,7 @@ onMounted(() => {
             <!-- demo btn start -->
             <el-row>
               <el-col :span="24" class="mt-4">
-                <el-button type="primary" @click="dialogVisible = true">
-                  查看图片分析详情
-                </el-button>
+                <el-button type="primary" @click="showDemoDataDialog"> 查看图片分析详情 </el-button>
               </el-col>
             </el-row>
             <!-- demo btn end -->
