@@ -1,10 +1,5 @@
 import { request } from './index';
 
-// 与后端对齐的参数接口
-export interface PlanForm {
-  grade: string;
-}
-
 // 生成教案响应
 export interface GeneratePlanResponse {
   plan_id: string;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Files, Document, Timer } from '@element-plus/icons-vue';
 import { getQuestions } from '@/api';
 import type { Question, QuestionFilters } from '@/api';
 import PaperPreview from './PaperPreview.vue';
 import PaperHistory from './PaperHistory.vue';
+import AIPaperGenerator from './AIPaperGenerator.vue';
 
 interface Difficulty {
   label: string;
@@ -14,18 +14,35 @@ interface Difficulty {
 
 // --- State for 题海星图 ---
 const questionFilters = reactive<QuestionFilters>({
-  type: [], // e.g., ['选择题', '填空题']
+  type: [], // e.g., ['鉴赏题', '创作表现题']
   difficulty: '', // e.g., 'easy', 'medium', 'hard'
   knowledgePoint: '',
 });
 
-const questionTypes = ref<string[]>(['选择题', '填空题', '判断题', '简答题']);
-const difficulties = ref<Difficulty[]>([
-  { label: '简单', value: 'easy' },
-  { label: '中等', value: 'medium' },
-  { label: '困难', value: 'hard' },
+const questionTypes = ref<string[]>([
+  '鉴赏题',
+  '创作表现题',
+  '技法应用题',
+  '材料工具题',
+  '美术史论题',
+  '综合探究题',
 ]);
-const knowledgePoints = ref<string[]>(['函数', '几何', '代数', '力学', '光学']); // Placeholder
+const difficulties = ref<Difficulty[]>([
+  { label: '基础', value: 'easy' },
+  { label: '提高', value: 'medium' },
+  { label: '拓展', value: 'hard' },
+]);
+const knowledgePoints = ref<string[]>([
+  '色彩理论',
+  '构图基础',
+  '透视原理',
+  '中国画技法',
+  '西方绘画史',
+  '中国美术史',
+  '设计元素',
+  '民间美术',
+  '现代艺术',
+]);
 const questions = ref<Question[]>([]); // Will hold fetched questions
 const isQuestionsLoading = ref<boolean>(false);
 const questionCurrentPage = ref<number>(1);
@@ -35,6 +52,7 @@ const totalQuestions = ref<number>(0);
 const paperPreviewRef = ref<InstanceType<typeof PaperPreview>>();
 const paperPreviewVisible = ref<boolean>(false);
 const paperHistoryVisible = ref<boolean>(false);
+const aiPaperGeneratorVisible = ref<boolean>(false);
 
 const filterQuestions = async (): Promise<void> => {
   console.log('Filtering questions:', questionFilters);
@@ -80,7 +98,7 @@ const addToPaper = (question: Question) => {
   }
 };
 
-const showPaperPreview = () => {
+const showPaperGenerator = () => {
   paperPreviewVisible.value = true;
 };
 
@@ -96,6 +114,14 @@ const handleHistoryClose = () => {
   paperHistoryVisible.value = false;
 };
 
+const showAIPaperGenerator = () => {
+  aiPaperGeneratorVisible.value = true;
+};
+
+const handleAIGeneratorClose = () => {
+  aiPaperGeneratorVisible.value = false;
+};
+
 // Initial data fetch on mount
 onMounted(() => {
   filterQuestions();
@@ -109,12 +135,12 @@ onMounted(() => {
         <div class="card-header">
           <div class="header-content">
             <h3 class="header-title">
-              <el-icon><Files /></el-icon> 题海星图 - 智能题库
+              <el-icon><Files /></el-icon> 题海星图 - 美术智能题库
             </h3>
             <div class="header-actions">
-              <el-button type="primary" @click="showPaperPreview" class="action-button">
+              <el-button type="primary" @click="showPaperGenerator" class="action-button">
                 <el-icon class="button-icon"><Document /></el-icon>
-                试卷预览
+                试卷生成
                 <template #suffix>
                   <el-badge
                     v-if="paperPreviewRef?.selectedQuestions?.length"
@@ -122,6 +148,10 @@ onMounted(() => {
                     class="preview-badge"
                   />
                 </template>
+              </el-button>
+              <el-button type="success" @click="showAIPaperGenerator" class="action-button">
+                <el-icon class="button-icon"><Microphone /></el-icon>
+                智能生成
               </el-button>
               <el-button type="info" plain @click="showPaperHistory" class="action-button">
                 <el-icon class="button-icon"><Timer /></el-icon>
@@ -180,7 +210,7 @@ onMounted(() => {
           :data="questions"
           v-loading="isQuestionsLoading"
           style="width: 100%"
-          empty-text="暂无题目，请调整筛选条件"
+          empty-text="暂无美术题目，请调整筛选条件"
         >
           <el-table-column type="index" width="50" label="序号"></el-table-column>
           <el-table-column prop="type" label="题型" width="100"></el-table-column>
@@ -232,10 +262,10 @@ onMounted(() => {
       </div>
     </el-card>
 
-    <!-- 试卷预览弹窗 -->
+    <!-- 试卷生成对话框 -->
     <el-dialog
       v-model="paperPreviewVisible"
-      title="试卷预览"
+      title="美术试卷生成"
       width="65%"
       :destroy-on-close="false"
       @close="handlePreviewClose"
@@ -243,10 +273,20 @@ onMounted(() => {
       <PaperPreview ref="paperPreviewRef" />
     </el-dialog>
 
-    <!-- 试卷历史弹窗 -->
+    <!-- AI试卷生成器对话框 -->
+    <el-dialog
+      v-model="aiPaperGeneratorVisible"
+      title="智能生成美术试卷"
+      width="65%"
+      @close="handleAIGeneratorClose"
+    >
+      <AIPaperGenerator :paperPreviewRef="paperPreviewRef" @close="handleAIGeneratorClose" />
+    </el-dialog>
+
+    <!-- 试卷历史对话框 -->
     <el-dialog
       v-model="paperHistoryVisible"
-      title="试卷历史"
+      title="美术试卷历史"
       width="65%"
       :destroy-on-close="false"
       @close="handleHistoryClose"

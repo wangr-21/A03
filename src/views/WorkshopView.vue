@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 import {
   ToolCards,
   LessonPlanGenerator,
-  InteractionRecommender,
   ThinkingTheater,
   QuestionBank,
   CaseLibrary,
@@ -133,9 +132,6 @@ onMounted(() => {
 
     <!-- 灵犀教案生成器 -->
     <LessonPlanGenerator />
-
-    <!-- 思辨剧场 - 互动推荐 -->
-    <InteractionRecommender />
 
     <!-- 思辨剧场组件 -->
     <ThinkingTheater />

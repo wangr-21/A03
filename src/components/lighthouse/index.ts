@@ -4,3 +4,5 @@ export { default as StudentTable } from './table/StudentTable.vue';
 export { default as StudentDetailsDialog } from './dialogs/StudentDetailsDialog.vue';
 export { default as StudentEvaluateDialog } from './dialogs/StudentEvaluateDialog.vue';
 export { default as AttendanceDialog } from './dialogs/AttendanceDialog.vue';
+export { default as AddStudentDialog } from './dialogs/AddStudentDialog.vue';
+export { default as ScoreWorkDialog } from './dialogs/ScoreWorkDialog.vue';

@@ -9,8 +9,8 @@ import {
   StatCards,
   StudentTable,
   StudentDetailsDialog,
-  StudentEvaluateDialog,
   AttendanceDialog,
+  AddStudentDialog,
 } from '@/components/lighthouse';
 
 // 数据
@@ -23,10 +23,9 @@ const pageSize = ref<number>(10);
 
 // 对话框状态变量
 const detailsDialogVisible = ref<boolean>(false);
-const evaluateDialogVisible = ref<boolean>(false);
 const attendanceDialogVisible = ref<boolean>(false); // 点名对话框状态
+const addStudentDialogVisible = ref<boolean>(false); // 添加学生对话框状态
 const currentStudent = ref<Student | null>(null);
-const submittingEvaluation = ref<boolean>(false);
 
 // 班级选项
 const classOptions = computed(() => {
@@ -90,14 +89,14 @@ const viewDetails = (student: Student): void => {
   detailsDialogVisible.value = true;
 };
 
-const evaluateStudent = (student: Student): void => {
-  currentStudent.value = student;
-  evaluateDialogVisible.value = true;
-};
-
 // 打开点名对话框
 const openAttendanceDialog = (): void => {
   attendanceDialogVisible.value = true;
+};
+
+// 打开添加学生对话框
+const openAddStudentDialog = (): void => {
+  addStudentDialogVisible.value = true;
 };
 
 // 处理考勤提交
@@ -150,24 +149,29 @@ const handleAttendanceSubmit = async (data: {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const submitEvaluation = async (content: string) => {
-  submittingEvaluation.value = true;
-
+// 处理添加学生
+const handleAddStudent = async (studentData: Student) => {
   try {
-    // 这里应该有一个实际的API调用来提交评价
-    // await submitStudentEvaluation(currentStudent.value.id, content);
+    // 这里应该有实际的API调用来添加学生
+    // await addStudent(studentData);
 
-    // 模拟API调用
+    // 模拟API调用延迟
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    ElMessage.success(`已成功提交对${currentStudent.value?.name}的评价`);
-    evaluateDialogVisible.value = false;
+    // 添加到本地数据（实际应该重新获取数据）
+    students.value.unshift({
+      ...studentData,
+      score: 0,
+      attendance: 100,
+    });
+
+    // 更新统计数据
+    fetchStatistics();
+
+    ElMessage.success('学生添加成功！');
   } catch (error) {
-    console.error('提交评价失败:', error);
-    ElMessage.error('提交评价失败，请稍后重试');
-  } finally {
-    submittingEvaluation.value = false;
+    console.error('添加学生失败:', error);
+    ElMessage.error('添加学生失败，请重试');
   }
 };
 
@@ -202,22 +206,14 @@ onMounted(() => {
         @update:search="handleSearchUpdate"
         @update:page="handlePageUpdate"
         @view-details="viewDetails"
-        @evaluate-student="evaluateStudent"
         @export-data="exportData"
         @take-attendance="openAttendanceDialog"
+        @add-student="openAddStudentDialog"
       />
     </div>
 
     <!-- 学生详情对话框 -->
     <StudentDetailsDialog v-model:visible="detailsDialogVisible" :student="currentStudent" />
-
-    <!-- 评价对话框 -->
-    <StudentEvaluateDialog
-      v-model:visible="evaluateDialogVisible"
-      :student="currentStudent"
-      :submitting="submittingEvaluation"
-      @submit="submitEvaluation"
-    />
 
     <!-- 考勤点名对话框 -->
     <AttendanceDialog
@@ -225,6 +221,13 @@ onMounted(() => {
       :students="students"
       :classOptions="classOptions"
       @submit-attendance="handleAttendanceSubmit"
+    />
+
+    <!-- 添加学生对话框 -->
+    <AddStudentDialog
+      v-model:visible="addStudentDialogVisible"
+      :classOptions="classOptions"
+      @submit="handleAddStudent"
     />
   </div>
 </template>

@@ -5,7 +5,6 @@ import { ElMessage } from 'element-plus';
 import type { Resource } from '@/api';
 import {
   StatsCards,
-  OverviewChart,
   ContactList,
   ShowcaseCarousel,
   HotspotCard,
@@ -90,9 +89,6 @@ onMounted(() => {
 
     <!-- 热门话题区域 -->
     <HomeHotTopics :tags="hotTags" class="hot-topics-section" />
-
-    <!-- 概览图表区域 -->
-    <OverviewChart />
 
     <!-- 统计卡片区域 -->
     <StatsCards />
