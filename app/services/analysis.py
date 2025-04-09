@@ -12,6 +12,12 @@ ASSETS_ROOT = ASSETS_DIR / "analysis"
 PROMPT_ANALYZE_COLOR = ASSETS_ROOT / "color.md"
 
 
+def normalize_color(color: tuple[int, ...]) -> tuple[int, ...]:
+    # Quantize colors to reduce color space while maintaining visual quality
+    # Using 32 levels (256/8) for better color representation
+    return tuple(i - (i % 32) for i in color)
+
+
 def extract_dominant_colors(
     image: bytes, num_colors: int = 5
 ) -> list[dict[str, float | str]]:
@@ -23,10 +29,12 @@ def extract_dominant_colors(
         if img.mode != "RGB":
             img = img.convert("RGB")
         # 缩小图片以加快处理速度，同时保留细节
-        img = img.resize((150, 150))
+        img = img.resize((300, 300))
         pixels = list(img.getdata())
         # 将RGB转换为HEX格式并计数
-        hex_colors = [f"#{r:02x}{g:02x}{b:02x}" for r, g, b in pixels]
+        hex_colors = [
+            f"#{r:02x}{g:02x}{b:02x}" for r, g, b in map(normalize_color, pixels)
+        ]
         color_counter = Counter(hex_colors)
         total_pixels = len(pixels)
         dominant_colors: list[dict[str, float | str]] = []
@@ -37,9 +45,9 @@ def extract_dominant_colors(
             if len(dominant_colors) >= num_colors:
                 break
         if not dominant_colors and color_counter:
-            color, count = color_counter.most_common(1)[0]
-            percentage = round((count / total_pixels) * 100, 1)
-            dominant_colors.append({"hex": color, "percentage": percentage})
+            for color, count in color_counter.most_common(5):
+                percentage = round((count / total_pixels) * 100, 1)
+                dominant_colors.append({"hex": color, "percentage": percentage})
         return dominant_colors
     except Exception:
         return []

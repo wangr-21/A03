@@ -43,7 +43,7 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
   // return request.post('/upload', formData);
 
   // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   return {
     success: true,
@@ -51,14 +51,34 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
   };
 }
 
+const imageDemoAssets = {
+  impressionism: [
+    '/src/assets/demo/lab/image/impressionism/1.png',
+    '/src/assets/demo/lab/image/impressionism/2.png',
+  ],
+  van_gogh: [
+    '/src/assets/demo/lab/image/van_gogh/1.png',
+    '/src/assets/demo/lab/image/van_gogh/2.png',
+  ],
+  ink_wash: ['/src/assets/demo/lab/image/ink_wash/1.png'],
+  cyberpunk: ['/src/assets/demo/lab/image/cyberpunk/1.png'],
+  ukiyo_e: ['/src/assets/demo/lab/image/ukiyo_e/1.png', '/src/assets/demo/lab/image/ukiyo_e/2.png'],
+} as const;
+
 // 应用风格转换
 export async function applyStyleTransfer(imageFile: UploadUserFile, style: string): Promise<Blob> {
-  const formData = new FormData();
-  formData.append('style_prompt', style);
-  formData.append('file', imageFile.raw as File);
-  return request.post('/style-transfer/generate', formData, {
-    responseType: 'blob',
-  });
+  // const formData = new FormData();
+  // formData.append('style_prompt', style);
+  // formData.append('file', imageFile.raw as File);
+  // return request.post('/style-transfer/generate', formData, {
+  //   responseType: 'blob',
+  // });
+
+  // 模拟API调用
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const images = imageDemoAssets[style as keyof typeof imageDemoAssets] as readonly string[];
+  const response = await fetch(images[Math.floor(Math.random() * images.length)]);
+  return response.blob();
 }
 
 // 分析色彩情感
@@ -70,6 +90,21 @@ export async function analyzeColorEmotion(
   formData.append('file', imageFile.raw as File);
   return request.post('/analysis/image', formData);
 }
+
+export async function demoGetImageEmotionAnalysis() {
+  const analysisFile = 'src/assets/demo/lab/emotion/analysis.md';
+  const teacherFile = 'src/assets/demo/lab/emotion/teacher.md';
+  const [analysis, teacher] = await Promise.all([
+    fetch(analysisFile).then(res => res.text()),
+    fetch(teacherFile).then(res => res.text())
+  ]);
+  return { analysis, teacher };
+}
+
+const videoDemoAssets = [
+  '/src/assets/demo/lab/video/1.mp4',
+  '/src/assets/demo/lab/video/2.mp4',
+] as const;
 
 // 生成视频
 export async function generateVideo(
@@ -83,10 +118,10 @@ export async function generateVideo(
   // return request.post('/lab/generate-video', formData);
 
   // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 6000));
 
   return {
-    videoUrl: '/src/assets/generated_video.mp4',
+    videoUrl: videoDemoAssets[Math.floor(Math.random() * videoDemoAssets.length)],
     script: `1. 画面拉近，聚焦主体。
 2. 添加轻快背景音乐。
 3. 元素[A]向右移动。

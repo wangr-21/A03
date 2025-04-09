@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import type { UploadUserFile } from 'element-plus';
-import { analyzeColorEmotion } from '@/api';
+import { analyzeColorEmotion, demoGetImageEmotionAnalysis } from '@/api';
 import type { ColorAnalysisResponse } from '@/api';
 import ImageUploader from './ImageUploader.vue';
 import ColorRadarChart from './ColorRadarChart.vue';
+import MarkdownIt from 'markdown-it';
 
 // --- State for Color Emotion Analysis ---
 const colorAnalysisFile = ref<UploadUserFile | null>(null);
 const colorAnalysisImageUrl = ref<string>('');
 const isAnalyzingColor = ref<boolean>(false);
 const colorAnalysisResult = ref<ColorAnalysisResponse | null>(null);
+
+const demoData = ref<{ analysis: string; teacher: string }>();
+const dialogVisible = ref(false);
+const md = new MarkdownIt();
 
 const getEmotionDimensions = (data: ColorAnalysisResponse): number[] => {
   return ['warmth', 'brightness', 'contrast', 'saturation', 'harmony'].map(
@@ -52,6 +57,13 @@ const handleAnalyzeColorEmotion = async (): Promise<void> => {
     isAnalyzingColor.value = false;
   }
 };
+
+onMounted(() => {
+  // Fetch demo data on mount
+  demoGetImageEmotionAnalysis().then((data) => {
+    demoData.value = data;
+  });
+});
 </script>
 
 <template>
@@ -117,17 +129,46 @@ const handleAnalyzeColorEmotion = async (): Promise<void> => {
                     v-for="word in colorAnalysisResult.keywords"
                     :key="word"
                     style="margin: 4px"
-                    >{{ word }}</el-tag
                   >
+                    {{ word }}
+                  </el-tag>
                 </div>
               </el-col>
             </el-row>
+            <!-- demo btn start -->
+            <el-row>
+              <el-col :span="24" class="mt-4">
+                <el-button type="primary" @click="dialogVisible = true">
+                  查看图片分析详情
+                </el-button>
+              </el-col>
+            </el-row>
+            <!-- demo btn end -->
           </div>
           <el-empty v-else description="请上传图片并点击开始分析"></el-empty>
         </div>
       </el-col>
     </el-row>
   </el-card>
+
+  <!-- demo dialog start -->
+  <el-dialog v-model="dialogVisible" title="图片色彩分析" width="50%" :close-on-click-modal="false">
+    <div v-if="demoData">
+      <div class="demo-content">
+        <div class="markdown-content" v-html="md.render(demoData.analysis)"></div>
+        <div class="demo-teacher mt-4">
+          <h4>教师评语</h4>
+          <p>{{ demoData.teacher }}</p>
+        </div>
+      </div>
+    </div>
+    <template #footer>
+      <span>
+        <el-button @click="dialogVisible = false">关闭</el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <!-- demo dialog end -->
 </template>
 
 <style scoped>
@@ -203,4 +244,34 @@ const handleAnalyzeColorEmotion = async (): Promise<void> => {
 .preview-header h5 {
   margin: 0;
 }
+
+/* demo style start */
+.markdown-content {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 15px 0;
+  line-height: 1.6;
+}
+
+.demo-teacher {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.demo-teacher h4 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.demo-teacher p {
+  color: #666;
+  line-height: 1.6;
+  margin: 10px 0 0 0;
+}
+/* demo style end */
 </style>
