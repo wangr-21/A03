@@ -3,7 +3,8 @@ import { ref } from 'vue';
 import type { Student } from '@/api';
 import SearchBar from './SearchBar.vue';
 import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElProgress, ElPagination } from 'element-plus';
-import { Calendar } from '@element-plus/icons-vue';
+import { Calendar, Plus, Star } from '@element-plus/icons-vue';
+import { StudentDetailsDialog, ScoreWorkDialog } from '../index';
 
 defineProps<{
   students: Student[];
@@ -15,14 +16,17 @@ const emit = defineEmits<{
   'update:search': [value: string];
   'update:page': [value: number];
   'view-details': [student: Student];
-  'evaluate-student': [student: Student];
   'export-data': [];
   'take-attendance': [];
+  'add-student': [];
 }>();
 
 const searchText = ref('');
 const currentPage = ref(1);
 const pageSize = ref(10);
+
+const showScoreWorkDialog = ref(false);
+const selectedStudent = ref<Student | null>(null);
 
 const handleSearchChange = (value: string) => {
   searchText.value = value;
@@ -48,6 +52,21 @@ const getProgressColor = (value: number): string => {
   if (value >= 70) return '#E6A23C';
   return '#F56C6C';
 };
+
+const handleViewDetails = (student: Student) => {
+  emit('view-details', student);
+};
+
+const handleScoreWork = (student: Student) => {
+  selectedStudent.value = student;
+  showScoreWorkDialog.value = true;
+};
+
+const handleScoreWorkSubmit = (data: any) => {
+  console.log('提交成绩和作品数据:', data);
+  // 这里可以添加实际的提交逻辑
+  showScoreWorkDialog.value = false;
+};
 </script>
 
 <template>
@@ -55,15 +74,25 @@ const getProgressColor = (value: number): string => {
     <template #header>
       <div class="card-header">
         <div class="title-area">
-        <div class="title">学生成长追踪</div>
-          <el-button 
-            type="primary" 
-            @click="emit('take-attendance')" 
-            class="attendance-btn"
-            :icon="Calendar"
-          >
-            考勤点名
-          </el-button>
+          <div class="title">学生成长追踪</div>
+          <div class="header-actions">
+            <el-button 
+              type="success" 
+              @click="emit('add-student')" 
+              class="add-student-btn"
+              :icon="Plus"
+            >
+              迎新引航
+            </el-button>
+            <el-button 
+              type="primary" 
+              @click="emit('take-attendance')" 
+              class="attendance-btn"
+              :icon="Calendar"
+            >
+              考勤点名
+            </el-button>
+          </div>
         </div>
         <SearchBar
           :value="searchText"
@@ -100,13 +129,23 @@ const getProgressColor = (value: number): string => {
           />
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
-        <template #default="scope">
-          <el-button size="small" type="primary" @click="emit('view-details', scope.row)">
-            详情
+      <el-table-column fixed="right" label="操作" width="220">
+        <template #default="{ row }">
+          <el-button
+            type="primary"
+            size="small"
+            @click="handleViewDetails(row)"
+          >
+            查看详情
           </el-button>
-          <el-button size="small" plain @click="emit('evaluate-student', scope.row)">
-            评价
+          <el-button
+            type="warning"
+            size="small"
+            @click="handleScoreWork(row)"
+            class="star-record-btn"
+            :icon="Star"
+          >
+            星光记录
           </el-button>
         </template>
       </el-table-column>
@@ -122,6 +161,12 @@ const getProgressColor = (value: number): string => {
       />
     </div>
   </el-card>
+
+  <ScoreWorkDialog
+    v-model="showScoreWorkDialog"
+    :student="selectedStudent"
+    @submit="handleScoreWorkSubmit"
+  />
 </template>
 
 <style scoped>
@@ -147,6 +192,25 @@ const getProgressColor = (value: number): string => {
   font-size: 18px;
   font-weight: bold;
   color: #303133;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.add-student-btn {
+  font-size: 14px;
+  height: 32px;
+  padding: 0 12px;
+  background: linear-gradient(135deg, #67C23A 0%, #4CAF50 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.add-student-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(103, 194, 58, 0.2);
 }
 
 .attendance-btn {
@@ -199,6 +263,18 @@ const getProgressColor = (value: number): string => {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+}
+
+.star-record-btn {
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.star-record-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
 }
 
 @media screen and (max-width: 768px) {

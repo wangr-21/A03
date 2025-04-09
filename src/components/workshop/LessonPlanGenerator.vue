@@ -11,6 +11,7 @@ const md = new MarkdownIt();
 // Reactive form data
 const planForm = reactive<PlanForm>({
   grade: '',
+  teachingInspiration: '',
 });
 
 // 文件上传相关
@@ -45,8 +46,8 @@ const handleRemoveImage = (file: UploadFile) => {
 
 // 生成教案
 const generateLessonPlanFunc = async (): Promise<void> => {
-  if (!planForm.grade || uploadedImages.value.length === 0) {
-    ElMessage.warning('请选择年级并上传至少一张教材图片！');
+  if (!planForm.grade || uploadedImages.value.length === 0 || !planForm.teachingInspiration) {
+    ElMessage.warning('请填写完整信息（年级、教材图片和教学灵感）！');
     return;
   }
 
@@ -60,7 +61,7 @@ const generateLessonPlanFunc = async (): Promise<void> => {
       .filter((file) => file !== undefined) as File[];
 
     // 调用API模块中的函数
-    const result = await generateLessonPlan(planForm.grade, imageFiles);
+    const result = await generateLessonPlan(planForm.grade, imageFiles, planForm.teachingInspiration);
 
     // 存储计划ID用于后续导出
     planId.value = result.plan_id;
@@ -122,6 +123,19 @@ const exportPlanAsDocxFunc = async (): Promise<void> => {
           </el-select>
         </el-form-item>
 
+        <el-form-item label="教学灵感" required>
+          <el-input
+            v-model="planForm.teachingInspiration"
+            type="textarea"
+            :rows="3"
+            placeholder="请描述您的教学构想，例如：希望通过生动的实验演示来讲解光的折射原理，让学生能够直观理解并产生兴趣..."
+          ></el-input>
+          <div class="inspiration-tips">
+            <el-icon><InfoFilled /></el-icon>
+            提示：描述越具体，生成的教案就越符合您的期望。可以包含教学目标、重点难点、教学方法等。
+          </div>
+        </el-form-item>
+
         <el-form-item label="教材图片" required>
           <el-upload
             class="upload-demo"
@@ -147,7 +161,7 @@ const exportPlanAsDocxFunc = async (): Promise<void> => {
             @click="generateLessonPlanFunc"
             :loading="isGenerating"
             icon="MagicStick"
-            :disabled="!planForm.grade || uploadedImages.length === 0"
+            :disabled="!planForm.grade || uploadedImages.length === 0 || !planForm.teachingInspiration"
           >
             {{ isGenerating ? '正在生成...' : '智能生成教案' }}
           </el-button>
@@ -306,5 +320,23 @@ const exportPlanAsDocxFunc = async (): Promise<void> => {
 
 .generated-content :deep(th) {
   background-color: #f5f5f5;
+}
+
+.inspiration-tips {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #909399;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+.inspiration-tips :deep(.el-icon) {
+  color: #409EFF;
+  font-size: 14px;
 }
 </style>
