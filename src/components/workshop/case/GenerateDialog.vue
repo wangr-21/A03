@@ -15,9 +15,7 @@ const props = defineProps<{
   disciplines: DisciplineCategory[];
 }>();
 
-const visible = defineModel<boolean>('visible', {
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 const emit = defineEmits<{
   'update:visible': [value: boolean];

@@ -5,10 +5,7 @@ defineProps<{
   scenario: Scenario | null;
 }>();
 
-const visible = defineModel('visible', {
-  type: Boolean,
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 const scenarioTypeMap = {
   historical: { label: '历史情境', tag: 'warning' },

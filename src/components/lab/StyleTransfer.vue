@@ -92,9 +92,9 @@ const downloadResult = () => {
             :class="{ 'is-active': selectedStyle === style.key }"
             @click="selectedStyle = style.key"
           >
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px">
               <el-image :src="style.thumb" fit="cover"></el-image>
-              <span style="font-size: medium;">{{ style.name }}</span>
+              <span style="font-size: medium">{{ style.name }}</span>
             </div>
           </div>
         </div>

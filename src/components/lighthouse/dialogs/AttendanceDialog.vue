@@ -1,128 +1,3 @@
-<template>
-  <el-dialog
-    title="考勤点名"
-    :model-value="visible"
-    @update:model-value="emit('update:visible', $event)"
-    width="800px"
-    class="attendance-dialog"
-    :close-on-click-modal="false"
-  >
-    <div class="attendance-header">
-      <div class="filter-group">
-        <el-date-picker
-          v-model="selectedDate"
-          type="date"
-          placeholder="选择考勤日期"
-          format="YYYY/MM/DD"
-          value-format="YYYY-MM-DD"
-          :clearable="false"
-          :disabled-date="disableFutureDates"
-          class="date-picker"
-        />
-        <el-select v-model="selectedClass" placeholder="选择班级" clearable class="class-select">
-          <el-option
-            v-for="option in classOptions"
-            :key="option.value"
-            :label="option.label"
-            :value="option.value"
-          />
-        </el-select>
-      </div>
-
-      <div class="quick-actions">
-        <span class="action-label">批量操作：</span>
-        <div class="action-buttons">
-          <el-button
-            v-for="option in attendanceOptions"
-            :key="option.value"
-            :type="option.type"
-            size="small"
-            @click="markAllAs(option.value)"
-          >
-            全部标记为{{ option.label }}
-          </el-button>
-        </div>
-      </div>
-    </div>
-
-    <el-table :data="filteredStudents" style="width: 100%" :max-height="400" border>
-      <el-table-column type="index" label="序号" width="60" align="center" />
-      <el-table-column label="学生信息" min-width="200">
-        <template #default="{ row }">
-          <div class="student-info">
-            <el-avatar
-              :size="32"
-              :src="row.avatar || '/src/assets/avatar.svg'"
-              class="student-avatar"
-            />
-            <div class="student-details">
-              <div class="student-name">{{ row.name }}</div>
-              <div class="student-id">{{ row.id }}</div>
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="class" label="班级" width="120" align="center" />
-      <el-table-column label="考勤状态" width="200" align="center">
-        <template #default="{ row }">
-          <el-select v-model="attendanceRecords[row.id]" placeholder="请选择" style="width: 120px">
-            <el-option
-              v-for="option in attendanceOptions"
-              :key="option.value"
-              :label="option.label"
-              :value="option.value"
-            >
-              <div class="status-option">
-                <el-tag :type="option.type" size="small" effect="light">
-                  {{ option.label }}
-                </el-tag>
-              </div>
-            </el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注" min-width="200">
-        <template #default="{ row }">
-          <el-input
-            v-model="attendanceNotes[row.id]"
-            placeholder="输入备注信息（选填）"
-            size="small"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <div class="attendance-summary" v-if="filteredStudents.length > 0">
-      <div class="summary-item">
-        <span class="label">应到人数：</span>
-        <span class="value">{{ filteredStudents.length }}</span>
-      </div>
-      <div class="summary-item">
-        <span class="label">实到人数：</span>
-        <span class="value">{{ getPresentCount }}</span>
-      </div>
-      <div class="summary-item">
-        <span class="label">出勤率：</span>
-        <span class="value" :class="getAttendanceRateClass"> {{ getAttendanceRate }}% </span>
-      </div>
-    </div>
-
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
-        <el-button
-          type="primary"
-          :loading="submitting"
-          :disabled="!canSubmit"
-          @click="handleSubmit"
-        >
-          提交考勤记录
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import type { Student } from '@/api';
@@ -130,14 +5,15 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 
 // Props 定义
 const props = defineProps<{
-  visible: boolean;
   students: Student[];
   classOptions: { label: string; value: string }[];
 }>();
 
+// Model 定义
+const visible = defineModel<boolean>('visible', { required: true });
+
 // Emits 定义
 const emit = defineEmits<{
-  'update:visible': [value: boolean];
   'submit-attendance': [
     data: {
       date: string;
@@ -261,20 +137,142 @@ const handleSubmit = async () => {
 };
 
 const closeDialog = () => {
-  emit('update:visible', false);
+  visible.value = false;
 };
 
 // 监听对话框可见性变化
-watch(
-  () => props.visible,
-  (newVal) => {
-    if (newVal) {
-      initializeRecords();
-      selectedDate.value = new Date().toISOString().split('T')[0];
-    }
-  },
-);
+watch(visible, (newVal) => {
+  if (newVal) {
+    initializeRecords();
+    selectedDate.value = new Date().toISOString().split('T')[0];
+  }
+});
 </script>
+
+<template>
+  <el-dialog
+    title="考勤点名"
+    :model-value="visible"
+    @update:model-value="visible = $event"
+    width="800px"
+    class="attendance-dialog"
+    :close-on-click-modal="false"
+  >
+    <div class="attendance-header">
+      <div class="filter-group">
+        <el-date-picker
+          v-model="selectedDate"
+          type="date"
+          placeholder="选择考勤日期"
+          format="YYYY/MM/DD"
+          value-format="YYYY-MM-DD"
+          :clearable="false"
+          :disabled-date="disableFutureDates"
+          class="date-picker"
+        />
+        <el-select v-model="selectedClass" placeholder="选择班级" clearable class="class-select">
+          <el-option
+            v-for="option in classOptions"
+            :key="option.value"
+            :label="option.label"
+            :value="option.value"
+          />
+        </el-select>
+      </div>
+
+      <div class="quick-actions">
+        <span class="action-label">批量操作：</span>
+        <div class="action-buttons">
+          <el-button
+            v-for="option in attendanceOptions"
+            :key="option.value"
+            :type="option.type"
+            size="small"
+            @click="markAllAs(option.value)"
+          >
+            全部标记为{{ option.label }}
+          </el-button>
+        </div>
+      </div>
+    </div>
+
+    <el-table :data="filteredStudents" style="width: 100%" :max-height="400" border>
+      <el-table-column type="index" label="序号" width="60" align="center" />
+      <el-table-column label="学生信息" min-width="200">
+        <template #default="{ row }">
+          <div class="student-info">
+            <el-avatar
+              :size="32"
+              :src="row.avatar || '/src/assets/avatar.svg'"
+              class="student-avatar"
+            />
+            <div class="student-details">
+              <div class="student-name">{{ row.name }}</div>
+              <div class="student-id">{{ row.id }}</div>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="class" label="班级" width="120" align="center" />
+      <el-table-column label="考勤状态" width="200" align="center">
+        <template #default="{ row }">
+          <el-select v-model="attendanceRecords[row.id]" placeholder="请选择" style="width: 120px">
+            <el-option
+              v-for="option in attendanceOptions"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+            >
+              <div class="status-option">
+                <el-tag :type="option.type" size="small" effect="light">
+                  {{ option.label }}
+                </el-tag>
+              </div>
+            </el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" min-width="200">
+        <template #default="{ row }">
+          <el-input
+            v-model="attendanceNotes[row.id]"
+            placeholder="输入备注信息（选填）"
+            size="small"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <div class="attendance-summary" v-if="filteredStudents.length > 0">
+      <div class="summary-item">
+        <span class="label">应到人数：</span>
+        <span class="value">{{ filteredStudents.length }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">实到人数：</span>
+        <span class="value">{{ getPresentCount }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">出勤率：</span>
+        <span class="value" :class="getAttendanceRateClass"> {{ getAttendanceRate }}% </span>
+      </div>
+    </div>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button
+          type="primary"
+          :loading="submitting"
+          :disabled="!canSubmit"
+          @click="handleSubmit"
+        >
+          提交考勤记录
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+</template>
 
 <style scoped>
 .attendance-dialog {

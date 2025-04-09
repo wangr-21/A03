@@ -2,9 +2,7 @@
 import { reactive } from 'vue';
 import type { CreateActivityRequest } from '@/api/thinking';
 
-const visible = defineModel<boolean>('visible', {
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 const emit = defineEmits<{
   submit: [data: CreateActivityRequest];

@@ -5,9 +5,7 @@ defineProps<{
   story: StoryItem | null;
 }>();
 
-const visible = defineModel<boolean>('visible', {
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);

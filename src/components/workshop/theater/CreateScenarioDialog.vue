@@ -2,10 +2,7 @@
 import { reactive } from 'vue';
 import type { CreateScenarioRequest } from '@/api/thinking';
 
-const visible = defineModel('visible', {
-  type: Boolean,
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 const emit = defineEmits<{
   submit: [data: CreateScenarioRequest];

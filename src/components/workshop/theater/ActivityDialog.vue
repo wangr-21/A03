@@ -5,10 +5,7 @@ defineProps<{
   activity: Activity | null;
 }>();
 
-const visible = defineModel('visible', {
-  type: Boolean,
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 // 活动类型标签和文本映射
 const activityTypeMap = {

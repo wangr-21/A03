@@ -8,9 +8,7 @@ const props = defineProps<{
   case_: CaseItem | null;
 }>();
 
-const visible = defineModel<boolean>('visible', {
-  default: false,
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 const emit = defineEmits<{
   'view-story': [storyId: string];

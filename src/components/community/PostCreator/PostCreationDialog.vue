@@ -8,14 +8,13 @@ import { ElMessage } from 'element-plus';
 import { BoldIcon, ItalicIcon } from '@/components/icons';
 
 const props = defineProps<{
-  // visible: boolean;
   isPosting: boolean;
   availableTags: string[];
   initialType?: string;
   initialTags?: string[];
 }>();
 
-const visible = defineModel('visible', { type: Boolean });
+const visible = defineModel<boolean>('visible', { required: true });
 
 const emit = defineEmits<{
   'submit-post': [postData: PostForm];
