@@ -20,7 +20,7 @@ const resources = ref<RecommendedResource[]>([
     date: '2023-03-15',
     views: 2341,
     stars: 189,
-    avatar: '/src/assets/avatar1.jpg',
+    avatar: '/src/assets/avatars/1.svg',
   },
   {
     title: '传统文化融入语文教学',
@@ -29,7 +29,7 @@ const resources = ref<RecommendedResource[]>([
     date: '2023-03-12',
     views: 1892,
     stars: 156,
-    avatar: '/src/assets/avatar2.jpg',
+    avatar: '/src/assets/avatars/2.svg',
   },
   {
     title: '物理实验创新设计指南',
@@ -38,7 +38,7 @@ const resources = ref<RecommendedResource[]>([
     date: '2023-03-08',
     views: 1654,
     stars: 142,
-    avatar: '/src/assets/avatar3.jpg',
+    avatar: '/src/assets/avatars/3.svg',
   },
 ]);
 </script>

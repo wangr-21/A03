@@ -114,7 +114,7 @@ const handleScoreWorkSubmit = (data: unknown) => {
       <el-table-column label="学生" min-width="160">
         <template #default="scope">
           <div class="student-info-cell">
-            <el-avatar :size="40" :src="scope.row.avatar || '/src/assets/avatar.svg'" />
+            <el-avatar :size="40" :src="scope.row.avatar || '/src/assets/avatars/0.svg'" />
             <div class="student-details">
               <div class="student-name">{{ scope.row.name }}</div>
               <div class="student-id">{{ scope.row.id }}</div>

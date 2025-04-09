@@ -203,7 +203,7 @@ watch(visible, (newVal) => {
           <div class="student-info">
             <el-avatar
               :size="32"
-              :src="row.avatar || '/src/assets/avatar.svg'"
+              :src="row.avatar || '/src/assets/avatars/0.svg'"
               class="student-avatar"
             />
             <div class="student-details">

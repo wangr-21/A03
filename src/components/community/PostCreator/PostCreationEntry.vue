@@ -38,7 +38,7 @@ const openPostDialogWithTopic = (topic: string) => {
 <template>
   <el-card class="post-creator-card">
     <div class="creator-main" @click="openPostDialog()">
-      <el-avatar class="user-avatar" size="small" src="/src/assets/my_avatar.svg"></el-avatar>
+      <el-avatar class="user-avatar" size="small" src="/src/assets/avatars/my.svg"></el-avatar>
       <div class="input-placeholder">
         <span class="placeholder-text">{{ getRandomPlaceholder() }}</span>
       </div>

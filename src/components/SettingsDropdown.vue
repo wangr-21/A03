@@ -77,7 +77,7 @@ onBeforeUnmount(() => {
   <div class="settings-dropdown" v-if="isActive">
     <div class="dropdown-header">
       <div class="user-info">
-        <el-avatar :size="50" :src="userInfo?.avatar || '/src/assets/avatar.svg'"></el-avatar>
+        <el-avatar :size="50" :src="userInfo?.avatar || '/src/assets/avatars/0.svg'"></el-avatar>
         <div class="user-details">
           <h3>{{ userInfo?.name || '用户名' }}</h3>
           <p>{{ userInfo?.title || '职位' }}</p>

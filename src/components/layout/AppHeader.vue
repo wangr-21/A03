@@ -68,7 +68,7 @@ onMounted(() => userStore.initUserState());
       </div>
       <div class="user-avatar" @click="toggleSettingsDropdown">
         <img
-          :src="userStore.userInfo?.avatar || '/src/assets/avatar.svg'"
+          :src="userStore.userInfo?.avatar || '/src/assets/avatars/0.svg'"
           :alt="userStore.userInfo?.name || '用户头像'"
         />
       </div>

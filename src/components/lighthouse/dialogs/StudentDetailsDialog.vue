@@ -74,7 +74,7 @@ const previewWork = (file: { name: string; url: string }) => {
         <el-collapse-item title="基本信息" name="1">
           <div class="basic-info-section">
             <div class="student-avatar">
-              <el-avatar :size="100" :src="student.avatar || '/src/assets/avatar.svg'" />
+              <el-avatar :size="100" :src="student.avatar || '/src/assets/avatars/0.svg'" />
             </div>
             <div class="student-info">
               <el-descriptions :column="2" border>
