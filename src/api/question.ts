@@ -22,6 +22,9 @@ export interface Question {
   explanation?: string;
   subject?: string;
   grade?: string;
+  // demo only
+  images?: string[];
+  isFavorite?: boolean;
 }
 
 export interface QuestionsResponse {

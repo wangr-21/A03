@@ -1,9 +1,97 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
 import type { Post } from '@/api';
+import { togglePostFavorite, getSyncedFavoriteStatus } from '@/api';
+import { ElMessage } from 'element-plus';
+import { useRoute } from 'vue-router';
 
-defineProps<{
+const props = defineProps<{
   post: Post;
 }>();
+
+const emit = defineEmits<{
+  'remove-post': [postId: number];
+}>();
+
+const route = useRoute();
+
+// 使用全局状态初始化收藏状态
+const localFavoritedState = ref(getSyncedFavoriteStatus(props.post.id, props.post.isFavorited));
+const localFavoritesCount = ref(props.post.favorites);
+
+// 监听props中post的变化，更新本地状态
+watch(
+  () => props.post,
+  (newPost) => {
+    localFavoritedState.value = getSyncedFavoriteStatus(newPost.id, newPost.isFavorited);
+    localFavoritesCount.value = newPost.favorites;
+  },
+  { immediate: true },
+);
+
+// 计算当前是否在收藏页面
+const isInFavoritesTab = computed(() => {
+  return route.query.tab === 'favorites';
+});
+
+// 计算样式
+const favoriteButtonClasses = computed(() => {
+  return {
+    'action-button': true,
+    'favorite-button': true,
+    'is-favorited': localFavoritedState.value,
+  };
+});
+
+// 处理收藏/取消收藏操作
+const handleToggleFavorite = async () => {
+  const newState = !localFavoritedState.value;
+  const oldState = localFavoritedState.value;
+  const oldCount = localFavoritesCount.value;
+
+  // 先更新本地状态，以提供即时反馈
+  localFavoritedState.value = newState;
+
+  // 更新收藏数量的预期变化
+  if (newState) {
+    localFavoritesCount.value += 1;
+  } else {
+    localFavoritesCount.value = Math.max(0, localFavoritesCount.value - 1);
+  }
+
+  try {
+    // 调用API更新服务器端收藏状态
+    const response = await togglePostFavorite(props.post.id, newState);
+    if (response.success) {
+      // 使用实际返回的数据更新UI
+      localFavoritedState.value = response.data.isFavorited;
+      localFavoritesCount.value = response.data.favorites;
+
+      // 确保收藏数量合理
+      if (response.data.favorites < 0) {
+        console.error('收藏数量异常:', response.data.favorites);
+        localFavoritesCount.value = 0; // 确保最小为0
+      }
+
+      const actionText = response.data.isFavorited ? '收藏成功' : '已取消收藏';
+      ElMessage.success(actionText);
+
+      // 如果在收藏页面取消了收藏，需要将该帖子从列表中移除
+      if (isInFavoritesTab.value && oldState && !response.data.isFavorited) {
+        // 通知父组件移除这个帖子
+        emit('remove-post', props.post.id);
+      }
+    } else {
+      throw new Error('操作失败');
+    }
+  } catch (error) {
+    // 操作失败，恢复到初始状态
+    localFavoritedState.value = oldState;
+    localFavoritesCount.value = oldCount;
+    ElMessage.error('操作失败，请稍后重试');
+    console.error('收藏操作失败:', error);
+  }
+};
 </script>
 
 <template>
@@ -54,14 +142,14 @@ defineProps<{
     </div>
 
     <div class="post-actions">
-      <span>
+      <span class="action-button">
         <el-icon><Pointer /></el-icon> {{ post.likes }}
       </span>
-      <span>
+      <span class="action-button">
         <el-icon><ChatDotRound /></el-icon> {{ post.comments }}
       </span>
-      <span>
-        <el-icon><Star /></el-icon> {{ post.favorites }}
+      <span :class="favoriteButtonClasses" @click="handleToggleFavorite">
+        <el-icon><Star /></el-icon> {{ localFavoritesCount }}
       </span>
       <el-button text type="primary" class="share-btn" icon="Share">分享</el-button>
     </div>
@@ -208,17 +296,34 @@ defineProps<{
   flex-wrap: wrap;
 }
 
-.post-actions span {
+.action-button {
   display: flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   min-width: 50px;
 }
 
-.post-actions span:hover {
+.action-button:hover {
   color: #409eff;
+}
+
+/* 收藏按钮特殊样式 */
+.favorite-button {
+  color: #666;
+}
+
+.favorite-button:hover {
+  color: #f7ba2a;
+}
+
+.favorite-button.is-favorited {
+  color: #f7ba2a;
+}
+
+.favorite-button.is-favorited:hover {
+  opacity: 0.8;
 }
 
 .share-btn {

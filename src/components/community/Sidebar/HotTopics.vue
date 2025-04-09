@@ -32,7 +32,7 @@ const viewAllTags = () => {
         :key="tag"
         class="hot-tag"
         :effect="tag === activeTag ? 'dark' : 'plain'"
-        :type="tag === activeTag ? 'primary' : ''"
+        :type="tag === activeTag ? 'primary' : 'info'"
         @click="handleTagClick(tag)"
         ># {{ tag }}</el-tag
       >

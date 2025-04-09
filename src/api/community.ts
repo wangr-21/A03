@@ -24,6 +24,7 @@ export interface Post {
   comments: number;
   favorites: number;
   isFeatured: boolean;
+  isFavorited: boolean;
 }
 
 export interface PostForm {
@@ -51,6 +52,23 @@ export interface PostsResponse {
   };
 }
 
+// 模拟数据存储，用于模拟服务器端状态
+const postFavoriteCache = new Map<number, number>();
+// 模拟收藏状态的存储
+const postFavoritedStatus = new Map<number, boolean>();
+
+// 初始化或获取帖子收藏状态
+export function getSyncedFavoriteStatus(postId: number, defaultStatus: boolean): boolean {
+  // 如果存储中已有该帖子的收藏状态，则返回存储的状态
+  if (postFavoritedStatus.has(postId)) {
+    return postFavoritedStatus.get(postId) as boolean;
+  }
+
+  // 否则初始化存储，并返回默认状态
+  postFavoritedStatus.set(postId, defaultStatus);
+  return defaultStatus;
+}
+
 // 获取帖子列表
 export async function getPosts(params: {
   page: number;
@@ -62,9 +80,9 @@ export async function getPosts(params: {
   // return request.get('/community/posts', { params });
 
   // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  const { page, tag } = params;
+  const { page, tag, tab } = params;
   const hasMore = page < 3;
 
   // 基础帖子数据
@@ -81,6 +99,7 @@ export async function getPosts(params: {
       favorites: 58,
       isFeatured: true,
       tags: ['教学设计', '语文'],
+      isFavorited: true,
     },
     {
       id: 100 + page * 5 - 3,
@@ -94,6 +113,7 @@ export async function getPosts(params: {
       favorites: 40,
       isFeatured: false,
       tags: ['AI教学', '数学'],
+      isFavorited: false,
     },
     {
       id: 100 + page * 5 - 2,
@@ -107,6 +127,7 @@ export async function getPosts(params: {
       favorites: 95,
       isFeatured: false,
       tags: ['美术', 'AI创作'],
+      isFavorited: true,
     },
     {
       id: 100 + page * 5 - 1,
@@ -120,6 +141,7 @@ export async function getPosts(params: {
       favorites: 70,
       isFeatured: false,
       tags: ['项目式学习'],
+      isFavorited: false,
     },
     {
       id: 100 + page * 5,
@@ -133,12 +155,33 @@ export async function getPosts(params: {
       favorites: 35,
       isFeatured: false,
       tags: ['课堂互动', '在线工具'],
+      isFavorited: false,
     },
   ];
+
+  // 更新帖子的收藏数据，与缓存同步
+  posts = posts.map((post) => {
+    // 使用全局状态同步收藏状态
+    post.isFavorited = getSyncedFavoriteStatus(post.id, post.isFavorited);
+
+    // 如果缓存中有该帖子的收藏数，则使用缓存中的数据
+    if (postFavoriteCache.has(post.id)) {
+      post.favorites = postFavoriteCache.get(post.id) || post.favorites;
+    } else {
+      // 否则初始化缓存
+      postFavoriteCache.set(post.id, post.favorites);
+    }
+    return post;
+  });
 
   // 如果指定了标签，过滤出包含该标签的帖子
   if (tag) {
     posts = posts.filter((post) => post.tags.includes(tag));
+  }
+
+  // 如果是"我的收藏"标签，仅显示收藏的帖子
+  if (tab === 'favorites') {
+    posts = posts.filter((post) => post.isFavorited);
   }
 
   return {
@@ -207,4 +250,66 @@ export async function submitPost(postForm: PostForm): Promise<{
       postId: Date.now(),
     },
   };
+}
+
+// 收藏/取消收藏帖子
+export async function togglePostFavorite(
+  postId: number,
+  isFavorited: boolean,
+): Promise<{
+  success: boolean;
+  data: {
+    isFavorited: boolean;
+    favorites: number;
+  };
+}> {
+  // 真实环境下应该是:
+  // return request.post('/community/posts/favorite', { postId, isFavorited });
+
+  // 模拟API调用
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // 如果缓存中没有该帖子的收藏数，初始化一个(20-60之间随机值)
+  if (!postFavoriteCache.has(postId)) {
+    const initialCount = Math.floor(Math.random() * 40) + 20;
+    postFavoriteCache.set(postId, initialCount);
+  }
+
+  // 获取当前收藏数
+  let currentFavorites = postFavoriteCache.get(postId) || 0;
+
+  // 计算新的收藏数
+  if (isFavorited) {
+    // 如果是收藏操作，增加1
+    currentFavorites += 1;
+  } else {
+    // 如果是取消收藏操作，减少1
+    currentFavorites = Math.max(0, currentFavorites - 1);
+  }
+
+  // 更新缓存
+  postFavoriteCache.set(postId, currentFavorites);
+
+  // 更新收藏状态
+  postFavoritedStatus.set(postId, isFavorited);
+
+  return {
+    success: true,
+    data: {
+      isFavorited: isFavorited,
+      favorites: currentFavorites,
+    },
+  };
+}
+
+// 获取收藏的帖子
+export async function getFavoritedPosts(params: { page: number }): Promise<PostsResponse> {
+  // 真实环境下应该是:
+  // return request.get('/community/posts/favorited', { params });
+
+  // 这里复用getPosts，并设置tab为favorites
+  return getPosts({
+    page: params.page,
+    tab: 'favorites',
+  });
 }

@@ -42,8 +42,20 @@ const recommendedUsers = ref<RecommendedUser[]>([]);
 const hotTags = ref<string[]>([]);
 const activeTag = ref<string>(''); // 当前选中的热门话题
 
-// 检查URL参数中是否有标签
+// 处理从收藏列表中移除帖子
+const handleRemovePost = (postId: number) => {
+  // 从当前帖子列表中移除该帖子
+  posts.value = posts.value.filter((post) => post.id !== postId);
+
+  // 如果在移除后发现列表为空，且当前在收藏标签页，显示友好提示
+  if (posts.value.length === 0 && activeTab.value === 'favorites') {
+    ElMessage.info('您的收藏列表已清空，可以切换到其他标签页浏览更多内容');
+  }
+};
+
+// 检查URL参数中是否有标签和标签页
 const checkUrlParams = () => {
+  // 检查tag参数
   if (route.query.tag) {
     activeTag.value = route.query.tag as string;
     // 重置页码并获取帖子
@@ -53,16 +65,46 @@ const checkUrlParams = () => {
     fetchPosts();
     ElMessage.success(`正在查看"${activeTag.value}"相关的帖子`);
   }
+
+  // 检查tab参数
+  if (route.query.tab) {
+    activeTab.value = route.query.tab as string;
+    // 重置页码并获取帖子
+    currentPage.value = 1;
+    noMorePosts.value = false;
+    posts.value = [];
+    fetchPosts();
+
+    if (activeTab.value === 'favorites') {
+      ElMessage.success('正在查看您收藏的帖子');
+    }
+  }
 };
 
-// 监听路由变化，以便支持从其他页面跳转过来时带上标签参数
+// 监听路由变化，以便支持从其他页面跳转过来时带上参数
 watch(
   () => route.query,
   (newQuery) => {
     // 如果URL中的标签与当前选中的标签不同，则更新
     const queryTag = newQuery.tag as string;
     if (queryTag !== activeTag.value) {
-      checkUrlParams();
+      activeTag.value = queryTag || '';
+      // 重置页码并获取帖子
+      currentPage.value = 1;
+      noMorePosts.value = false;
+      posts.value = [];
+      fetchPosts();
+    }
+
+    // 如果URL中的标签页与当前标签页不同，则更新
+    const queryTab = newQuery.tab as string;
+    if (queryTab && queryTab !== activeTab.value) {
+      activeTab.value = queryTab;
+      // 重置页码并获取帖子
+      currentPage.value = 1;
+      noMorePosts.value = false;
+      posts.value = [];
+      fetchPosts();
     }
   },
 );
@@ -120,6 +162,11 @@ const fetchPosts = async (loadMore: boolean = false): Promise<void> => {
     }
 
     noMorePosts.value = !response.data.hasMore;
+
+    // 如果是收藏标签页且没有帖子，显示友好提示
+    if (activeTab.value === 'favorites' && posts.value.length === 0 && !loadMore) {
+      ElMessage.info('您暂时没有收藏的帖子，浏览内容时点击收藏按钮添加');
+    }
   } catch (error) {
     console.error('Error fetching posts:', error);
     ElMessage.error('获取帖子失败，请稍后重试');
@@ -139,6 +186,17 @@ const handleTabChange = (tab: string): void => {
   currentPage.value = 1; // Reset page
   noMorePosts.value = false;
   posts.value = []; // Clear posts before fetching new tab data
+
+  // 更新URL参数
+  router.replace({
+    query: { ...route.query, tab },
+  });
+
+  if (tab === 'favorites') {
+    ElMessage.success('正在查看您收藏的帖子');
+  }
+
+  // 获取新标签页的数据
   fetchPosts();
 };
 
@@ -235,6 +293,7 @@ onMounted(() => {
             :loading="loadingMore"
             :no-more-posts="noMorePosts"
             @load-more="handleLoadMore"
+            @remove-post="handleRemovePost"
           />
         </div>
       </el-col>

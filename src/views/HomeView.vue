@@ -17,7 +17,6 @@ import {
 const allResources = ref<Resource[]>([]);
 const resourcesLoading = ref<boolean>(false);
 const activeLibraryTab = ref<string>('all');
-const selectedSubject = ref<string>('');
 const selectedGrade = ref<string>('');
 
 // 热门话题
@@ -26,7 +25,7 @@ const hotTags = ref<string[]>([]);
 // 获取资源数据
 const fetchResources = async (filters?: {
   type?: string;
-  subject?: string;
+  // subject?: string; // 移除学科过滤
   grade?: string;
 }): Promise<void> => {
   resourcesLoading.value = true;
@@ -35,7 +34,6 @@ const fetchResources = async (filters?: {
   try {
     const response = await getResources({
       type: filters?.type === 'all' ? undefined : filters?.type,
-      subject: filters?.subject,
       grade: filters?.grade,
     });
 
@@ -63,14 +61,13 @@ const fetchHotTags = async () => {
 };
 
 // 过滤资源变化处理
-const handleFiltersChange = (filters: { tab: string; subject: string; grade: string }) => {
+const handleFiltersChange = (filters: { tab: string; grade: string }) => {
+  // 移除学科属性
   activeLibraryTab.value = filters.tab;
-  selectedSubject.value = filters.subject;
   selectedGrade.value = filters.grade;
 
   fetchResources({
     type: filters.tab,
-    subject: filters.subject,
     grade: filters.grade,
   });
 };
@@ -111,7 +108,6 @@ onMounted(() => {
       :resources="allResources"
       :loading="resourcesLoading"
       :active-tab="activeLibraryTab"
-      :selected-subject="selectedSubject"
       :selected-grade="selectedGrade"
       @filters-change="handleFiltersChange"
     />
