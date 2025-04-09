@@ -328,7 +328,7 @@ onMounted(() => {
 <style scoped>
 .workshop-container {
   padding: 0;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .question-bank-card {

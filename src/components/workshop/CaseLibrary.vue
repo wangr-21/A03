@@ -224,6 +224,7 @@ onMounted(() => {
   :deep(.el-card__body) {
     padding: 20px;
   }
+  margin-bottom: 30px;
 }
 
 .card-header {
