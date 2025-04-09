@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import {
-  ToolCards,
-  LessonPlanGenerator,
-  ThinkingTheater,
-  QuestionBank,
-  CaseLibrary,
-  RecentPlans,
-  RecommendedResources,
-} from '@/components/workshop';
+import { ref, onMounted, defineAsyncComponent } from 'vue';
+
+const ToolCards = defineAsyncComponent(() => import('@/components/workshop/ToolCards.vue'));
+const LessonPlanGenerator = defineAsyncComponent(
+  () => import('@/components/workshop/LessonPlanGenerator.vue'),
+);
+const ThinkingTheater = defineAsyncComponent(
+  () => import('@/components/workshop/ThinkingTheater.vue'),
+);
+const QuestionBank = defineAsyncComponent(() => import('@/components/workshop/QuestionBank.vue'));
+const CaseLibrary = defineAsyncComponent(() => import('@/components/workshop/CaseLibrary.vue'));
+const RecentPlans = defineAsyncComponent(() => import('@/components/workshop/RecentPlans.vue'));
+const RecommendedResources = defineAsyncComponent(
+  () => import('@/components/workshop/RecommendedResources.vue'),
+);
 
 // 工具卡片数据
 const tools = ref([

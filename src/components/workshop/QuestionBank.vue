@@ -2,12 +2,14 @@
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElPagination } from 'element-plus';
 import { Files, Document, Timer, Microphone } from '@element-plus/icons-vue';
-import { getQuestions, QUESTION_TYPES, KNOWLEDGE_POINTS } from '../../api/question';
-import type { Question, QuestionFilters } from '../../api/question';
-import PaperPreview from './PaperPreview.vue';
-import PaperHistory from './PaperHistory.vue';
-import AIPaperGenerator from './AIPaperGenerator.vue';
-import QuestionDetail from './QuestionDetail.vue';
+import {
+  getQuestions,
+  QUESTION_TYPES,
+  KNOWLEDGE_POINTS,
+  type Question,
+  type QuestionFilters,
+} from '@/api';
+import { PaperPreview, PaperHistory, AIPaperGenerator, QuestionDetail } from './question';
 
 interface Difficulty {
   label: string;
