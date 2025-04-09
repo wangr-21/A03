@@ -27,11 +27,11 @@ export interface UploadResponse {
 // 获取可用风格列表
 export function getAvailableStyles(): StyleOption[] {
   return [
-    { name: '印象派', key: 'impressionism', thumb: '/src/assets/icons/impressionism.svg' },
-    { name: '梵高', key: 'van_gogh', thumb: '/src/assets/icons/van_gogh.svg' },
-    { name: '水墨画', key: 'ink_wash', thumb: '/src/assets/icons/ink_wash.svg' },
-    { name: '赛博朋克', key: 'cyberpunk', thumb: '/src/assets/icons/cyberpunk.svg' },
-    { name: '浮世绘', key: 'ukiyo_e', thumb: '/src/assets/icons/ukiyo_e.svg' },
+    { name: '印象派', key: 'impressionism', thumb: '/src/assets/icons/impressionism.png' },
+    { name: '梵高', key: 'van_gogh', thumb: '/src/assets/icons/van_gogh.png' },
+    { name: '水墨画', key: 'ink_wash', thumb: '/src/assets/icons/ink_wash.png' },
+    { name: '赛博朋克', key: 'cyberpunk', thumb: '/src/assets/icons/cyberpunk.png' },
+    { name: '浮世绘', key: 'ukiyo_e', thumb: '/src/assets/icons/ukiyo_e.png' },
   ];
 }
 
