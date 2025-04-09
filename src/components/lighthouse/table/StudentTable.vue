@@ -12,7 +12,7 @@ import {
   ElPagination,
 } from 'element-plus';
 import { Calendar, Plus, Star } from '@element-plus/icons-vue';
-import { ScoreWorkDialog } from '../index';
+import ScoreWorkDialog from '../dialogs/ScoreWorkDialog.vue';
 
 defineProps<{
   students: Student[];

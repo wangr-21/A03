@@ -131,7 +131,7 @@ const beforeRemove: UploadProps['beforeRemove'] = (uploadFile) => {
         >
           <el-button type="primary">点击上传</el-button>
           <template #tip>
-            <div class="el-upload__tip">支持jpg/png/pdf文件，且不超过10mb</div>
+            <div class="el-upload__tip">支持jpg/png/pdf文件，且不超过 10 MB</div>
           </template>
         </el-upload>
       </el-form-item>

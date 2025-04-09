@@ -22,6 +22,11 @@ export default defineConfig({
           }
           return 'assets/[name]-[hash][extname]';
         },
+        manualChunks: {
+          vendor: ['vue', 'vue-router', 'axios', 'pinia'],
+          'element-plus': ['element-plus'],
+          'element-plus-icons': ['@element-plus/icons-vue'],
+        },
       },
     },
   },
