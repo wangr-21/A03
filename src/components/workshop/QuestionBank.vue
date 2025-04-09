@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { getQuestions } from '@/api';
-import type { Question, QuestionFilters } from '@/api';
+import { Files, Document, Timer } from '@element-plus/icons-vue';
+import { getQuestions, QUESTION_TYPES, KNOWLEDGE_POINTS } from '../../api/question';
+import type { Question, QuestionFilters } from '../../api/question';
 import PaperPreview from './PaperPreview.vue';
 import PaperHistory from './PaperHistory.vue';
 import AIPaperGenerator from './AIPaperGenerator.vue';
@@ -14,35 +15,18 @@ interface Difficulty {
 
 // --- State for 题海星图 ---
 const questionFilters = reactive<QuestionFilters>({
-  type: [], // e.g., ['鉴赏题', '创作表现题']
-  difficulty: '', // e.g., 'easy', 'medium', 'hard'
+  type: [], // e.g., ['选择题']
+  difficulty: '', // e.g., '简单', '中等', '困难'
   knowledgePoint: '',
 });
 
-const questionTypes = ref<string[]>([
-  '鉴赏题',
-  '创作表现题',
-  '技法应用题',
-  '材料工具题',
-  '美术史论题',
-  '综合探究题',
-]);
+const questionTypes = ref<string[]>(QUESTION_TYPES);
 const difficulties = ref<Difficulty[]>([
-  { label: '基础', value: 'easy' },
-  { label: '提高', value: 'medium' },
-  { label: '拓展', value: 'hard' },
+  { label: '简单', value: '简单' },
+  { label: '中等', value: '中等' },
+  { label: '困难', value: '困难' },
 ]);
-const knowledgePoints = ref<string[]>([
-  '色彩理论',
-  '构图基础',
-  '透视原理',
-  '中国画技法',
-  '西方绘画史',
-  '中国美术史',
-  '设计元素',
-  '民间美术',
-  '现代艺术',
-]);
+const knowledgePoints = ref<string[]>(KNOWLEDGE_POINTS);
 const questions = ref<Question[]>([]); // Will hold fetched questions
 const isQuestionsLoading = ref<boolean>(false);
 const questionCurrentPage = ref<number>(1);
@@ -218,18 +202,15 @@ onMounted(() => {
             <template #default="scope">
               <el-tag
                 :type="
-                  scope.row.difficulty === 'easy'
+                  scope.row.difficulty === '简单'
                     ? 'success'
-                    : scope.row.difficulty === 'medium'
+                    : scope.row.difficulty === '中等'
                       ? 'warning'
                       : 'danger'
                 "
                 size="small"
               >
-                {{
-                  difficulties.find((d) => d.value === scope.row.difficulty)?.label ||
-                  scope.row.difficulty
-                }}
+                {{ scope.row.difficulty }}
               </el-tag>
             </template>
           </el-table-column>
