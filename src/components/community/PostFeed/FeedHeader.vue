@@ -52,6 +52,14 @@ const handleClear = () => {
       <el-tab-pane label="最新发布" name="latest"></el-tab-pane>
       <el-tab-pane label="热门讨论" name="hot"></el-tab-pane>
       <el-tab-pane label="精华推荐" name="featured"></el-tab-pane>
+      <el-tab-pane label="我的收藏" name="favorites">
+        <template #label>
+          <div class="favorites-tab">
+            <el-icon><Star /></el-icon>
+            <span>我的收藏</span>
+          </div>
+        </template>
+      </el-tab-pane>
     </el-tabs>
     <el-input
       placeholder="搜索帖子内容或标签"
@@ -101,6 +109,17 @@ const handleClear = () => {
 .search-input {
   width: 250px;
   margin-left: 10px;
+}
+
+/* 星号图标标签样式 */
+.favorites-tab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.favorites-tab .el-icon {
+  color: #f7ba2a;
 }
 
 /* 宽屏幕断点 */

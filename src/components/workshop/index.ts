@@ -5,3 +5,4 @@ export { default as QuestionBank } from './QuestionBank.vue';
 export { default as CaseLibrary } from './CaseLibrary.vue';
 export { default as RecentPlans } from './RecentPlans.vue';
 export { default as RecommendedResources } from './RecommendedResources.vue';
+export { default as QuestionDetail } from './QuestionDetail.vue';

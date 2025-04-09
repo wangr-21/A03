@@ -20,8 +20,11 @@ export interface Question {
   answer: string;
   options?: string[];
   explanation?: string;
+  analysis?: string;
+  images?: string[];
   subject?: string;
   grade?: string;
+  isFavorite?: boolean;
 }
 
 export interface QuestionsResponse {

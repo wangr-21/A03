@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Files, Document, Timer } from '@element-plus/icons-vue';
+import { Files, Document, Timer, Microphone } from '@element-plus/icons-vue';
 import { getQuestions, QUESTION_TYPES, KNOWLEDGE_POINTS } from '../../api/question';
 import type { Question, QuestionFilters } from '../../api/question';
 import PaperPreview from './PaperPreview.vue';
 import PaperHistory from './PaperHistory.vue';
 import AIPaperGenerator from './AIPaperGenerator.vue';
+import QuestionDetail from './QuestionDetail.vue';
 
 interface Difficulty {
   label: string;
@@ -37,6 +38,9 @@ const paperPreviewRef = ref<InstanceType<typeof PaperPreview>>();
 const paperPreviewVisible = ref<boolean>(false);
 const paperHistoryVisible = ref<boolean>(false);
 const aiPaperGeneratorVisible = ref<boolean>(false);
+
+const detailVisible = ref<boolean>(false);
+const currentQuestion = ref<Question | null>(null);
 
 const filterQuestions = async (): Promise<void> => {
   console.log('Filtering questions:', questionFilters);
@@ -104,6 +108,29 @@ const showAIPaperGenerator = () => {
 
 const handleAIGeneratorClose = () => {
   aiPaperGeneratorVisible.value = false;
+};
+
+const handleViewDetail = (question: Question): void => {
+  currentQuestion.value = question;
+  detailVisible.value = true;
+};
+
+const handleDetailClose = (): void => {
+  detailVisible.value = false;
+};
+
+const handleFavoriteQuestion = (questionId: number): void => {
+  // 这里实现收藏逻辑
+  ElMessage.success(`已收藏题目 ${questionId}`);
+};
+
+const handleUnfavoriteQuestion = (questionId: number): void => {
+  // 这里实现取消收藏逻辑
+  ElMessage.success(`已取消收藏题目 ${questionId}`);
+};
+
+const handleViewKnowledge = (knowledgePoint: string): void => {
+  ElMessage.info(`查看知识点: ${knowledgePoint}，该功能开发中`);
 };
 
 // Initial data fetch on mount
@@ -219,10 +246,8 @@ onMounted(() => {
           <el-table-column label="操作" width="180" fixed="right">
             <template #default="scope">
               <div class="operation-buttons">
-                <el-button text type="primary" size="small">查看详情</el-button>
-                <el-button text type="success" size="small" @click="addToPaper(scope.row)"
-                  >加入试卷</el-button
-                >
+                <el-button text type="primary" size="small" @click="handleViewDetail(scope.row)">查看详情</el-button>
+                <el-button text type="success" size="small" @click="addToPaper(scope.row)">加入试卷</el-button>
               </div>
             </template>
           </el-table-column>
@@ -273,6 +298,25 @@ onMounted(() => {
       @close="handleHistoryClose"
     >
       <PaperHistory />
+    </el-dialog>
+
+    <!-- 题目详情对话框 -->
+    <el-dialog
+      v-model="detailVisible"
+      title="题目详情"
+      width="65%"
+      destroy-on-close
+      @close="handleDetailClose"
+    >
+      <QuestionDetail
+        v-if="currentQuestion"
+        :question="currentQuestion"
+        @close="handleDetailClose"
+        @add-to-paper="addToPaper"
+        @favorite="handleFavoriteQuestion"
+        @unfavorite="handleUnfavoriteQuestion"
+        @view-knowledge="handleViewKnowledge"
+      />
     </el-dialog>
   </div>
 </template>
