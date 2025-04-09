@@ -15,15 +15,17 @@ const selectedQuestions = ref<Question[]>([]);
 const paperInfo = reactive<PaperInfo>({
   title: '',
   totalScore: 100,
-  duration: 120,
+  duration: 45,
   description: '',
 });
 
 const defaultScores = {
-  '选择题': 5,
-  '填空题': 5,
-  '判断题': 3,
-  '简答题': 10,
+  '鉴赏题': 10,
+  '创作表现题': 20,
+  '技法应用题': 15,
+  '材料工具题': 10,
+  '美术史论题': 10,
+  '综合探究题': 20,
 };
 
 // 计算试卷总分
@@ -94,20 +96,20 @@ defineExpose({
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="试卷标题" required>
-            <el-input v-model="paperInfo.title" placeholder="请输入试卷标题"></el-input>
+            <el-input v-model="paperInfo.title" placeholder="请输入美术试卷标题"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="考试时长">
-            <el-input-number v-model="paperInfo.duration" :min="30" :step="30" placeholder="分钟"></el-input-number>
+          <el-form-item label="课时时长">
+            <el-input-number v-model="paperInfo.duration" :min="30" :step="5" placeholder="分钟"></el-input-number>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="试卷说明">
+      <el-form-item label="教学目标">
         <el-input
           v-model="paperInfo.description"
           type="textarea"
-          placeholder="请输入试卷说明"
+          placeholder="请输入本次美术考核的教学目标"
           :rows="2"
         ></el-input>
       </el-form-item>
@@ -120,7 +122,7 @@ defineExpose({
         <span class="total-score">总分：{{ calculateTotalScore() }}分</span>
       </div>
 
-      <el-empty v-if="selectedQuestions.length === 0" description="暂无已选题目"></el-empty>
+      <el-empty v-if="selectedQuestions.length === 0" description="暂无已选美术题目，请从题库中选择或使用智能生成"></el-empty>
       <el-table
         v-else
         :data="selectedQuestions"
@@ -168,10 +170,10 @@ defineExpose({
     <div class="export-buttons">
       <el-button-group>
         <el-button type="primary" @click="exportPaper" :disabled="selectedQuestions.length === 0">
-          导出试卷
+          生成美术试卷
         </el-button>
         <el-button type="success" @click="exportToWord" :disabled="selectedQuestions.length === 0">
-          导出Word
+          导出教案
         </el-button>
       </el-button-group>
     </div>
