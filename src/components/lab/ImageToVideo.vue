@@ -66,7 +66,7 @@ const downloadVideo = () => {
           <h5>图片预览</h5>
           <el-image :src="imageToVideoImageUrl" fit="contain"></el-image>
         </div>
-        <el-form label-position="top" style="margin-top: 20px">
+        <!-- <el-form label-position="top" style="margin-top: 20px">
           <el-form-item label="选择背景音乐">
             <el-select v-model="selectedMusic" placeholder="选择音乐(可选)" clearable>
               <el-option label="轻快节奏" value="music1.mp3"></el-option>
@@ -74,7 +74,7 @@ const downloadVideo = () => {
               <el-option label="史诗氛围" value="music3.mp3"></el-option>
             </el-select>
           </el-form-item>
-        </el-form>
+        </el-form> -->
         <el-button
           type="primary"
           @click="generateVideoFunc"
@@ -101,8 +101,8 @@ const downloadVideo = () => {
               <el-icon><VideoCameraFilled /></el-icon>
               <span>点击播放视频</span>
             </div>
-            <h5>智能推荐脚本</h5>
-            <el-input type="textarea" :rows="4" v-model="videoScript" readonly></el-input>
+            <!-- <h5>智能推荐脚本</h5>
+            <el-input type="textarea" :rows="4" v-model="videoScript" readonly></el-input> -->
             <div class="result-actions">
               <el-button type="primary" icon="Download" @click="downloadVideo">下载视频</el-button>
             </div>
