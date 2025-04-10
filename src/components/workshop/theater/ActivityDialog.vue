@@ -89,7 +89,8 @@ const getActivityTypeTag = (type: string): string => {
         <div class="detail-section">
           <h4>评价方式</h4>
           <p>{{ activity.evaluation.method }}</p>
-          <ul>
+          <el-empty v-if="activity.evaluation.criteria.length === 0" description="暂无评价标准" />
+          <ul v-else>
             <li v-for="(item, index) in activity.evaluation.criteria" :key="index">
               {{ item }}
             </li>
@@ -99,7 +100,8 @@ const getActivityTypeTag = (type: string): string => {
         <!-- 延伸活动 -->
         <div class="detail-section">
           <h4>延伸活动</h4>
-          <ul>
+          <el-empty v-if="activity.extensions.length === 0" description="暂无延伸活动" />
+          <ul v-else>
             <li v-for="(item, index) in activity.extensions" :key="index">
               {{ item }}
             </li>

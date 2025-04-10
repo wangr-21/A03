@@ -1,47 +1,66 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import type { Activity, ActivityFilters } from '@/api/thinking';
+import { onMounted, reactive, ref, watch } from 'vue';
+import { getActivities } from '@/api';
+import type { Activity, ActivityFilters } from '@/api';
 import ActivityCard from './ActivityCard.vue';
-
-defineProps<{
-  activities: Activity[];
-}>();
+import { ElMessage } from 'element-plus';
+import { Refresh } from '@element-plus/icons-vue';
 
 const emit = defineEmits<{
   select: [activity: Activity];
-  filter: [filters: ActivityFilters];
 }>();
 
-// 筛选条件
-const filters = ref<ActivityFilters>({
+const isLoading = ref<boolean>(false);
+const activities = ref<Activity[]>([]);
+const filters = reactive<ActivityFilters>({
   subject: '',
   grade: '',
   activity_type: '',
 });
 
 // 活动类型和学科选项
-const activityTypes = ['discussion', 'question', 'game'];
-const subjects = ['语文', '数学', '英语', '物理', '化学', '生物'];
-const grades = ['七年级', '八年级', '九年级'];
+const activityTypes = ['discussion', 'question', 'game'] as const;
+const subjects = ['语文', '数学', '英语', '物理', '化学', '生物'] as const;
+const grades = ['七年级', '八年级', '九年级'] as const;
+
+const loadActivities = async () => {
+  isLoading.value = true;
+  try {
+    activities.value = await getActivities(filters);
+  } catch (error) {
+    console.error('Failed to load activities:', error);
+    ElMessage.error('加载互动活动数据失败');
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 // 获取活动类型显示文本
-const getActivityTypeLabel = (type: string): string => {
+const getActivityTypeLabel = (type: (typeof activityTypes)[number]): string => {
   const activityTypeMap = {
     discussion: '讨论',
     question: '提问',
     game: '游戏',
   };
-  return activityTypeMap[type as keyof typeof activityTypeMap] || type;
+  return activityTypeMap[type] || type;
 };
 
 // 监听筛选条件变化
 watch(filters, () => {
-  emit('filter', filters.value);
+  loadActivities();
 });
 
 const handleActivityClick = (activity: Activity) => {
-  emit('select', activity);
+  emit('select', { ...activity });
 };
+
+onMounted(() => {
+  loadActivities();
+});
+
+defineExpose({
+  refresh: loadActivities,
+});
 </script>
 
 <template>
@@ -72,17 +91,21 @@ const handleActivityClick = (activity: Activity) => {
           <el-select v-model="filters.grade" placeholder="年级" clearable size="small">
             <el-option v-for="grade in grades" :key="grade" :label="grade" :value="grade" />
           </el-select>
+          <el-button type="primary" :icon="Refresh" circle size="small" @click="loadActivities" />
         </div>
       </div>
     </template>
 
-    <div class="activity-list">
-      <ActivityCard
-        v-for="activity in activities"
-        :key="activity.id"
-        :activity="activity"
-        @click="handleActivityClick(activity)"
-      />
+    <div v-loading="isLoading">
+      <el-empty v-if="activities.length === 0" description="暂无活动" />
+      <div v-else class="activity-list">
+        <ActivityCard
+          v-for="activity in activities"
+          :key="activity.id"
+          :activity="activity"
+          @click="handleActivityClick(activity)"
+        />
+      </div>
     </div>
   </el-card>
 </template>
@@ -111,6 +134,7 @@ const handleActivityClick = (activity: Activity) => {
 .filter-actions {
   display: flex;
   gap: 10px;
+  width: 40%;
 }
 
 .activity-list {
