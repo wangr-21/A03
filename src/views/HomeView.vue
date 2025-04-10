@@ -12,6 +12,7 @@ import {
   KnowledgeGraph,
   HomeHotTopics,
 } from '@/components/home';
+import CrossDisciplineGraph from '@/components/home/CrossDisciplineGraph.vue';
 
 // 资源库相关数据
 const allResources = ref<Resource[]>([]);
