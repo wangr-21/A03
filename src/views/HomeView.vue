@@ -12,7 +12,6 @@ import {
   KnowledgeGraph,
   HomeHotTopics,
 } from '@/components/home';
-import CrossDisciplineGraph from '@/components/home/CrossDisciplineGraph.vue';
 
 // 资源库相关数据
 const allResources = ref<Resource[]>([]);
@@ -24,11 +23,7 @@ const selectedGrade = ref<string>('');
 const hotTags = ref<string[]>([]);
 
 // 获取资源数据
-const fetchResources = async (filters?: {
-  type?: string;
-  // subject?: string; // 移除学科过滤
-  grade?: string;
-}): Promise<void> => {
+const fetchResources = async (filters?: { type?: string; grade?: string }): Promise<void> => {
   resourcesLoading.value = true;
   console.log('Fetching resources with filters:', filters);
 
