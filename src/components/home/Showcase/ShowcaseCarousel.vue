@@ -11,20 +11,20 @@ const carouselItems: CarouselItem[] = [
   {
     id: 1,
     title: '优秀教学案例展示',
-    description: '互动式历史课堂设计',
-    image: '/src/assets/carousel1.jpg',
+    description: '互动式课堂设计',
+    image: '/src/assets/demo/showcase_images/carousel1.jpg',
   },
   {
     id: 2,
     title: '学生创意作品欣赏',
     description: 'AI赋能美术创作',
-    image: '/src/assets/carousel2.jpg',
+    image: '/src/assets/demo/showcase_images/carousel2.jpg',
   },
   {
     id: 3,
     title: '最新平台功能介绍',
     description: '学科星云知识图谱上线',
-    image: '/src/assets/carousel3.jpg',
+    image: '/src/assets/demo/showcase_images/carousel3.jpg',
   },
 ];
 </script>
