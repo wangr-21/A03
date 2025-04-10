@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import type { TabsPaneContext } from 'element-plus';
 import type { Resource } from '@/api';
 
@@ -16,18 +16,37 @@ const emit = defineEmits<{
   filtersChange: [filters: { tab: string; grade: string }];
 }>();
 
-// 本地状态
-const localActiveTab = ref(props.activeTab);
+// 本地状态 - 确保默认值为'textbook'
+const localActiveTab = ref('textbook'); // 直接设置默认值为textbook
 const localSelectedGrade = ref(props.selectedGrade);
 const resourcePageSize = ref<number>(5);
 const resourceCurrentPage = ref<number>(1);
+
+// 组件挂载时确保选中美术课本
+onMounted(() => {
+  // 确保默认选中美术课本
+  if (localActiveTab.value !== 'textbook') {
+    localActiveTab.value = 'textbook';
+    emit('filtersChange', {
+      tab: 'textbook',
+      grade: localSelectedGrade.value,
+    });
+  }
+});
 
 // 监听props变化，更新本地状态
 watch(
   () => props.activeTab,
   (newVal) => {
-    localActiveTab.value = newVal;
+    if (newVal) {
+      // 如果传入的是已删除的选项卡，则默认选择textbook
+      localActiveTab.value = newVal === 'all' || newVal === 'reference' ? 'textbook' : newVal;
+    } else {
+      // 如果没有传入值，确保默认为textbook
+      localActiveTab.value = 'textbook';
+    }
   },
+  { immediate: true }, // 立即执行一次
 );
 
 watch(
@@ -40,10 +59,16 @@ watch(
 // 可选项
 const grades: string[] = ['初一', '初二', '初三'];
 
+// 控制年级选择器显示
+const showGradeSelector = computed(() => {
+  return localActiveTab.value === 'textbook';
+});
+
 // 过滤资源
 const filteredResources = computed<Resource[]>(() => {
   return props.resources.filter((resource) => {
-    const typeMatch = localActiveTab.value === 'all' || resource.type === localActiveTab.value;
+    // 修改过滤逻辑，不再支持'all'选项
+    const typeMatch = resource.type === localActiveTab.value;
     const gradeMatch = !localSelectedGrade.value || resource.grade === localSelectedGrade.value;
     return typeMatch && gradeMatch;
   });
@@ -83,8 +108,23 @@ const handleResourcePageChange = (page: number): void => {
 };
 
 // 查看资源详情
-const viewResource = (id: number): void => {
-  console.log('View resource:', id);
+const viewResource = (resource: Resource): void => {
+  console.log('View resource:', resource.id);
+
+  // 如果有PDF路径，则打开PDF
+  if (resource.pdfPath) {
+    // 方法1: 使用window.open打开PDF (适用于web环境)
+    window.open(resource.pdfPath, '_blank');
+
+    // 方法2: 如果是Electron应用，可以使用Electron的shell.openExternal
+    // 需要先导入: import { shell } from 'electron'
+    // shell.openExternal(resource.pdfPath);
+  }
+};
+
+// 打开党建网站
+const openPartyWebsite = () => {
+  window.open('https://www.12371.cn/special/xz/', '_blank');
 };
 </script>
 
@@ -97,17 +137,18 @@ const viewResource = (id: number): void => {
         </h3>
         <div class="library-filters">
           <el-tabs v-model="localActiveTab" @tab-click="handleTabClick">
-            <el-tab-pane label="全部资源" name="all"></el-tab-pane>
-            <el-tab-pane label="教材课件" name="textbook"></el-tab-pane>
-            <el-tab-pane label="教学参考" name="reference"></el-tab-pane>
+            <el-tab-pane label="美术课本" name="textbook"></el-tab-pane>
             <el-tab-pane label="党建专题" name="party"></el-tab-pane>
           </el-tabs>
           <div class="filter-controls">
+            <!-- 修改年级选择器样式 -->
             <el-select
+              v-if="showGradeSelector"
               v-model="localSelectedGrade"
-              placeholder="选择年级"
-              size="small"
+              placeholder="请选择年级"
+              size="default"
               clearable
+              class="grade-selector"
               @change="applyFilters"
             >
               <el-option
@@ -122,7 +163,13 @@ const viewResource = (id: number): void => {
       </div>
     </template>
 
-    <div class="resource-grid" v-loading="loading" element-loading-text="加载美术资源中...">
+    <!-- 美术课本内容 -->
+    <div
+      v-if="localActiveTab === 'textbook'"
+      class="resource-grid"
+      v-loading="loading"
+      element-loading-text="加载资源中..."
+    >
       <el-card
         class="resource-card"
         v-for="resource in paginatedResources"
@@ -131,19 +178,32 @@ const viewResource = (id: number): void => {
       >
         <div class="resource-cover">
           <img :src="resource.cover" :alt="resource.title" />
-          <el-tag v-if="resource.type === 'party'" type="danger" class="party-tag">党建</el-tag>
         </div>
         <div class="resource-info">
           <h4>{{ resource.title }}</h4>
           <div class="resource-meta">
             <span>{{ resource.grade }}</span>
           </div>
-          <el-button text type="primary" @click="viewResource(resource.id)">查看资源</el-button>
+          <el-button text type="primary" @click="viewResource(resource)">查看资源</el-button>
         </div>
       </el-card>
     </div>
 
-    <div class="pagination" v-if="filteredResources.length > 0">
+    <!-- 党建专题内容 -->
+    <div v-if="localActiveTab === 'party'" class="party-content">
+      <el-button
+        :type="localActiveTab === 'party' ? 'danger' : 'default'"
+        size="large"
+        class="party-button"
+        @click="openPartyWebsite"
+      >
+        <el-icon class="party-icon"><Link /></el-icon>
+        访问党建专题网站
+      </el-button>
+    </div>
+
+    <!-- 分页 -->
+    <div class="pagination" v-if="localActiveTab === 'textbook' && filteredResources.length > 0">
       <el-pagination
         background
         layout="prev, pager, next"
@@ -154,8 +214,9 @@ const viewResource = (id: number): void => {
       ></el-pagination>
     </div>
 
+    <!-- 空状态 -->
     <el-empty
-      v-if="!loading && filteredResources.length === 0"
+      v-if="localActiveTab === 'textbook' && !loading && filteredResources.length === 0"
       description="暂无匹配的美术资源"
     ></el-empty>
   </el-card>
@@ -201,6 +262,23 @@ const viewResource = (id: number): void => {
   display: flex;
   gap: 10px;
   margin-left: auto;
+}
+
+/* 添加年级选择器样式 */
+.grade-selector {
+  width: 240px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+}
+
+:deep(.grade-selector .el-input__wrapper) {
+  border: none;
+  box-shadow: none !important;
+}
+
+:deep(.grade-selector .el-input__inner) {
+  color: #606266;
+  font-size: 14px;
 }
 
 .resource-grid {
@@ -265,5 +343,61 @@ const viewResource = (id: number): void => {
   padding: 20px;
   display: flex;
   justify-content: center;
+}
+
+/* 党建专题样式 */
+.party-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 200px; /* 减小最小高度 */
+}
+
+.party-button {
+  width: 60%; /* 减小宽度 */
+  height: 80px; /* 减小高度 */
+  font-size: 20px; /* 减小字体大小 */
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px; /* 减小图标和文字的间距 */
+  border-radius: 6px; /* 稍微减小圆角 */
+  transition: all 0.3s ease;
+}
+
+.party-icon {
+  font-size: 22px; /* 减小图标大小 */
+}
+.party-button.el-button--danger {
+  background-color: #c5281c;
+  border-color: #c5281c;
+  box-shadow: 0 4px 12px rgba(197, 40, 28, 0.3);
+}
+
+.party-button.el-button--default {
+  background-color: #ffffff;
+  border-color: #dcdfe6;
+  color: #606266;
+}
+
+.party-button:hover {
+  transform: translateY(-5px);
+}
+
+.party-button.el-button--danger:hover {
+  box-shadow: 0 8px 20px rgba(197, 40, 28, 0.4);
+  background-color: #d92d20;
+  border-color: #d92d20;
+}
+
+.party-button.el-button--default:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-color: #c0c4cc;
+}
+
+.party-icon {
+  font-size: 28px;
 }
 </style>
