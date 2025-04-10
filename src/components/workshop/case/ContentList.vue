@@ -6,9 +6,9 @@ defineProps<{
 </script>
 
 <template>
-  <div class="content-list" v-loading="loading">
-    <slot v-if="!isEmpty"></slot>
-    <el-empty v-else description="暂无数据" />
+  <el-empty v-if="isEmpty" description="暂无数据" />
+  <div v-else class="content-list" v-loading="loading">
+    <slot></slot>
   </div>
 </template>
 

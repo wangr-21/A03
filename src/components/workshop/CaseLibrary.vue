@@ -174,31 +174,31 @@ onMounted(() => {
 
     <el-tabs>
       <el-tab-pane label="传统故事">
-        <story-filter-comp :dynasties="dynasties" :themes="themes" @filter="handleStoryFilter" />
-        <content-list :loading="isStoriesLoading" :isEmpty="stories.length === 0">
-          <story-card
+        <StoryFilterComp :dynasties="dynasties" :themes="themes" @filter="handleStoryFilter" />
+        <ContentList :loading="isStoriesLoading" :isEmpty="stories.length === 0">
+          <StoryCard
             v-for="story in stories"
             :key="story.id"
             :story="story"
             @detail="handleStoryDetail"
           />
-        </content-list>
+        </ContentList>
       </el-tab-pane>
 
       <el-tab-pane label="教学案例">
-        <case-filter-comp :disciplines="disciplines" @filter="handleCaseFilter" />
-        <content-list :loading="isCasesLoading" :isEmpty="cases.length === 0">
-          <case-card
+        <CaseFilterComp :disciplines="disciplines" @filter="handleCaseFilter" />
+        <ContentList :loading="isCasesLoading" :isEmpty="cases.length === 0">
+          <CaseCard
             v-for="case_ in cases"
             :key="case_.id"
             :case_="case_"
             @detail="handleCaseDetail"
           />
-        </content-list>
+        </ContentList>
       </el-tab-pane>
     </el-tabs>
 
-    <generate-dialog
+    <GenerateDialog
       v-model:visible="showGenerateDialog"
       :type="dialogType"
       :dynasties="dynasties"
@@ -208,10 +208,10 @@ onMounted(() => {
     />
 
     <!-- 故事详情对话框 -->
-    <story-detail v-model:visible="showStoryDetail" :story="currentStory" />
+    <StoryDetail v-model:visible="showStoryDetail" :story="currentStory" />
 
     <!-- 案例详情对话框 -->
-    <case-detail
+    <CaseDetail
       v-model:visible="showCaseDetail"
       :case_="currentCase"
       @view-story="handleViewStory"
