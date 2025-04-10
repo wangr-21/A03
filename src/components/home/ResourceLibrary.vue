@@ -98,7 +98,7 @@ const viewResource = (id: number): void => {
         <div class="library-filters">
           <el-tabs v-model="localActiveTab" @tab-click="handleTabClick">
             <el-tab-pane label="全部资源" name="all"></el-tab-pane>
-            <el-tab-pane label="美术课本" name="textbook"></el-tab-pane>
+            <el-tab-pane label="教材课件" name="textbook"></el-tab-pane>
             <el-tab-pane label="教学参考" name="reference"></el-tab-pane>
             <el-tab-pane label="党建专题" name="party"></el-tab-pane>
           </el-tabs>

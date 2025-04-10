@@ -9,9 +9,9 @@ interface Contact {
 
 // 联系人数据
 const contacts: Contact[] = [
-  { name: '王小明', title: '数学教师', avatar: '/src/assets/avatar1.jpg' },
-  { name: '李晓华', title: '语文组长', avatar: '/src/assets/avatar2.jpg' },
-  { name: '张三', title: '科学教师', avatar: '/src/assets/avatar3.jpg' },
+  { name: '王小明', title: '数学教师', avatar: '/src/assets/avatars/1.svg' },
+  { name: '李晓华', title: '语文组长', avatar: '/src/assets/avatars/2.svg' },
+  { name: '张三', title: '科学教师', avatar: '/src/assets/avatars/3.svg' },
 ];
 
 const searchContact = ref<string>('');

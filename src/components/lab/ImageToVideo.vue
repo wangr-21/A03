@@ -61,20 +61,12 @@ const downloadVideo = () => {
     <el-row :gutter="30">
       <!-- Left: Upload & Settings -->
       <el-col :span="8">
-        <ImageUploader title="1. 上传静态图片" @upload-success="handleVideoUploadSuccess" />
+        <h4>1. 上传静态图片</h4>
+        <ImageUploader @upload-success="handleVideoUploadSuccess" />
         <div class="image-preview" v-if="imageToVideoImageUrl">
           <h5>图片预览</h5>
           <el-image :src="imageToVideoImageUrl" fit="contain"></el-image>
         </div>
-        <!-- <el-form label-position="top" style="margin-top: 20px">
-          <el-form-item label="选择背景音乐">
-            <el-select v-model="selectedMusic" placeholder="选择音乐(可选)" clearable>
-              <el-option label="轻快节奏" value="music1.mp3"></el-option>
-              <el-option label="舒缓旋律" value="music2.mp3"></el-option>
-              <el-option label="史诗氛围" value="music3.mp3"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form> -->
         <el-button
           type="primary"
           @click="generateVideoFunc"

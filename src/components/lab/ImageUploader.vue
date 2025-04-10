@@ -3,7 +3,6 @@ import { ElMessage } from 'element-plus';
 import type { UploadFile, UploadUserFile } from 'element-plus';
 
 defineProps<{
-  title?: string;
   tip?: string;
 }>();
 
@@ -38,7 +37,6 @@ const beforeUpload = (rawFile: File): boolean | Promise<File> => {
 
 <template>
   <div>
-    <h4 v-if="title">{{ title }}</h4>
     <el-upload
       class="image-uploader"
       action="#"
