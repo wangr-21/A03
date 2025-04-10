@@ -91,7 +91,9 @@ const handleCreateScenario = async (data: CreateScenarioRequest) => {
     <el-card>
       <template #header>
         <div class="theater-header">
-          <h2 class="section-title">思辨剧场</h2>
+          <h2 class="section-title">
+            <el-icon><ChatDotRound /></el-icon> 思辨剧场
+          </h2>
           <div class="header-actions">
             <el-button
               type="primary"
@@ -156,7 +158,7 @@ const handleCreateScenario = async (data: CreateScenarioRequest) => {
 }
 
 .section-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
   margin: 0;

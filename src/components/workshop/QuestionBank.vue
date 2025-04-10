@@ -147,7 +147,7 @@ onMounted(() => {
       <template #header>
         <div class="card-header">
           <div class="header-content">
-            <h3 class="header-title">
+            <h3 class="section-title">
               <el-icon><Files /></el-icon> 题海星图 - 美术智能题库
             </h3>
             <div class="header-actions">
@@ -354,15 +354,11 @@ onMounted(() => {
   min-height: 32px;
 }
 
-.header-title {
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
   margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--el-text-color-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  line-height: 1.5;
 }
 
 .header-title .el-icon {

@@ -164,7 +164,9 @@ onMounted(() => {
   <el-card class="case-library-card">
     <template #header>
       <div class="card-header">
-        <h3>时空走廊 - 故事与案例</h3>
+        <h3 class="section-title">
+          <el-icon><Clock /></el-icon> 时空走廊 - 故事与案例
+        </h3>
         <div class="header-actions">
           <el-button type="primary" @click="openGenerateDialog('story')">生成故事</el-button>
           <el-button type="success" @click="openGenerateDialog('case')">生成案例</el-button>
@@ -231,10 +233,13 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
 
-  h3 {
-    margin: 0;
-  }
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
 }
 
 /* 调整标签页样式 */

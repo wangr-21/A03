@@ -113,7 +113,7 @@ const exportPlanAsDocxFunc = async (): Promise<void> => {
     <el-card class="generator-card">
       <template #header>
         <div class="card-header">
-          <h3>
+          <h3 class="section-title">
             <el-icon><EditPen /></el-icon> 灵犀教案生成器
           </h3>
         </div>
@@ -206,6 +206,13 @@ const exportPlanAsDocxFunc = async (): Promise<void> => {
 .generator-card,
 .display-card {
   margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
 }
 
 .generator-form .el-select {

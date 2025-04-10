@@ -61,7 +61,9 @@ const recentPlans = ref<RecentPlan[]>([
     <el-card>
       <template #header>
         <div class="section-header">
-          <h2>最近教案</h2>
+          <h2 class="section-title">
+            <el-icon><Notebook /></el-icon> 最近教案
+          </h2>
           <el-button text type="primary">查看全部</el-button>
         </div>
       </template>
@@ -113,7 +115,7 @@ const recentPlans = ref<RecentPlan[]>([
   margin-bottom: 20px;
 }
 
-.section-header h2 {
+.section-title {
   font-size: 20px;
   font-weight: bold;
   color: #333;
