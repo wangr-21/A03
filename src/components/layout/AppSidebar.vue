@@ -22,7 +22,7 @@ const handleStartButtonClick = () => {
 <template>
   <div class="sidebar">
     <div class="logo-container">
-      <img alt="Logo" class="logo" src="@/assets/logo.svg" />
+      <img alt="Logo" class="logo" src="/src/assets/icons/logo.svg" />
       <span class="app-name" v-if="!collapsed">智教通平台</span>
     </div>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import contactListImages from '@/assets/demo/contactlist';
 
 interface Contact {
   name: string;
@@ -9,9 +10,9 @@ interface Contact {
 
 // 联系人数据
 const contacts: Contact[] = [
-  { name: '王小明', title: '数学教师', avatar: '/src/assets/demo/contactlist_images/avatar1.jpg' },
-  { name: '李晓华', title: '语文组长', avatar: '/src/assets/demo/contactlist_images/avatar2.jpg' },
-  { name: '张三', title: '科学教师', avatar: '/src/assets/demo/contactlist_images/avatar3.jpg' },
+  { name: '王小明', title: '数学教师', avatar: contactListImages.avatar1 },
+  { name: '李晓华', title: '语文组长', avatar: contactListImages.avatar2 },
+  { name: '张三', title: '科学教师', avatar: contactListImages.avatar3 },
 ];
 
 const searchContact = ref<string>('');
