@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import * as echarts from 'echarts';
-import type { EChartsType } from 'echarts';
+import { use, init, type EChartsType } from 'echarts/core';
+import { TooltipComponent, RadarComponent } from 'echarts/components';
+import { RadarChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+
+// 注册必需的组件
+use([TooltipComponent, RadarComponent, RadarChart, CanvasRenderer]);
 
 const props = defineProps<{
   chartData: number[];
@@ -14,7 +19,7 @@ const initChart = () => {
   if (!chartRef.value) return;
   if (chartInstance) chartInstance.dispose();
 
-  chartInstance = echarts.init(chartRef.value);
+  chartInstance = init(chartRef.value);
   const option = {
     tooltip: { trigger: 'item' },
     radar: {

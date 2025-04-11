@@ -1,7 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import * as echarts from 'echarts';
-import type { EChartsType } from 'echarts';
+import { use, init, type EChartsType } from 'echarts/core';
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+} from 'echarts/components';
+import { LineChart } from 'echarts/charts';
+import { UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+
+// 注册必需的组件
+use([
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+  LineChart,
+  CanvasRenderer,
+  UniversalTransition,
+]);
 
 const overviewChart = ref<EChartsType | null>(null);
 const overviewTimeRange = ref<string>('month');
@@ -11,7 +30,7 @@ const initChart = (): void => {
   const chartDom = document.getElementById('overviewChart');
   if (!chartDom) return;
 
-  overviewChart.value = echarts.init(chartDom);
+  overviewChart.value = init(chartDom);
   updateChartData();
 };
 
