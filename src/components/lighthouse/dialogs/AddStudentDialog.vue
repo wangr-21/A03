@@ -29,12 +29,9 @@ const submitting = ref(false);
 
 // 年级选项
 const grades = [
-  { label: '一年级', value: '1' },
-  { label: '二年级', value: '2' },
-  { label: '三年级', value: '3' },
-  { label: '四年级', value: '4' },
-  { label: '五年级', value: '5' },
-  { label: '六年级', value: '6' },
+  { label: '七年级', value: '7' },
+  { label: '八年级', value: '8' },
+  { label: '九年级', value: '9' },
 ];
 
 // 表单数据
@@ -67,14 +64,11 @@ const rules = reactive<FormRules>({
 
 // 头像上传前的验证
 const beforeAvatarUpload = (file: File) => {
-  const isImage = file.type.startsWith('image/');
-  const isLt2M = file.size / 1024 / 1024 < 2;
-
-  if (!isImage) {
+  if (!file.type.startsWith('image/')) {
     ElMessage.error('头像必须是图片格式!');
     return false;
   }
-  if (!isLt2M) {
+  if (file.size / 1024 / 1024 > 2) {
     ElMessage.error('头像大小不能超过 2MB!');
     return false;
   }
