@@ -89,15 +89,6 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   });
 };
 
-// 快速演示登录
-const quickDemoLogin = () => {
-  loginForm.username = 'teacher';
-  loginForm.password = '123456';
-  loginFormRef.value?.validate(() => {
-    handleLogin(loginFormRef.value);
-  });
-};
-
 // 处理忘记密码
 const handleForgotPassword = () => {
   ElMessage({
@@ -109,6 +100,11 @@ const handleForgotPassword = () => {
   });
   // 可以在这里添加更多逻辑，如显示重置密码对话框或导航到密码重置页面
   // router.push('/reset-password');
+};
+
+// 添加注册处理函数
+const handleRegister = () => {
+  router.push('/register');
 };
 </script>
 
@@ -196,11 +192,11 @@ const handleForgotPassword = () => {
                 type="info"
                 plain
                 size="large"
-                class="demo-button"
+                class="register-button"
                 :disabled="loading"
-                @click="quickDemoLogin"
+                @click="handleRegister"
               >
-                演示账号快速登录
+                注册账号
               </el-button>
             </el-form-item>
           </el-form>
@@ -447,7 +443,7 @@ const handleForgotPassword = () => {
   box-shadow: 0 7px 14px rgba(115, 83, 229, 0.2);
 }
 
-.demo-button {
+.register-button {
   width: 100%;
   border-radius: 4px;
 }
