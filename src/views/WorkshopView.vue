@@ -76,6 +76,11 @@ const handleToolClick = (toolTitle: string) => {
   }
 };
 
+const scrollToGenerator = () => {
+  // 滚动到灵犀教案生成器区域
+  document.querySelector('.generator-card')?.scrollIntoView({ behavior: 'smooth' });
+}
+
 // 简化回到顶部逻辑
 const showBackToTop = ref(false);
 
@@ -129,7 +134,7 @@ onMounted(() => {
   <div class="workshop-container">
     <div class="page-header">
       <h1 class="page-title">智课工坊</h1>
-      <el-button type="primary" icon="Plus">创建新教案</el-button>
+      <el-button type="primary" icon="Plus" @click="scrollToGenerator">创建新教案</el-button>
     </div>
 
     <!-- 工具卡片区域 -->
