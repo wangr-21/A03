@@ -1,4 +1,5 @@
 import { request } from './index';
+import * as avatars from '@/assets/avatars';
 
 export interface Notification {
   id: number;
@@ -49,7 +50,7 @@ export async function getNotifications(): Promise<NotificationsResponse> {
       title: '新消息',
       content: '张老师给您发送了一条消息',
       time: '10分钟前',
-      avatar: '/src/assets/avatars/1.svg',
+      avatar: avatars.avatar1,
       read: false,
     },
     {
@@ -58,7 +59,7 @@ export async function getNotifications(): Promise<NotificationsResponse> {
       title: '评论回复',
       content: '李老师回复了您在"如何提高学生课堂参与度"的评论',
       time: '30分钟前',
-      avatar: '/src/assets/avatars/2.svg',
+      avatar: avatars.avatar2,
       read: false,
     },
     {
@@ -67,7 +68,7 @@ export async function getNotifications(): Promise<NotificationsResponse> {
       title: '系统通知',
       content: '您上传的教案已通过审核',
       time: '2小时前',
-      avatar: '/src/assets/avatars/system.svg',
+      avatar: avatars.system,
       read: true,
     },
   ];
@@ -135,7 +136,7 @@ export async function login(data: LoginForm): Promise<{
           id: 1,
           username: 'teacher',
           name: '王老师',
-          avatar: '/src/assets/avatars/my.svg',
+          avatar: avatars.my,
           role: 'teacher',
           title: '特级教师',
           department: '语文教研组',
@@ -171,7 +172,7 @@ export async function getCurrentUser(): Promise<{
       id: 1,
       username: 'teacher',
       name: '王老师',
-      avatar: '/src/assets/avatars/my.svg',
+      avatar: avatars.my,
       role: 'teacher',
       title: '特级教师',
       department: '语文教研组',

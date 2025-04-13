@@ -1,4 +1,5 @@
 import { request } from './index';
+import * as avatars from '@/assets/avatars';
 
 export interface Student {
   id: string;
@@ -45,7 +46,7 @@ export async function getStudents(params: {
       class: '1班',
       score: 92,
       attendance: 98,
-      avatar: '/src/assets/avatars/1.svg',
+      avatar: avatars.avatar1,
     },
     {
       id: '20230002',
@@ -54,7 +55,7 @@ export async function getStudents(params: {
       class: '1班',
       score: 85,
       attendance: 95,
-      avatar: '/src/assets/avatars/2.svg',
+      avatar: avatars.avatar2,
     },
     {
       id: '20230003',
@@ -63,7 +64,7 @@ export async function getStudents(params: {
       class: '2班',
       score: 78,
       attendance: 90,
-      avatar: '/src/assets/avatars/3.svg',
+      avatar: avatars.avatar3,
     },
     {
       id: '20230004',
@@ -72,7 +73,7 @@ export async function getStudents(params: {
       class: '2班',
       score: 88,
       attendance: 92,
-      avatar: '/src/assets/avatars/0.svg',
+      avatar: avatars.avatar0,
     },
     {
       id: '20230005',
@@ -81,7 +82,7 @@ export async function getStudents(params: {
       class: '3班',
       score: 76,
       attendance: 85,
-      avatar: '/src/assets/avatars/0.svg',
+      avatar: avatars.avatar0,
     },
     {
       id: '20230006',
@@ -90,7 +91,7 @@ export async function getStudents(params: {
       class: '3班',
       score: 95,
       attendance: 99,
-      avatar: '/src/assets/avatars/0.svg',
+      avatar: avatars.avatar0,
     },
   ];
 

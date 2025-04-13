@@ -3,6 +3,7 @@ import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { avatar0 } from '@/assets/avatars';
 
 // 定义属性和事件
 defineProps<{
@@ -77,7 +78,7 @@ onBeforeUnmount(() => {
   <div class="settings-dropdown" v-if="isActive">
     <div class="dropdown-header">
       <div class="user-info">
-        <el-avatar :size="50" :src="userInfo?.avatar || '/src/assets/avatars/0.svg'"></el-avatar>
+        <el-avatar :size="50" :src="userInfo?.avatar || avatar0"></el-avatar>
         <div class="user-details">
           <h3>{{ userInfo?.name || '用户名' }}</h3>
           <p>{{ userInfo?.title || '职位' }}</p>

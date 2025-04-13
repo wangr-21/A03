@@ -1,5 +1,6 @@
 import { request } from './index';
 import type { UploadUserFile } from 'element-plus';
+import labDemoAssets from '@/assets/demo/lab';
 
 export interface StyleOption {
   name: string;
@@ -51,20 +52,6 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
   };
 }
 
-const imageDemoAssets = {
-  impressionism: [
-    '/src/assets/demo/lab/image/impressionism/1.png',
-    '/src/assets/demo/lab/image/impressionism/2.png',
-  ],
-  van_gogh: [
-    '/src/assets/demo/lab/image/van_gogh/1.png',
-    '/src/assets/demo/lab/image/van_gogh/2.png',
-  ],
-  ink_wash: ['/src/assets/demo/lab/image/ink_wash/1.png'],
-  cyberpunk: ['/src/assets/demo/lab/image/cyberpunk/1.png'],
-  ukiyo_e: ['/src/assets/demo/lab/image/ukiyo_e/1.png', '/src/assets/demo/lab/image/ukiyo_e/2.png'],
-} as const;
-
 // 应用风格转换
 export async function applyStyleTransfer(imageFile: UploadUserFile, style: string): Promise<Blob> {
   // const formData = new FormData();
@@ -76,7 +63,7 @@ export async function applyStyleTransfer(imageFile: UploadUserFile, style: strin
 
   // 模拟API调用
   await new Promise((resolve) => setTimeout(resolve, 2000));
-  const images = imageDemoAssets[style as keyof typeof imageDemoAssets] as readonly string[];
+  const images = labDemoAssets.image[style as keyof typeof labDemoAssets.image] as readonly string[];
   const response = await fetch(images[Math.floor(Math.random() * images.length)]);
   return response.blob();
 }
@@ -92,19 +79,9 @@ export async function analyzeColorEmotion(
 }
 
 export async function demoGetImageEmotionAnalysis() {
-  const analysisFile = 'src/assets/demo/lab/emotion/analysis.md';
-  const teacherFile = 'src/assets/demo/lab/emotion/teacher.md';
-  const [analysis, teacher] = await Promise.all([
-    fetch(analysisFile).then(res => res.text()),
-    fetch(teacherFile).then(res => res.text())
-  ]);
-  return { analysis, teacher };
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return labDemoAssets.emotion;
 }
-
-const videoDemoAssets = [
-  '/src/assets/demo/lab/video/1.mp4',
-  '/src/assets/demo/lab/video/2.mp4',
-] as const;
 
 // 生成视频
 export async function generateVideo(
@@ -121,7 +98,7 @@ export async function generateVideo(
   await new Promise((resolve) => setTimeout(resolve, 6000));
 
   return {
-    videoUrl: videoDemoAssets[Math.floor(Math.random() * videoDemoAssets.length)],
+    videoUrl: labDemoAssets.video[Math.floor(Math.random() * labDemoAssets.video.length)],
     script: `1. 画面拉近，聚焦主体。
 2. 添加轻快背景音乐。
 3. 元素[A]向右移动。

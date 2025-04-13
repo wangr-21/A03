@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import * as avatars from '@/assets/avatars';
 
 interface RecommendedResource {
   title: string;
@@ -20,7 +21,7 @@ const resources = ref<RecommendedResource[]>([
     date: '2023-03-15',
     views: 2341,
     stars: 189,
-    avatar: '/src/assets/avatars/1.svg',
+    avatar: avatars.avatar1,
   },
   {
     title: '传统文化融入语文教学',
@@ -29,7 +30,7 @@ const resources = ref<RecommendedResource[]>([
     date: '2023-03-12',
     views: 1892,
     stars: 156,
-    avatar: '/src/assets/avatars/2.svg',
+    avatar: avatars.avatar2,
   },
   {
     title: '物理实验创新设计指南',
@@ -38,7 +39,7 @@ const resources = ref<RecommendedResource[]>([
     date: '2023-03-08',
     views: 1654,
     stars: 142,
-    avatar: '/src/assets/avatars/3.svg',
+    avatar: avatars.avatar3,
   },
 ]);
 </script>

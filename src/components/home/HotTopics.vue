@@ -33,8 +33,9 @@ const viewAllTags = () => {
         class="topic-tag"
         effect="plain"
         @click="handleTagClick(tag)"
-        ># {{ tag }}</el-tag
       >
+        # {{ tag }}
+      </el-tag>
       <div v-if="!tags.length" class="empty-topics">暂无热门话题</div>
     </div>
   </div>

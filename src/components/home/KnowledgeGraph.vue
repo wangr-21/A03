@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import * as datawithmix from '@/assets/datawithmix';
 
 const currentPage = ref(1);
 const pageSize = ref(5);
@@ -10,36 +11,36 @@ const knowledgeData = [
     title: '山水意境创作课',
     description:
       '湖北监利市玉沙中学结合语文课文《山水画的意境》开展美术创作，学生通过赏析《漓江胜境图》并绘制心中山水，实现文本到图像的转化。',
-    image: '/src/assets/datawithmix/images/literature.png',
-    graph: '/src/assets/datawithmix/graphs/literature.png',
+    image: datawithmix.images.literature,
+    graph: datawithmix.graphs.literature,
   },
   {
     key: '美术+历史',
     title: '文艺复兴艺术探源',
     description: '通过分析达芬奇《蒙娜丽莎》的构图与技法，理解人文主义精神。',
-    image: '/src/assets/datawithmix/images/history.png',
-    graph: '/src/assets/datawithmix/graphs/history.png',
+    image: datawithmix.images.history,
+    graph: datawithmix.graphs.history,
   },
   {
     key: '美术+数学',
     title: '七巧板几何设计',
     description: '学生用七巧板拼几何图形并讲故事，融合数学规律与美术表达。',
-    image: '/src/assets/datawithmix/images/math.png',
-    graph: '/src/assets/datawithmix/graphs/math.png',
+    image: datawithmix.images.math,
+    graph: datawithmix.graphs.math,
   },
   {
     key: '美术+生物',
     title: '生态主题绘画',
     description: '观察草履虫、仙人掌等生物结构后创作生态主题画作。',
-    image: '/src/assets/datawithmix/images/biology.png',
-    graph: '/src/assets/datawithmix/graphs/biology.png',
+    image: datawithmix.images.biology,
+    graph: datawithmix.graphs.biology,
   },
   {
     key: '美术+地理',
     title: '地理摄影与地图绘制',
     description: '拍摄自然景观并绘制等高线地形图，结合地理知识解读作品。',
-    image: '/src/assets/datawithmix/images/geography.png',
-    graph: '/src/assets/datawithmix/graphs/geography.png',
+    image: datawithmix.images.geography,
+    graph: datawithmix.graphs.geography,
   },
 ];
 

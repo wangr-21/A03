@@ -29,7 +29,7 @@ export default defineConfig({
       output: {
         assetFileNames: (assetInfo) => {
           // 对于 favicon.ico，保持其在根目录中
-          if (assetInfo.name === 'favicon.ico') {
+          if (assetInfo.names.includes('favicon.ico')) {
             return 'favicon.ico';
           }
           return 'assets/[name]-[hash][extname]';

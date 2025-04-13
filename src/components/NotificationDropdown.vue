@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import * as avatars from '@/assets/avatars'
 
 // 定义Props
 defineProps({
@@ -20,7 +21,7 @@ const notifications = ref([
     title: '新消息',
     content: '张老师给您发送了一条消息',
     time: '10分钟前',
-    avatar: '/src/assets/avatars/1.svg',
+    avatar: avatars.avatar1,
     read: false,
   },
   {
@@ -29,7 +30,7 @@ const notifications = ref([
     title: '评论回复',
     content: '李老师回复了您在"如何提高学生课堂参与度"的评论',
     time: '30分钟前',
-    avatar: '/src/assets/avatars/2.svg',
+    avatar: avatars.avatar2,
     read: false,
   },
   {
@@ -38,7 +39,7 @@ const notifications = ref([
     title: '系统通知',
     content: '您分享的资源"初中数学教案"已被审核通过',
     time: '2小时前',
-    avatar: '/src/assets/avatars/system.svg',
+    avatar: avatars.system,
     read: true,
   },
   {
@@ -47,7 +48,7 @@ const notifications = ref([
     title: '评论回复',
     content: '王老师在师韵星盟点赞了您的评论',
     time: '昨天',
-    avatar: '/src/assets/avatars/3.svg',
+    avatar: avatars.avatar3,
     read: true,
   },
 ]);

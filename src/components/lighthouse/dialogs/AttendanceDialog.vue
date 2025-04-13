@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import type { Student } from '@/api';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { avatar0 } from '@/assets/avatars';
 
 // Props 定义
 const props = defineProps<{
@@ -201,11 +202,7 @@ watch(visible, (newVal) => {
       <el-table-column label="学生信息" min-width="200">
         <template #default="{ row }">
           <div class="student-info">
-            <el-avatar
-              :size="32"
-              :src="row.avatar || '/src/assets/avatars/0.svg'"
-              class="student-avatar"
-            />
+            <el-avatar :size="32" :src="row.avatar || avatar0" class="student-avatar" />
             <div class="student-details">
               <div class="student-name">{{ row.name }}</div>
               <div class="student-id">{{ row.id }}</div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Edit, Picture, Paperclip, QuestionFilled } from '@element-plus/icons-vue';
+import * as avatars from '@/assets/avatars';
 
 const emit = defineEmits<{
   'open-dialog': [payload: { type?: string; tags?: string[] }];
@@ -38,7 +39,7 @@ const openPostDialogWithTopic = (topic: string) => {
 <template>
   <el-card class="post-creator-card">
     <div class="creator-main" @click="openPostDialog()">
-      <el-avatar class="user-avatar" size="small" src="/src/assets/avatars/my.svg"></el-avatar>
+      <el-avatar class="user-avatar" size="small" :src="avatars.my"></el-avatar>
       <div class="input-placeholder">
         <span class="placeholder-text">{{ getRandomPlaceholder() }}</span>
       </div>

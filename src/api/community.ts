@@ -1,5 +1,6 @@
 import { request } from './index';
 import type { UploadUserFile } from 'element-plus';
+import * as avatars from '@/assets/avatars';
 
 export interface Author {
   name: string;
@@ -89,7 +90,7 @@ export async function getPosts(params: {
   let posts: Post[] = [
     {
       id: 100 + page * 5 - 4,
-      author: { name: '王老师', title: '特级教师', avatar: '/src/assets/avatars/teacher/1.svg' },
+      author: { name: '王老师', title: '特级教师', avatar: avatars.teacher1 },
       createdAt: '2小时前',
       content: '分享一个关于《红楼梦》人物分析的教学设计...',
       images: [],
@@ -103,7 +104,7 @@ export async function getPosts(params: {
     },
     {
       id: 100 + page * 5 - 3,
-      author: { name: '李老师', title: '骨干教师', avatar: '/src/assets/avatars/teacher/2.svg' },
+      author: { name: '李老师', title: '骨干教师', avatar: avatars.teacher2 },
       createdAt: '5小时前',
       content: '推荐一个AI批改数学作业的工具... #AI助教',
       images: ['/src/assets/ai_tool.png'],
@@ -117,7 +118,7 @@ export async function getPosts(params: {
     },
     {
       id: 100 + page * 5 - 2,
-      author: { name: '张老师', title: '青年教师', avatar: '/src/assets/avatars/teacher/3.svg' },
+      author: { name: '张老师', title: '青年教师', avatar: avatars.teacher3 },
       createdAt: '昨天',
       content: '用「幻画实验室」的风格迁移功能，看看孩子们的创意大作！',
       images: ['/src/assets/artwork_styled1.jpg', '/src/assets/artwork_styled2.jpg'],
@@ -131,7 +132,7 @@ export async function getPosts(params: {
     },
     {
       id: 100 + page * 5 - 1,
-      author: { name: '赵老师', title: '教研组长', avatar: '/src/assets/avatars/teacher/4.svg' },
+      author: { name: '赵老师', title: '教研组长', avatar: avatars.teacher4 },
       createdAt: '2天前',
       content: '关于项目式学习的一些思考和实践案例分享。',
       images: [],
@@ -148,7 +149,7 @@ export async function getPosts(params: {
       author: {
         name: '孙老师',
         title: '信息技术教师',
-        avatar: '/src/assets/avatars/teacher/5.svg',
+        avatar: avatars.teacher5,
       },
       createdAt: '3天前',
       content: '如何利用在线工具进行互动课堂测验？',
@@ -211,9 +212,9 @@ export async function getSidebarData(): Promise<{
 
   return {
     recommendedUsers: [
-      { name: '赵教授', title: '教育学专家', avatar: '/src/assets/avatars/expert/1.svg' },
-      { name: '钱研究员', title: '课程设计顾问', avatar: '/src/assets/avatars/expert/2.svg' },
-      { name: '孙校长', title: '资深教育管理者', avatar: '/src/assets/avatars/expert/3.svg' },
+      { name: '赵教授', title: '教育学专家', avatar: avatars.expert1 },
+      { name: '钱研究员', title: '课程设计顾问', avatar: avatars.expert2 },
+      { name: '孙校长', title: '资深教育管理者', avatar: avatars.expert3 },
     ],
     hotTags: ['AI教学', '课堂互动', '教学资源', '项目式学习', '新课标', '德育教育'],
   };

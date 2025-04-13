@@ -6,6 +6,7 @@ import NotificationDropdown from '@/components/NotificationDropdown.vue';
 import SettingsDropdown from '@/components/SettingsDropdown.vue';
 import BreadCrumb from './BreadCrumb.vue';
 import { onMounted } from 'vue';
+import { avatar0 } from '@/assets/avatars';
 
 defineProps({
   isMobile: {
@@ -68,7 +69,7 @@ onMounted(() => userStore.initUserState());
       </div>
       <div class="user-avatar" @click="toggleSettingsDropdown">
         <img
-          :src="userStore.userInfo?.avatar || '/src/assets/avatars/0.svg'"
+          :src="userStore.userInfo?.avatar || avatar0"
           :alt="userStore.userInfo?.name || '用户头像'"
         />
       </div>

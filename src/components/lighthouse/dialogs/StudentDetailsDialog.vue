@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import type { Student } from '@/api';
 import { ElMessageBox } from 'element-plus';
+import { avatar0 } from '@/assets/avatars';
 
 defineProps<{
   student: Student | null;
@@ -74,7 +75,7 @@ const previewWork = (file: { name: string; url: string }) => {
         <el-collapse-item title="基本信息" name="1">
           <div class="basic-info-section">
             <div class="student-avatar">
-              <el-avatar :size="100" :src="student.avatar || '/src/assets/avatars/0.svg'" />
+              <el-avatar :size="100" :src="student.avatar || avatar0" />
             </div>
             <div class="student-info">
               <el-descriptions :column="2" border>
