@@ -120,7 +120,7 @@ const handleRegister = () => {
     <div class="login-container">
       <div class="login-content">
         <div class="login-header">
-          <h1 class="app-title">师韵星盟</h1>
+          <h1 class="app-title">艺智绘</h1>
           <p class="app-slogan">汇聚教育智慧 · 点亮教学星火</p>
         </div>
 
