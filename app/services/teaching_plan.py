@@ -54,12 +54,10 @@ class TeachingPlanGenerator:
         return result[result.find("#") :]
 
     async def _convert_json(self, content: str):
-        prompt = PROMPT_CONVERT.read_text("utf-8")
+        prompt = PROMPT_CONVERT.read_text("utf-8").replace("{{content}}", content)
         response = await run_sync(self.client.chat.completions.create)(
             model=self.model_name,
-            messages=[
-                CompletionMessage().text(prompt.replace("{{content}}", content)).build()
-            ],
+            messages=[CompletionMessage().text(prompt).build()],
         )
         output = response.choices[0].message.content or ""
         return output[output.find("{") : output.rfind("}") + 1]
