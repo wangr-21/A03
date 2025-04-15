@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import showcaseImages from '@/assets/demo/showcase';
+import showcaseImages from '@/assets/showcase';
 
 interface CarouselItem {
   id: number;

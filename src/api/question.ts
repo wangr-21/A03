@@ -1,5 +1,5 @@
 import { request } from './index';
-import questionsData from '../assets/demo/questions.json';
+import questionsData from '../assets/questions.json';
 
 export interface QuestionFilters {
   type: string[];

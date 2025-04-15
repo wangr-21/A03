@@ -11,7 +11,7 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人教版】七年级上册(2024秋版)美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C(2024%E7%A7%8B%E7%89%88)%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 2,
@@ -25,7 +25,7 @@
     "publishYear": 2021,
     "downloadCount": 3897,
     "rating": 4.7,
-    "pdfPath": "/src/assets/pdfs/【人教版】七年级下册(2025年新版)美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C(2025%E5%B9%B4%E6%96%B0%E7%89%88)%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 3,
@@ -39,7 +39,7 @@
     "publishYear": 2021,
     "downloadCount": 3897,
     "rating": 4.7,
-    "pdfPath": "/src/assets/pdfs/【人教版】八年级上册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 4,
@@ -53,7 +53,7 @@
     "publishYear": 2021,
     "downloadCount": 3897,
     "rating": 4.7,
-    "pdfPath": "/src/assets/pdfs/【人教版】八年级下册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 5,
@@ -67,7 +67,7 @@
     "publishYear": 2021,
     "downloadCount": 3897,
     "rating": 4.7,
-    "pdfPath": "/src/assets/pdfs/【人教版】九年级上册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 6,
@@ -81,7 +81,7 @@
     "publishYear": 2021,
     "downloadCount": 3897,
     "rating": 4.7,
-    "pdfPath": "/src/assets/pdfs/【人教版】九年级下册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 7,
@@ -95,7 +95,7 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人美版】七年级上册(2024秋版)美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E7%BE%8E%E7%89%88%E3%80%91%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C(2024%E7%A7%8B%E7%89%88)%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 8,
@@ -109,7 +109,7 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人美版】七年级下册(2025年新版)美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E7%BE%8E%E7%89%88%E3%80%91%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C(2025%E5%B9%B4%E6%96%B0%E7%89%88)%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 8,
@@ -123,7 +123,7 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人美版】八年级上册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E7%BE%8E%E7%89%88%E3%80%91%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 9,
@@ -137,7 +137,7 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人美版】八年级下册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E7%BE%8E%E7%89%88%E3%80%91%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 10,
@@ -151,7 +151,7 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人美版】九年级上册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E7%BE%8E%E7%89%88%E3%80%91%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   },
   {
     "id": 10,
@@ -165,6 +165,6 @@
     "publishYear": 2022,
     "downloadCount": 5621,
     "rating": 4.8,
-    "pdfPath": "/src/assets/pdfs/【人美版】九年级下册美术电子课本.pdf"
+    "pdfUrl": "https://wyf7685-1302679584.cos.ap-shanghai.myqcloud.com/public/%E3%80%90%E4%BA%BA%E7%BE%8E%E7%89%88%E3%80%91%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C%E7%BE%8E%E6%9C%AF%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.pdf"
   }
 ]

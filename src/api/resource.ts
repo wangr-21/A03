@@ -1,7 +1,6 @@
 import { request } from './index';
-import resourceData from '@/assets/demo/resources.json';
+import resourceData from '@/assets/resources.json';
 
-// 修改Resource接口，添加pdfPath字段
 export interface Resource {
   id: number;
   title: string;
@@ -14,7 +13,7 @@ export interface Resource {
   publishYear?: number;
   downloadCount?: number;
   rating?: number;
-  pdfPath?: string; // 添加PDF文件路径字段
+  pdfUrl?: string;
 }
 
 export interface ResourcesResponse {

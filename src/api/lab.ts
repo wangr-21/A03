@@ -1,6 +1,6 @@
 import { request } from './index';
 import type { UploadUserFile } from 'element-plus';
-import labDemoAssets from '@/assets/demo/lab';
+import labDemoAssets from '@/assets/lab';
 
 export interface StyleOption {
   name: string;

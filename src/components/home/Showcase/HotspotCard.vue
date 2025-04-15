@@ -4,7 +4,7 @@ interface Hotspot {
   description?: string; // 添加画作简介字段
 }
 
-import hotspotImage from '@/assets/demo/hotspot.png';
+import hotspotImage from '@/assets/hotspot.png';
 import { ref } from 'vue';
 
 // 热点数据

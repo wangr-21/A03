@@ -110,15 +110,8 @@ const handleResourcePageChange = (page: number): void => {
 // 查看资源详情
 const viewResource = (resource: Resource): void => {
   console.log('View resource:', resource.id);
-
-  // 如果有PDF路径，则打开PDF
-  if (resource.pdfPath) {
-    // 方法1: 使用window.open打开PDF (适用于web环境)
-    window.open(resource.pdfPath, '_blank');
-
-    // 方法2: 如果是Electron应用，可以使用Electron的shell.openExternal
-    // 需要先导入: import { shell } from 'electron'
-    // shell.openExternal(resource.pdfPath);
+  if (resource.pdfUrl) {
+    window.open(resource.pdfUrl, '_blank');
   }
 };
 

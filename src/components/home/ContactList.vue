@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import contactListImages from '@/assets/demo/contactlist';
+import contactListImages from '@/assets/contactlist';
 
 interface Contact {
   name: string;
