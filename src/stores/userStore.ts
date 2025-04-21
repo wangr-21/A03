@@ -40,9 +40,9 @@ export const useUserStore = defineStore('user', () => {
     loading.value = true;
     try {
       const response = await getCurrentUser();
-      userInfo.value = response.data;
+      userInfo.value = response;
       // 更新localStorage中的用户信息
-      localStorage.setItem('userInfo', JSON.stringify(response.data));
+      localStorage.setItem('userInfo', JSON.stringify(response));
     } catch (error) {
       console.error('Failed to fetch current user:', error);
       // 如果获取用户信息失败，清除token和用户信息

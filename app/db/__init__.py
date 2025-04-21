@@ -8,3 +8,4 @@ from .models import Question as Question
 from .models import ScenarioSimulation as ScenarioSimulation
 from .models import StudentInfo as StudentInfo
 from .models import TraditionalStory as TraditionalStory
+from .models import User as User

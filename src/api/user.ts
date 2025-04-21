@@ -29,10 +29,10 @@ export interface UserInfo {
   id: number;
   username: string;
   name: string;
-  avatar: string;
-  role: string;
   title: string;
   department: string;
+  avatar: string;
+  role: string;
 }
 
 // 获取通知列表
@@ -114,70 +114,28 @@ export async function markAllNotificationsAsRead(): Promise<{ success: boolean }
 
 // 用户登录
 export async function login(data: LoginForm): Promise<{
-  success: boolean;
-  data: {
-    token: string;
-    userInfo: UserInfo;
-  };
+  access_token: string;
 }> {
-  // 真实环境下应该是:
-  // return request.post('/user/login', data);
-
-  // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
-  // 模拟登录验证
-  if (data.username === 'teacher' && data.password === '123456') {
-    return {
-      success: true,
-      data: {
-        token: 'mock_token_' + Date.now(),
-        userInfo: {
-          id: 1,
-          username: 'teacher',
-          name: '王老师',
-          avatar: avatars.my,
-          role: 'teacher',
-          title: '特级教师',
-          department: '语文教研组',
-        },
-      },
-    };
-  } else {
-    // 登录失败
-    throw new Error('用户名或密码错误');
-  }
+  const form = new FormData();
+  form.append('username', data.username);
+  form.append('password', data.password);
+  return request.post('/auth/token', form);
 }
 
+const demoUser = {
+  id: 1,
+  username: 'teacher',
+  name: '王老师',
+  avatar: avatars.my,
+  role: 'teacher',
+  title: '特级教师',
+  department: '语文教研组',
+};
+
 // 获取当前用户信息
-export async function getCurrentUser(): Promise<{
-  success: boolean;
-  data: UserInfo;
-}> {
-  // 真实环境下应该是:
+export async function getCurrentUser(): Promise<UserInfo> {
   // return request.get('/user/current');
-
-  // 模拟API调用
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // 检查是否有有效token
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('未登录或登录已过期');
-  }
-
-  return {
-    success: true,
-    data: {
-      id: 1,
-      username: 'teacher',
-      name: '王老师',
-      avatar: avatars.my,
-      role: 'teacher',
-      title: '特级教师',
-      department: '语文教研组',
-    },
-  };
+  return demoUser;
 }
 
 // 退出登录

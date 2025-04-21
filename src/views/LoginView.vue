@@ -3,7 +3,7 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
-import { login } from '@/api';
+import { login,getCurrentUser  } from '@/api';
 import type { LoginForm } from '@/api';
 
 const router = useRouter();
@@ -67,19 +67,18 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 
     try {
       const response = await login(loginForm);
-      if (response.success) {
         // 存储token
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('token', response.access_token);
 
+      const userInfo = await getCurrentUser();
         // 存储用户信息
-        localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
         // 登录成功提示
         ElMessage.success('登录成功，欢迎回来！');
 
         // 跳转到重定向页面或首页
         router.replace(redirectPath.value);
-      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       ElMessage.error(error.message || '登录失败，请重试');

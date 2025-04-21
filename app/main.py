@@ -7,6 +7,7 @@ load_dotenv()
 
 from .routers import (  # noqa: E402
     analysis,
+    auth,
     cultural_corridor,
     homework,
     interactive,
@@ -14,6 +15,7 @@ from .routers import (  # noqa: E402
     students,
     style_transfer,
     teaching,
+    user,
 )
 
 app = FastAPI()
@@ -27,7 +29,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 注册路由
+app.include_router(auth.router, prefix="/api")
+
 for router in (
     teaching.router,
     analysis.router,
@@ -37,8 +40,9 @@ for router in (
     question_bank.router,
     cultural_corridor.router,
     style_transfer.router,
+    user.router,
 ):
-    app.include_router(router, prefix="/api")
+    app.include_router(router, prefix="/api", dependencies=[auth.RequireLogin()])
 
 
 @app.get("/", response_class=RedirectResponse)
